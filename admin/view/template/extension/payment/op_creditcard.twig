@@ -1,0 +1,328 @@
+{{ header }}{{ column_left }}
+<div id="content">
+  <div class="page-header">
+    <div class="container-fluid">
+      <div class="pull-right">
+        <button type="submit" form="form-op_creditcard" data-toggle="tooltip" title="{{ button_save }}" class="btn btn-primary"><i class="fa fa-save"></i></button>
+        <a href="{{ cancel }}" data-toggle="tooltip" title="{{ button_cancel }}" class="btn btn-default"><i class="fa fa-reply"></i></a></div>
+      <h1>{{ heading_title }}</h1>
+      <ul class="breadcrumb">
+          {% for breadcrumb in breadcrumbs %}
+        <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text}}</a></li>
+          {% endfor %}
+      </ul>
+    </div>
+  </div>
+  <div class="container-fluid">
+      {% if error_warning %}
+	<div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> {{ error_warning }}
+	  <button type="button" class="close" data-dismiss="alert">&times;</button>
+    </div>
+      {% endif %}
+    <div class="panel panel-default">
+	  <div class="panel-heading">
+	    <h3 class="panel-title"><i class="fa fa-pencil"></i> {{ text_edit }}</h3>
+	  </div>
+	  <div class="panel-body">
+	 	 <form action="{{ action }}" method="post" enctype="multipart/form-data" id="form-op_creditcard" class="form-horizontal">
+	 	 	<div class="form-group required">
+	            <label class="col-sm-2 control-label" for="input-account">{{ entry_account }}</label>
+	            <div class="col-sm-10">
+	              <input type="text" name="payment_op_creditcard_account" value="{{ payment_op_creditcard_account }}" placeholder="{{ entry_account }}" id="input-account" class="form-control" />
+					{% if error_account  %}
+	              <div class="text-danger">{{ error_account }}</div>
+                    {% endif %}
+	            </div>
+	        </div>
+	        <div class="form-group required">
+	            <label class="col-sm-2 control-label" for="input-terminal">{{ entry_terminal }}</label>
+	            <div class="col-sm-10">
+	              <input type="text" name="payment_op_creditcard_terminal" value="{{ payment_op_creditcard_terminal }}" placeholder="{{ entry_terminal }}" id="input-terminal" class="form-control" />
+					{% if error_terminal  %}
+	              <div class="text-danger">{{ error_terminal }}</div>
+					{% endif %}
+	            </div>
+	        </div>
+	        <div class="form-group required">
+	            <label class="col-sm-2 control-label" for="input-securecode">{{ entry_securecode }}</label>
+	            <div class="col-sm-10">
+	              <input type="text" name="payment_op_creditcard_securecode" value="{{ payment_op_creditcard_securecode }}" placeholder="{{ entry_securecode }}" id="input-securecode" class="form-control" />
+				  {% if  error_securecode  %}
+	              <div class="text-danger">{{ error_securecode }}</div>
+	              {% endif %}
+	             
+	            </div>
+	        </div>
+	        <!-- 3D功能区  -->
+	        <div class="form-group">
+	            <label class="col-sm-2 control-label" for="input-3d">{{ entry_3d }}</label>
+	            <div class="col-sm-10">
+	              <select name="payment_op_creditcard_3d" id="op_creditcard_3d" class="form-control" onchange="is_3d(this.value)">
+					{% if payment_op_creditcard_3d == 1 %}
+	                <option value="1" selected="selected">{{ text_3d_on }}</option>
+	                {% else %}
+	                <option value="1">{{ text_3d_on }}</option>
+	                {% endif %}
+
+
+					{% if payment_op_creditcard_3d == 0 %}
+	                <option value="0" selected="selected">{{ text_3d_off }}</option>
+	                {% else %}
+	                <option value="0">{{ text_3d_off }}</option>
+                    {% endif %}
+	              </select>
+	            </div>
+	        </div>
+	        <div class="form-group 3d_div">
+	            <label class="col-sm-2 control-label" for="input-3d-terminal">{{ entry_3d_terminal }}</label>
+	            <div class="col-sm-10">
+	              <input type="text" name="payment_op_creditcard_3d_terminal" value="{{ payment_op_creditcard_3d_terminal }}" placeholder="{{ entry_3d_terminal }}" id="input-3d-terminal" class="form-control" />
+	            </div>
+	        </div>
+	        <div class="form-group 3d_div">
+	            <label class="col-sm-2 control-label" for="input-3d-securecode">{{ entry_3d_securecode }}</label>
+	            <div class="col-sm-10">
+	              <input type="text" name="payment_op_creditcard_3d_securecode" value="{{ payment_op_creditcard_3d_securecode }}" placeholder="{{ entry_3d_securecode }}" id="input-3d-securecode" class="form-control" />
+	            </div>
+	        </div>
+	        <div class="form-group 3d_div">
+	            <label class="col-sm-2 control-label" for="input-currencies">{{ entry_currencies }}</label>
+	            <div class="col-sm-10">
+	              <select name="payment_op_creditcard_currencies" id="input-currencies" class="form-control" onchange="show_currency_value(this.value)">
+	                <option value="0">{{ text_select_currency }}</option>
+                      {% for key, currency in currencies %}
+	                <option value="{{ currency }}" >{{ currency }}</option>
+	                {% endfor %}
+	              </select>
+	            </div>
+	        </div>
+	        <div class="form-group 3d_div">
+	            <label class="col-sm-2 control-label" for="input-currencies-value">{{ entry_currencies_value }}</label>
+	            <div class="col-sm-10">
+					{% for key, currency in currencies %}
+	              	<input type="text" class="currencies_value form-control" style="display:none" id="{{ currency }}_value" name="payment_op_creditcard_currencies_value[{{ currency }}]" value="{{ payment_op_creditcard_currencies_value[currency] }}"  />
+                    {% endfor %}
+	            </div>
+	        </div>
+	        <div class="form-group 3d_div">
+			    <label class="col-sm-2 control-label">{{ entry_countries }}</label>
+			    <div class="col-sm-10">
+			      <div class="well well-sm" style="height: 150px; overflow: auto;">
+				{% for country in countries %}
+				<div class="checkbox" style="width: 40%; float: left;">
+				  <label>
+					{% if country.country_id in payment_op_creditcard_country_array %}
+				    <input type="checkbox" name="payment_op_creditcard_country_array[]" value="{{ country.country_id}}" checked="checked" />
+					  {{ country.name}}
+				    {% else %}
+				    <input type="checkbox" name="payment_op_creditcard_country_array[]" value="{{ country.country_id}}" />
+					{{ country.name}}
+				    {% endif %}
+				  </label>
+				</div>
+             	{% endfor %}
+			      </div>
+			      <a onclick="$(this).parent().find(':checkbox').prop('checked', true);">{{ text_select_all }}</a> / <a onclick="$(this).parent().find(':checkbox').prop('checked', false);">{{ text_unselect_all }}</a></div>
+			</div>
+			
+			
+	        <!-- 3D功能区  -->
+	        
+	        
+	        
+	        <div class="form-group">
+	            <label class="col-sm-2 control-label" for="input-transaction">{{ entry_transaction }}</label>
+	            <div class="col-sm-10">
+					<select name="payment_op_creditcard_transaction" id="input-transaction" class="form-control">
+                        {% if payment_op_creditcard_transaction == text_pay %}
+							<option value="{{ text_pay }}" selected="selected">{{ text_pay }}</option>
+                        {% else %}
+							<option value="{{ text_pay }}">{{ text_pay }}</option>
+                        {% endif %}
+
+                        {% if payment_op_creditcard_transaction == text_test %}
+							<option value="{{ text_test }}" selected="selected">{{ text_test }}</option>
+                        {% else %}
+							<option value="{{ text_test }}">{{ text_test }}</option>
+                        {% endif %}
+					</select>
+	            </div>
+	        </div>
+	        <div class="form-group">
+	            <label class="col-sm-2 control-label" for="input-pay-mode">{{ entry_pay_mode }}</label>
+	            <div class="col-sm-10">
+	              <select name="payment_op_creditcard_pay_mode" id="input-pay-mode" class="form-control">
+					{% if payment_op_creditcard_pay_mode == 1 %}
+	                <option value="1" selected="selected">{{ text_pay_iframe }}</option>
+					{% else %}
+	                <option value="1">{{ text_pay_iframe }}</option>
+	                {% endif %}
+
+					{% if payment_op_creditcard_pay_mode == 0 %}
+	                <option value="0" selected="selected">{{ text_pay_redirect }}</option>
+                      {% else %}
+	                <option value="0">{{ text_pay_redirect }}</option>
+                    {% endif %}
+	              </select>
+	            </div>
+	        </div>
+	        <div class="form-group">
+	            <label class="col-sm-2 control-label" for="input-default-order-status">{{ entry_default_order_status }}</label>
+	            <div class="col-sm-10">
+					<select name="payment_op_creditcard_default_order_status_id" id="input-default-order-status" class="form-control">
+                        {% for order_status in order_statuses  %}
+                            {% if order_status.order_status_id == payment_op_creditcard_default_order_status_id %}
+								<option value="{{ order_status.order_status_id}}" selected="selected">{{ order_status.name }}</option>
+                            {% else %}
+								<option value="{{ order_status.order_status_id }}">{{ order_status.name }}</option>
+                            {% endif %}
+                        {% endfor %}
+					</select>
+	            </div>
+	        </div>
+			 <div class="form-group">
+				 <label class="col-sm-2 control-label" for="input-success-order-status">{{ entry_success_order_status }}</label>
+				 <div class="col-sm-10">
+					 <select name="payment_op_creditcard_success_order_status_id" id="input-success-order-status" class="form-control">
+                         {% for order_status in order_statuses %}
+                             {% if order_status.order_status_id == payment_op_creditcard_success_order_status_id %}
+								 <option value="{{ order_status.order_status_id}}" selected="selected">{{ order_status.name }}</option>
+                             {% else %}
+								 <option value="{{ order_status.order_status_id}}">{{ order_status.name}}</option>
+                             {% endif %}
+                         {% endfor %}
+					 </select>
+				 </div>
+			 </div>
+			 <div class="form-group">
+				 <label class="col-sm-2 control-label" for="input-failed-order-status">{{ entry_failed_order_status }}</label>
+				 <div class="col-sm-10">
+					 <select name="payment_op_creditcard_failed_order_status_id" id="input-failed-order-status" class="form-control">
+                         {% for order_status in order_statuses %}
+                             {% if order_status.order_status_id == payment_op_creditcard_failed_order_status_id %}
+								 <option value="{{ order_status.order_status_id }}" selected="selected">{{ order_status.name }}</option>
+                             {% else %}
+								 <option value="{{ order_status.order_status_id }}">{{ order_status.name }}</option>
+                             {% endif %}
+                         {% endfor %}
+					 </select>
+				 </div>
+			 </div>
+			 <div class="form-group">
+				 <label class="col-sm-2 control-label" for="input-pending-order-status">{{ entry_pending_order_status }}</label>
+				 <div class="col-sm-10">
+					 <select name="payment_op_creditcard_pending_order_status_id" id="input-pending-order-status" class="form-control">
+                         {% for order_status in order_statuses %}
+                             {% if order_status.order_status_id  == payment_op_creditcard_pending_order_status_id %}
+								 <option value="{{ order_status.order_status_id }}" selected="selected">{{ order_status.name }}</option>
+                             {% else %}
+								 <option value="{{ order_status.order_status_id }}">{{ order_status.name }}</option>
+                             {% endif %}
+                         {% endfor %}
+					 </select>
+				 </div>
+			 </div>
+			 <div class="form-group">
+				 <label class="col-sm-2 control-label" for="input-geo-zone">{{ entry_geo_zone }}</label>
+				 <div class="col-sm-10">
+					 <select name="payment_op_creditcard_geo_zone_id" id="input-geo-zone" class="form-control">
+						 <option value="0">{{ text_all_zones }}</option>
+                         {% for geo_zone in geo_zones %}
+                             {% if geo_zone.geo_zone_id == payment_op_creditcard_geo_zone_id %}
+								 <option value="{{ geo_zone.geo_zone_id }}" selected="selected">{{ geo_zone.name }}</option>
+                             {% else %}
+								 <option value="{{ geo_zone.geo_zone_id }}">{{ geo_zone.name }}</option>
+                             {% endif %}
+                         {% endfor %}
+					 </select>
+				 </div>
+			 </div>
+			 <div class="form-group">
+				 <label class="col-sm-2 control-label" for="input-status">{{ entry_status }}</label>
+				 <div class="col-sm-10">
+					 <select name="payment_op_creditcard_status" id="input-status" class="form-control">
+                         {% if payment_op_creditcard_status %}
+							 <option value="1" selected="selected">{{ text_enabled }}</option>
+							 <option value="0">{{ text_disabled }}</option>
+                         {% else %}
+							 <option value="1">{{ text_enabled }}</option>
+							 <option value="0" selected="selected">{{ text_disabled }}</option>
+                         {% endif %}
+					 </select>
+				 </div>
+			 </div>
+			 <div class="form-group">
+				 <label class="col-sm-2 control-label" for="input-sort-order">{{ entry_sort_order }}</label>
+				 <div class="col-sm-10">
+					 <input type="text" name="payment_op_creditcard_sort_order" value="{{ payment_op_creditcard_sort_order }}" placeholder="{{ entry_sort_order }}" id="input-sort-order" class="form-control" />
+				 </div>
+			 </div>
+			
+			
+			<div class="form-group">
+			 <label class="col-sm-2 control-label" for="input-location">{{ entry_location }}</label>
+			 <div class="col-sm-10">
+				<select name="payment_op_creditcard_location" id="input-location" class="form-control">
+					{% if payment_op_creditcard_location %}
+				   <option value="1" selected="selected">{{ text_show }}</option>
+				   <option value="0">{{ text_hide }}</option>
+				   {% else %}
+				   <option value="1">{{ text_show }}</option>
+				   <option value="0" selected="selected">{{ text_hide }}</option>
+				   {% endif %}
+				</select>
+			 </div>
+			</div>
+			<div class="form-group ">
+			 <label class="col-sm-2 control-label" for="input-locations">{{ entry_locations }}</label>
+			 <div class="col-sm-10">
+				<input type="text" name="payment_op_creditcard_locations" value="{{ payment_op_creditcard_locations }}" placeholder="{{ entry_locations }}" id="input-terminal" class="form-control" />
+			 </div>
+			</div>
+			<div class="form-group">
+			 <label class="col-sm-2 control-label" for="input-entity">{{ entry_entity }}</label>
+			 <div class="col-sm-10">
+				<select name="payment_op_creditcard_entity" id="input-location" class="form-control">
+					{% if payment_op_creditcard_entity %}
+				   <option value="1" selected="selected">{{ text_shows }}</option>
+				   <option value="0">{{ text_hides }}</option>
+				   {% else %}
+				   <option value="1">{{ text_shows }}</option>
+				   <option value="0" selected="selected">{{ text_hides }}</option>
+				   {% endif %}
+				</select>
+			 </div>
+			</div>
+			<div class="form-group ">
+			 <label class="col-sm-2 control-label" for="input-entitys">{{ entry_entitys }}</label>
+			 <div class="col-sm-10">
+				<input type="text" name="payment_op_creditcard_entitys" value="{{ payment_op_creditcard_entitys }}" placeholder="{{ entry_entitys }}" id="input-terminal" class="form-control" />
+			 </div>
+			</div>
+
+	 	 </form>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript"><!--
+	function show_currency_value(currency){
+		$(".currencies_value").hide();
+		$("#"+currency+"_value").show();
+	}
+	function is_3d(val){
+		if(val == 1){
+			$(".3d_div").show();
+		}else{
+			$(".3d_div").hide();
+		}
+	}
+	
+	if($("#op_creditcard_3d").val() == 1){
+		$(".3d_div").show();
+	}else{
+		$(".3d_div").hide();
+	}
+	
+//--></script>
+{{ footer }}

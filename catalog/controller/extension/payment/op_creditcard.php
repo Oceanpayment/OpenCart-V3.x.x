@@ -1,28 +1,27 @@
 <?php
 
-class ControllerExtensionPaymentOPBoleto extends Controller {
+class ControllerExtensionPaymentOPCreditCard extends Controller {
 	
 	const PUSH 			= "[PUSH]";
-	const BrowserReturn = "[Browser Return]";	    
+	const BrowserReturn = "[Browser Return]";	
 	
-	public function index() {		
+	public function index() {
 		
+
 		$this->load->model('checkout/order');
-		$this->load->language('extension/payment/op_boleto');
 		
-		$data['pay_userName'] = $this->language->get('entry_pay_userName');
-		$data['pay_countryCode'] = $this->language->get('entry_pay_countryCode');
-		$data['button_confirm']  = $this->language->get('button_confirm');
-		$data['action'] = 'index.php?route=extension/payment/op_boleto/op_boleto_form';
+		
+		$data['button_confirm'] = $this->language->get('button_confirm');
+		$data['action'] = 'index.php?route=extension/payment/op_creditcard/op_creditcard_form';
 		
 		
 		$order_info = $this->model_checkout_order->getOrder($this->session->data['order_id']);
 		
-		return $this->load->view('extension/payment/op_boleto', $data);
+		return $this->load->view('extension/payment/op_creditcard', $data);
 	}
 
 	
-	public function op_boleto_form() {
+	public function op_creditcard_form() {
 		
 		$this->load->model('checkout/order');
 		$order_info = $this->model_checkout_order->getOrder($this->session->data['order_id']);
@@ -31,13 +30,13 @@ class ControllerExtensionPaymentOPBoleto extends Controller {
 		//判断是否为空订单
 		if (!empty($order_info)) {
 			
-			$this->load->model('extension/payment/op_boleto');
-			$product_info = $this->model_extension_payment_op_boleto->getOrderProducts($this->session->data['order_id']);
+			$this->load->model('extension/payment/op_creditcard');
+			$product_info = $this->model_extension_payment_op_creditcard->getOrderProducts($this->session->data['order_id']);
 			
 			//获取订单详情
 			$productDetails = $this->getProductItems($product_info);
 			//获取消费者详情
-			$customer_info = $this->model_extension_payment_op_boleto->getCustomerDetails($order_info['customer_id']);
+			$customer_info = $this->model_extension_payment_op_creditcard->getCustomerDetails($order_info['customer_id']);
 			
 			
 			if (!$this->request->server['HTTPS']) {
@@ -47,7 +46,7 @@ class ControllerExtensionPaymentOPBoleto extends Controller {
 			}
 			
 			//提交网关
-			$action = $this->config->get('payment_op_boleto_transaction');
+			$action = $this->config->get('payment_op_creditcard_transaction');
 			$data['action'] = $action;
 			
 			//订单号
@@ -61,26 +60,38 @@ class ControllerExtensionPaymentOPBoleto extends Controller {
 			//币种
 			$order_currency = $order_info['currency_code'];
 			$data['order_currency'] = $order_currency;
-
+			
+			//非3D交易
+			$_SESSION['is_3d'] = 0;
+			
+			//判断是否启用3D功能
+			if($this->config->get('payment_op_creditcard_3d') == 1){
+				//检验是否需要3D验证
+				$validate_arr = $this->validate3D($order_currency, $order_amount, $order_info);							
+			}else{
+				$validate_arr['terminal'] = $this->config->get('payment_op_creditcard_terminal');
+				$validate_arr['securecode'] = $this->config->get('payment_op_creditcard_securecode');
+			}
+			
 		
 			//商户号
-			$account = $this->config->get('payment_op_boleto_account');
+			$account = $this->config->get('payment_op_creditcard_account');
 			$data['account'] = $account;
 				
 			//终端号
-			$terminal = $this->config->get('payment_op_boleto_terminal');;
+			$terminal = $validate_arr['terminal'];
 			$data['terminal'] = $terminal;
 			
 			//securecode
-			$securecode = $this->config->get('payment_op_boleto_securecode');
+			$securecode = $validate_arr['securecode'];
 			
 			
 			//返回地址
-			$backUrl = $base_url.'index.php?route=extension/payment/op_boleto/callback';
+			$backUrl = $base_url.'index.php?route=extension/payment/op_creditcard/callback';
 			$data['backUrl'] = $backUrl;
 			
 			//服务器响应地址
-			$noticeUrl = $base_url.'index.php?route=extension/payment/op_boleto/notice';
+			$noticeUrl = $base_url.'index.php?route=extension/payment/op_creditcard/notice';
 			$data['noticeUrl'] = $noticeUrl;
 			
 			//备注
@@ -88,29 +99,9 @@ class ControllerExtensionPaymentOPBoleto extends Controller {
 			$data['order_notes'] = $order_notes;
 			
 			//支付方式
-			$methods = "Boleto";
+			$methods = "Credit Card";
 			$data['methods'] = $methods;
 			
-			//Boleto注册名称
-			$data['pay_userName'] = $this->OceanHtmlSpecialChars($order_info['payment_firstname'].$order_info['payment_lastname']);
-			
-			//Boleto注册邮箱
-			$data['pay_email'] = $this->OceanHtmlSpecialChars($order_info['email']);
-			
-			//cpf
-			$pay_cpf = $_POST['pay_cpf'];
-			$data['pay_cpf'] = $pay_cpf;
-			
-			//boleto支付类型
-			$pay_typeCode = 'directboleto';
-			$data['pay_typeCode'] = $pay_typeCode;
-		
-			$pay_bankCode = 'BL';
-			$data['pay_bankCode'] = $pay_bankCode;
-			
-			$pay_countryCode = 'BR';
-			$data['pay_countryCode'] = $pay_countryCode;
-										
 			//账单人名
 			$billing_firstName = $this->OceanHtmlSpecialChars($order_info['payment_firstname']);
 			$data['billing_firstName'] = $billing_firstName;
@@ -204,13 +195,27 @@ class ControllerExtensionPaymentOPBoleto extends Controller {
 			$data['productNum'] = $productNum;
 			
 			//购物车信息
-			$cart_info = 'opencart3.0 above';
+			$cart_info = 'opencart2.0 above';
 			$data['cart_info'] = $cart_info;
 			
 			//API版本
 			$cart_api = 'V1.7.1';
 			$data['cart_api'] = $cart_api;
-					
+			
+			//支付页面样式
+			$pages = 0;
+			$data['pages'] = $pages;
+			
+			
+			//附加参数-用户名注册时间
+			$ET_REGISTERDATE = empty($customer_info['date_added']) ? 'N/A' : $customer_info['date_added'];
+			$data['ET_REGISTERDATE'] = $ET_REGISTERDATE;
+			
+			//附加参数-是否使用优惠券
+			$ET_COUPONS = isset($this->session->data['coupon']) ? 'Yes' : 'No';
+			$data['ET_COUPONS'] = $ET_COUPONS;
+	
+			
 			//记录发送到oceanpayment的post log
 			$filedate = date('Y-m-d');
 			$postdate = date('Y-m-d H:i:s');
@@ -223,11 +228,6 @@ class ControllerExtensionPaymentOPBoleto extends Controller {
 					"order_number = "      .$order_number . "\r\n".
 					"order_currency = "    .$order_currency . "\r\n".
 					"order_amount = "      .$order_amount . "\r\n".
-					"pay_cpf = "           .$pay_cpf . "\r\n".
-					"pay_userName = "      .$data['pay_userName'] . "\r\n".
-					"pay_typeCode = "      .$pay_typeCode . "\r\n".
-					"pay_bankCode = "      .$pay_bankCode . "\r\n".
-					"pay_countryCode = "   .$pay_countryCode . "\r\n".
 					"billing_firstName = " .$billing_firstName . "\r\n".
 					"billing_lastName = "  .$billing_lastName . "\r\n".
 					"billing_email = "     .$billing_email . "\r\n".
@@ -252,7 +252,9 @@ class ControllerExtensionPaymentOPBoleto extends Controller {
 					"productNum = "        .$productNum . "\r\n".
 					"cart_info = "         .$cart_info . "\r\n".
 					"cart_api = "          .$cart_api . "\r\n".
-					"order_notes = "       .$order_notes . "\r\n";					
+					"order_notes = "       .$order_notes . "\r\n".
+					"ET_REGISTERDATE = "   .$ET_REGISTERDATE . "\r\n".
+					"ET_COUPONS = "        .$ET_COUPONS . "\r\n";
 			$post_log = $post_log . "*************************************\r\n";
 			$post_log = $post_log.file_get_contents( "oceanpayment_log/" . $filedate . ".log");
 			$filename = fopen( "oceanpayment_log/" . $filedate . ".log", "r+" );
@@ -276,9 +278,15 @@ class ControllerExtensionPaymentOPBoleto extends Controller {
 			$data['content_bottom'] = $this->load->controller('common/content_bottom');
 			$data['footer'] = $this->load->controller('common/footer');
 			$data['header'] = $this->load->controller('common/header');
-						
-			//跳转Redirect
-			$this->response->setOutput($this->load->view('extension/payment/op_boleto_form', $data));
+			
+			//支付模式Pay Mode
+			if($this->config->get('payment_op_creditcard_pay_mode') == 1){
+				//内嵌Iframe
+				$this->response->setOutput($this->load->view('extension/payment/op_creditcard_iframe', $data));
+			}else{
+				//跳转Redirect
+				$this->response->setOutput($this->load->view('extension/payment/op_creditcard_form', $data));
+			}
 
 		}else{		
 			$this->response->redirect($this->url->link('checkout/cart'));
@@ -290,7 +298,7 @@ class ControllerExtensionPaymentOPBoleto extends Controller {
 	
 	public function callback() {
 		if (isset($this->request->post['order_number']) && !(empty($this->request->post['order_number']))) {
-			$this->language->load('extension/payment/op_boleto');
+			$this->language->load('extension/payment/op_creditcard');
 		
 			$data['title'] = sprintf($this->language->get('heading_title'), $this->config->get('config_name'));
 
@@ -319,9 +327,8 @@ class ControllerExtensionPaymentOPBoleto extends Controller {
 			
 	
 			//返回信息
-			$account = $this->config->get('payment_op_boleto_account');
+			$account = $this->config->get('payment_op_creditcard_account');
 			$terminal = $this->request->post['terminal'];
-			$securecode = $this->config->get('payment_op_boleto_securecode');
 			$response_type = $this->request->post['response_type'];
 			$payment_id = $this->request->post['payment_id'];
 			$order_number = $this->request->post['order_number'];
@@ -337,7 +344,7 @@ class ControllerExtensionPaymentOPBoleto extends Controller {
 			$payment_authType = $this->request->post['payment_authType'];
 			$payment_risk = $this->request->post['payment_risk'];
 			$payment_solutions = $this->request->post['payment_solutions'];
-            $pay_barCode = $this->request->post['pay_barCode'];
+
 			
 			//用于支付结果页面显示响应代码
 			$getErrorCode = explode(':', $payment_details);
@@ -345,9 +352,24 @@ class ControllerExtensionPaymentOPBoleto extends Controller {
 			$data['op_errorCode'] = $ErrorCode;
 			$data['payment_details'] = $payment_details;
 			$data['payment_solutions'] = $payment_solutions;
+			
+			
+			//匹配终端号   记录是否3D交易
+			if($terminal == $this->config->get('payment_op_creditcard_terminal')){
+				//普通终端号
+				$securecode = $this->config->get('payment_op_creditcard_securecode');
+				$text_is_3d = '';
+			}elseif($terminal == $this->config->get('payment_op_creditcard_3d_terminal')){
+				//3D终端号
+				$securecode = $this->config->get('payment_op_creditcard_3d_securecode');
+				$text_is_3d = '[3D] ';
+			}else{				
+				$securecode = '';	
+				$text_is_3d = '';
+			}
+			
+			
 
-
-             
 			//签名数据		
 			$local_signValue = hash("sha256",$account.$terminal.$order_number.$order_currency.$order_amount.$order_notes.$card_number.
 					$payment_id.$payment_authType.$payment_status.$payment_details.$payment_risk.$securecode);
@@ -358,28 +380,19 @@ class ControllerExtensionPaymentOPBoleto extends Controller {
 
 
 	
-			
-			//是否来自移动端
-			$pages = isset($_SESSION['pages']) ? $_SESSION['pages'] : 0;
-			if($pages == 1){
-				$MobileType = '(Mobile)';
-			}else{
-				$MobileType = '';
-			}
-			
-			$message = '';
+
+			$message = self::BrowserReturn . $text_is_3d;
 			if ($payment_status == 1){           //交易状态
 				$message .= 'PAY:Success.';
 			}elseif ($payment_status == 0){
 				$message .= 'PAY:Failure.';
 			}elseif ($payment_status == -1){
-				if($payment_authType == 0){				    				    
-				    $message .= 'PAY:Pending.';			
+				if($payment_authType == 1){
+					$message .= 'PAY:Success.';
 				}else{
-					$message .= 'PAY:Failure.';
+					$message .= 'PAY:Pending.';
 				}
 			}
-						
 			$message .= ' | ' . $payment_id . ' | ' . $order_currency . ':' . $order_amount . ' | ' . $payment_details . "\n";
 		
 			$this->load->model('checkout/order');
@@ -390,7 +403,7 @@ class ControllerExtensionPaymentOPBoleto extends Controller {
 					if($ErrorCode == 20061){	 
 						//排除订单号重复(20061)的交易
 						$data['continue'] = $this->url->link('checkout/cart');
-						$this->response->setOutput($this->load->view('extension/payment/op_boleto_failure', $data));
+						$this->response->setOutput($this->load->view('extension/payment/op_creditcard_failure', $data));
 
 					}else{
 						if ($payment_status == 1 ){  
@@ -398,30 +411,28 @@ class ControllerExtensionPaymentOPBoleto extends Controller {
 							//清除coupon
 							unset($this->session->data['coupon']);
 							
-							$this->model_checkout_order->addOrderHistory($this->request->post['order_number'], $this->config->get('payment_op_boleto_success_order_status_id'), $message, true);
+							$this->model_checkout_order->addOrderHistory($this->request->post['order_number'], $this->config->get('payment_op_creditcard_success_order_status_id'), $message, true);
 							
 							$data['continue'] = HTTPS_SERVER . 'index.php?route=checkout/success';
-							$this->response->setOutput($this->load->view('extension/payment/op_boleto_success', $data));
+							$this->response->setOutput($this->load->view('extension/payment/op_creditcard_success', $data));
 
 						}elseif ($payment_status == -1 ){   
-							//交易待处理 						
-							if($payment_authType == 0){						
-							    if(!empty($pay_barCode)){
-							        header('Location: https://print.ebanx.com/print/?hash='.$pay_barCode);
-							        exit;
-							    }
+							//交易待处理 
+							//是否预授权交易
+							if($payment_authType == 1){						
+								$message .= '(Pre-auth)';
 							}
-							$this->model_checkout_order->addOrderHistory($this->request->post['order_number'], $this->config->get('payment_op_boleto_pending_order_status_id'), $message, false);
+							$this->model_checkout_order->addOrderHistory($this->request->post['order_number'], $this->config->get('payment_op_creditcard_pending_order_status_id'), $message, false);
 								
-							$data['continue'] = $this->url->link('checkout/cart');							
-							$this->response->setOutput($this->load->view('extension/payment/op_boleto_success', $data));
+							$data['continue'] = $this->url->link('checkout/cart');
+							$this->response->setOutput($this->load->view('extension/payment/op_creditcard_success', $data));
 	
 						}else{     
 							//交易失败
-							$this->model_checkout_order->addOrderHistory($this->request->post['order_number'], $this->config->get('payment_op_boleto_failed_order_status_id'), $message, false);
+							$this->model_checkout_order->addOrderHistory($this->request->post['order_number'], $this->config->get('payment_op_creditcard_failed_order_status_id'), $message, false);
 							
 							$data['continue'] = $this->url->link('checkout/cart');
-							$this->response->setOutput($this->load->view('extension/payment/op_boleto_failure', $data));
+							$this->response->setOutput($this->load->view('extension/payment/op_creditcard_failure', $data));
 
 						}
  					}								
@@ -429,18 +440,14 @@ class ControllerExtensionPaymentOPBoleto extends Controller {
 			
 			}else {     
 				//数据签名对比失败
-				$this->model_checkout_order->addOrderHistory($this->request->post['order_number'], $this->config->get('op_boleto_failed_order_status_id'), $message, false);
+				$this->model_checkout_order->addOrderHistory($this->request->post['order_number'], $this->config->get('op_creditcard_failed_order_status_id'), $message, false);
 							
 				$data['continue'] = $this->url->link('checkout/cart');
-				$this->response->setOutput($this->load->view('extension/payment/op_boleto_failure', $data));
+				$this->response->setOutput($this->load->view('extension/payment/op_creditcard_failure', $data));
 					
 			}
 		}
 
-	  unset($data['payment_op_boleto_location']);
-      unset($data['payment_op_boleto_locations']);
-      unset($data['payment_op_boleto_entity']);
-      unset($data['payment_op_boleto_entitys']);
 
 	}
 	
@@ -450,7 +457,7 @@ class ControllerExtensionPaymentOPBoleto extends Controller {
 		
 		//获取推送输入流XML
 		$xml_str = file_get_contents("php://input");
-		$securecode = $this->config->get('payment_op_boleto_securecode');
+		
 		//判断返回的输入流是否为xml
 		if($this->xml_parser($xml_str)){
 			$xml = simplexml_load_string($xml_str);
@@ -475,7 +482,23 @@ class ControllerExtensionPaymentOPBoleto extends Controller {
 			$_REQUEST['methods'] 	  	  = (string)$xml->methods;
 			$_REQUEST['payment_country']  = (string)$xml->payment_country;
 			$_REQUEST['payment_solutions']= (string)$xml->payment_solutions;
-			$_REQUEST['pay_barCode']      = (string)$xml->pay_barCode;
+				
+					
+			//匹配终端号   记录是否3D交易
+			if($_REQUEST['terminal'] == $this->config->get('payment_op_creditcard_terminal')){
+				//普通终端号
+				$securecode = $this->config->get('payment_op_creditcard_securecode');
+				$text_is_3d = '';
+			}elseif($_REQUEST['terminal'] == $this->config->get('payment_op_creditcard_3d_terminal')){
+				//3D终端号
+				$securecode = $this->config->get('payment_op_creditcard_3d_securecode');
+				$text_is_3d = '[3D] ';
+			}else{
+				$securecode = '';
+				$text_is_3d = '';
+			}
+			
+
 			
 		}
 		
@@ -499,13 +522,18 @@ class ControllerExtensionPaymentOPBoleto extends Controller {
 			
 				$this->load->model('checkout/order');
 				
-	
+
+				$message = self::PUSH . $text_is_3d;
 				if ($_REQUEST['payment_status'] == 1){           //交易状态
 					$message .= 'PAY:Success.';
 				}elseif ($_REQUEST['payment_status'] == 0){
 					$message .= 'PAY:Failure.';
-				}elseif ($_REQUEST['payment_status'] == -1){					
+				}elseif ($_REQUEST['payment_status'] == -1){
+					if($_REQUEST['payment_authType'] == 1){
+						$message .= 'PAY:Success.';
+					}else{
 						$message .= 'PAY:Pending.';
+					}
 				}			
 				$message .= ' | ' . $_REQUEST['payment_id'] . ' | ' . $_REQUEST['order_currency'] . ':' . $_REQUEST['order_amount'] . ' | ' . $_REQUEST['payment_details'] . "\n";
 				
@@ -515,14 +543,17 @@ class ControllerExtensionPaymentOPBoleto extends Controller {
 				}else{
 					if ($_REQUEST['payment_status'] == 1 ){
 						//交易成功
-						$this->model_checkout_order->addOrderHistory($_REQUEST['order_number'], $this->config->get('payment_op_boleto_success_order_status_id'), $message, false);
+						$this->model_checkout_order->addOrderHistory($_REQUEST['order_number'], $this->config->get('payment_op_creditcard_success_order_status_id'), $message, false);
 					}elseif ($_REQUEST['payment_status'] == -1){
 						//交易待处理
-						
-						$this->model_checkout_order->addOrderHistory($_REQUEST['order_number'], $this->config->get('payment_op_boleto_pending_order_status_id'), $message, false);
+						//是否预授权交易
+						if($_REQUEST['payment_authType'] == 1){
+							$message .= '(Pre-auth)';
+						}
+						$this->model_checkout_order->addOrderHistory($_REQUEST['order_number'], $this->config->get('payment_op_creditcard_pending_order_status_id'), $message, false);
 					}else{
 						//交易失败
-						$this->model_checkout_order->addOrderHistory($_REQUEST['order_number'], $this->config->get('payment_op_boleto_failed_order_status_id'), $message, false);
+						$this->model_checkout_order->addOrderHistory($_REQUEST['order_number'], $this->config->get('payment_op_creditcard_failed_order_status_id'), $message, false);
 					}
 				}
 				
@@ -535,6 +566,87 @@ class ControllerExtensionPaymentOPBoleto extends Controller {
 	
 			
 	}
+	
+	
+	/**
+	 * 检验是否需要3D验证
+	 */
+	public function validate3D($order_currency, $order_amount, $order_info){
+		
+		//是否需要3D验证
+		$is_3d = 0;
+		//获取3D功能下各个币种的金额
+		$currencies_value = $this->config->get('payment_op_creditcard_currencies_value');
+	
+		//判断金额是否为空
+		if(isset($currencies_value[$order_currency])){
+				
+			//判断3D金额不为空
+			//判断订单金额是否大于3d设定值
+			if($order_amount >= $currencies_value[$order_currency]){
+				//需要3D
+				$is_3d = 1;
+			}
+				
+		}
+		
+
+	
+		//获取3D功能下国家列表
+		$countries_3d = $this->config->get('payment_op_creditcard_country_array');
+
+		if(isset($countries_3d)){
+			//账单国
+			$billing_country_id = $order_info['payment_country_id'];
+			//收货国
+			$ship_country_id = $order_info['shipping_country_id'];
+			
+			
+			//判断账单国是否处于3D国家列表
+			if (in_array($billing_country_id , $countries_3d)){
+				$is_3d = 1;
+			}
+			//判断收货国是否处于3D国家列表
+			if (in_array($ship_country_id , $countries_3d)){
+				$is_3d = 1;
+			}
+		}
+		
+			
+		
+		
+	
+		
+		if($is_3d ==  0){
+	
+			//终端号
+			$terminal = $this->config->get('payment_op_creditcard_terminal');
+			//securecode
+			$securecode = $this->config->get('payment_op_creditcard_securecode');
+			
+		}elseif($is_3d == 1){
+					
+			//3D终端号
+			$terminal= $this->config->get('payment_op_creditcard_3d_terminal');
+			//3D securecode
+			$securecode = $this->config->get('payment_op_creditcard_3d_securecode');
+			//是3D交易
+			$_SESSION['is_3d'] = 1;
+		}
+		
+
+		$validate_arr['terminal'] = $terminal;
+		$validate_arr['securecode'] = $securecode;
+		
+		return $validate_arr;
+		
+	}
+	
+	
+	
+	
+	
+	
 	
 	
 	
@@ -559,12 +671,11 @@ class ControllerExtensionPaymentOPBoleto extends Controller {
 				"signValue = "           . $_REQUEST['signValue'] . "\r\n".
 				"order_notes = "         . $_REQUEST['order_notes'] . "\r\n".
 				"card_number = "         . $_REQUEST['card_number'] . "\r\n".
-				"methods = "    		 . $_REQUEST['methods'] . "\r\n".				
+				"methods = "    		 . $_REQUEST['methods'] . "\r\n".
 				"payment_country = "     . $_REQUEST['payment_country'] . "\r\n".
 				"payment_authType = "    . $_REQUEST['payment_authType'] . "\r\n".
 				"payment_risk = "        . $_REQUEST['payment_risk'] . "\r\n".
 				"payment_solutions = "   . $_REQUEST['payment_solutions'] . "\r\n";
-		        "pay_barCode = "         . $_REQUEST['pay_barCode'] . "\r\n";
 	
 		$return_log = $return_log . "*************************************\r\n";			
 		$return_log = $return_log.file_get_contents( "oceanpayment_log/" . $filedate . ".log");			
@@ -574,7 +685,12 @@ class ControllerExtensionPaymentOPBoleto extends Controller {
 		fclose($newfile);
 	
 	}
-
+	
+	
+	
+	
+	
+	
 	
 	/**
 	 *  判断是否为xml
