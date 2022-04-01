@@ -1,6 +1,6 @@
 <?php
 
-class ControllerExtensionPaymentOPCreditCard extends Controller {
+class ControllerExtensionPaymentOPKonbini extends Controller {
 	
 	const PUSH 			= "[PUSH]";
 	const BrowserReturn = "[Browser Return]";	
@@ -12,16 +12,16 @@ class ControllerExtensionPaymentOPCreditCard extends Controller {
 		
 		
 		$data['button_confirm'] = $this->language->get('button_confirm');
-		$data['action'] = 'index.php?route=extension/payment/op_creditcard/op_creditcard_form';
+		$data['action'] = 'index.php?route=extension/payment/op_konbini/op_konbini_form';
 		
 		
 		$order_info = $this->model_checkout_order->getOrder($this->session->data['order_id']);
 		
-		return $this->load->view('extension/payment/op_creditcard', $data);
+		return $this->load->view('extension/payment/op_konbini', $data);
 	}
 
 	
-	public function op_creditcard_form() {
+	public function op_konbini_form() {
 		
 		$this->load->model('checkout/order');
 		$order_info = $this->model_checkout_order->getOrder($this->session->data['order_id']);
@@ -30,13 +30,13 @@ class ControllerExtensionPaymentOPCreditCard extends Controller {
 		//判断是否为空订单
 		if (!empty($order_info)) {
 			
-			$this->load->model('extension/payment/op_creditcard');
-			$product_info = $this->model_extension_payment_op_creditcard->getOrderProducts($this->session->data['order_id']);
+			$this->load->model('extension/payment/op_konbini');
+			$product_info = $this->model_extension_payment_op_konbini->getOrderProducts($this->session->data['order_id']);
 			
 			//获取订单详情
 			$productDetails = $this->getProductItems($product_info);
 			//获取消费者详情
-			$customer_info = $this->model_extension_payment_op_creditcard->getCustomerDetails($order_info['customer_id']);
+			$customer_info = $this->model_extension_payment_op_konbini->getCustomerDetails($order_info['customer_id']);
 			
 			
 			if (!$this->request->server['HTTPS']) {
@@ -46,7 +46,7 @@ class ControllerExtensionPaymentOPCreditCard extends Controller {
 			}
 			
 			//提交网关
-			$action = $this->config->get('payment_op_creditcard_transaction');
+			$action = $this->config->get('payment_op_konbini_transaction');
 			$data['action'] = $action;
 			
 			//订单号
@@ -65,17 +65,17 @@ class ControllerExtensionPaymentOPCreditCard extends Controller {
 			$_SESSION['is_3d'] = 0;
 			
 			//判断是否启用3D功能
-			if($this->config->get('payment_op_creditcard_3d') == 1){
+			if($this->config->get('payment_op_konbini_3d') == 1){
 				//检验是否需要3D验证
 				$validate_arr = $this->validate3D($order_currency, $order_amount, $order_info);							
 			}else{
-				$validate_arr['terminal'] = $this->config->get('payment_op_creditcard_terminal');
-				$validate_arr['securecode'] = $this->config->get('payment_op_creditcard_securecode');
+				$validate_arr['terminal'] = $this->config->get('payment_op_konbini_terminal');
+				$validate_arr['securecode'] = $this->config->get('payment_op_konbini_securecode');
 			}
 			
 		
 			//商户号
-			$account = $this->config->get('payment_op_creditcard_account');
+			$account = $this->config->get('payment_op_konbini_account');
 			$data['account'] = $account;
 				
 			//终端号
@@ -87,19 +87,19 @@ class ControllerExtensionPaymentOPCreditCard extends Controller {
 			
 			
 			//返回地址
-			$backUrl = $base_url.'index.php?route=extension/payment/op_creditcard/callback';
+			$backUrl = $base_url.'index.php?route=extension/payment/op_konbini/callback';
 			$data['backUrl'] = $backUrl;
 			
 			//服务器响应地址
-			$noticeUrl = $base_url.'index.php?route=extension/payment/op_creditcard/notice';
+			$noticeUrl = $base_url.'index.php?route=extension/payment/op_konbini/notice';
 			$data['noticeUrl'] = $noticeUrl;
 			
 			//备注
 			$order_notes = '';
 			$data['order_notes'] = $order_notes;
 			
-			//支付方式
-			$methods = "Credit Card";
+			//支付方式 日本本地支付
+			$methods = "Konbini";
 			$data['methods'] = $methods;
 			
 			//账单人名
@@ -183,7 +183,7 @@ class ControllerExtensionPaymentOPCreditCard extends Controller {
 			$data['ship_zip'] = $ship_zip;
 			
 			//产品名称
-			$productName = $productDetails['productName'];
+			$productName = substr($productDetails['productName'], 0,22);
 			$data['productName'] = $productName;
 			
 			//产品SKU
@@ -195,11 +195,11 @@ class ControllerExtensionPaymentOPCreditCard extends Controller {
 			$data['productNum'] = $productNum;
 			
 			//购物车信息
-			$cart_info = 'opencart2.0 above';
+			$cart_info = 'opencart3.0 above';
 			$data['cart_info'] = $cart_info;
 			
 			//API版本
-			$cart_api = 'V1.7.1';
+			$cart_api = 'V1.1.0';
 			$data['cart_api'] = $cart_api;
 			
 			//支付页面样式
@@ -280,12 +280,12 @@ class ControllerExtensionPaymentOPCreditCard extends Controller {
 			$data['header'] = $this->load->controller('common/header');
 			
 			//支付模式Pay Mode
-			if($this->config->get('payment_op_creditcard_pay_mode') == 1){
+			if($this->config->get('payment_op_konbini_pay_mode') == 1){
 				//内嵌Iframe
-				$this->response->setOutput($this->load->view('extension/payment/op_creditcard_iframe', $data));
+				$this->response->setOutput($this->load->view('extension/payment/op_konbini_iframe', $data));
 			}else{
 				//跳转Redirect
-				$this->response->setOutput($this->load->view('extension/payment/op_creditcard_form', $data));
+				$this->response->setOutput($this->load->view('extension/payment/op_konbini_form', $data));
 			}
 
 		}else{		
@@ -298,7 +298,7 @@ class ControllerExtensionPaymentOPCreditCard extends Controller {
 	
 	public function callback() {
 		if (isset($this->request->post['order_number']) && !(empty($this->request->post['order_number']))) {
-			$this->language->load('extension/payment/op_creditcard');
+			$this->language->load('extension/payment/op_konbini');
 		
 			$data['title'] = sprintf($this->language->get('heading_title'), $this->config->get('config_name'));
 
@@ -327,7 +327,7 @@ class ControllerExtensionPaymentOPCreditCard extends Controller {
 			
 	
 			//返回信息
-			$account = $this->config->get('payment_op_creditcard_account');
+			$account = $this->config->get('payment_op_konbini_account');
 			$terminal = $this->request->post['terminal'];
 			$response_type = $this->request->post['response_type'];
 			$payment_id = $this->request->post['payment_id'];
@@ -355,13 +355,13 @@ class ControllerExtensionPaymentOPCreditCard extends Controller {
 			
 			
 			//匹配终端号   记录是否3D交易
-			if($terminal == $this->config->get('payment_op_creditcard_terminal')){
+			if($terminal == $this->config->get('payment_op_konbini_terminal')){
 				//普通终端号
-				$securecode = $this->config->get('payment_op_creditcard_securecode');
+				$securecode = $this->config->get('payment_op_konbini_securecode');
 				$text_is_3d = '';
-			}elseif($terminal == $this->config->get('payment_op_creditcard_3d_terminal')){
+			}elseif($terminal == $this->config->get('payment_op_konbini_3d_terminal')){
 				//3D终端号
-				$securecode = $this->config->get('payment_op_creditcard_3d_securecode');
+				$securecode = $this->config->get('payment_op_konbini_3d_securecode');
 				$text_is_3d = '[3D] ';
 			}else{				
 				$securecode = '';	
@@ -403,7 +403,7 @@ class ControllerExtensionPaymentOPCreditCard extends Controller {
 					if($ErrorCode == 20061){	 
 						//排除订单号重复(20061)的交易
 						$data['continue'] = $this->url->link('checkout/cart');
-						$this->response->setOutput($this->load->view('extension/payment/op_creditcard_failure', $data));
+						$this->response->setOutput($this->load->view('extension/payment/op_konbini_failure', $data));
 
 					}else{
 						if ($payment_status == 1 ){  
@@ -411,10 +411,10 @@ class ControllerExtensionPaymentOPCreditCard extends Controller {
 							//清除coupon
 							unset($this->session->data['coupon']);
 							
-							$this->model_checkout_order->addOrderHistory($this->request->post['order_number'], $this->config->get('payment_op_creditcard_success_order_status_id'), $message, true);
+							$this->model_checkout_order->addOrderHistory($this->request->post['order_number'], $this->config->get('payment_op_konbini_success_order_status_id'), $message, true);
 							
 							$data['continue'] = HTTPS_SERVER . 'index.php?route=checkout/success';
-							$this->response->setOutput($this->load->view('extension/payment/op_creditcard_success', $data));
+							$this->response->setOutput($this->load->view('extension/payment/op_konbini_success', $data));
 
 						}elseif ($payment_status == -1 ){   
 							//交易待处理 
@@ -422,17 +422,17 @@ class ControllerExtensionPaymentOPCreditCard extends Controller {
 							if($payment_authType == 1){						
 								$message .= '(Pre-auth)';
 							}
-							$this->model_checkout_order->addOrderHistory($this->request->post['order_number'], $this->config->get('payment_op_creditcard_pending_order_status_id'), $message, false);
+							$this->model_checkout_order->addOrderHistory($this->request->post['order_number'], $this->config->get('payment_op_konbini_pending_order_status_id'), $message, false);
 								
 							$data['continue'] = $this->url->link('checkout/cart');
-							$this->response->setOutput($this->load->view('extension/payment/op_creditcard_success', $data));
+							$this->response->setOutput($this->load->view('extension/payment/op_konbini_success', $data));
 	
 						}else{     
 							//交易失败
-							$this->model_checkout_order->addOrderHistory($this->request->post['order_number'], $this->config->get('payment_op_creditcard_failed_order_status_id'), $message, false);
+							$this->model_checkout_order->addOrderHistory($this->request->post['order_number'], $this->config->get('payment_op_konbini_failed_order_status_id'), $message, false);
 							
 							$data['continue'] = $this->url->link('checkout/cart');
-							$this->response->setOutput($this->load->view('extension/payment/op_creditcard_failure', $data));
+							$this->response->setOutput($this->load->view('extension/payment/op_konbini_failure', $data));
 
 						}
  					}								
@@ -440,10 +440,10 @@ class ControllerExtensionPaymentOPCreditCard extends Controller {
 			
 			}else {     
 				//数据签名对比失败
-				$this->model_checkout_order->addOrderHistory($this->request->post['order_number'], $this->config->get('op_creditcard_failed_order_status_id'), $message, false);
+				$this->model_checkout_order->addOrderHistory($this->request->post['order_number'], $this->config->get('op_konbini_failed_order_status_id'), $message, false);
 							
 				$data['continue'] = $this->url->link('checkout/cart');
-				$this->response->setOutput($this->load->view('extension/payment/op_creditcard_failure', $data));
+				$this->response->setOutput($this->load->view('extension/payment/op_konbini_failure', $data));
 					
 			}
 		}
@@ -485,13 +485,13 @@ class ControllerExtensionPaymentOPCreditCard extends Controller {
 				
 					
 			//匹配终端号   记录是否3D交易
-			if($_REQUEST['terminal'] == $this->config->get('payment_op_creditcard_terminal')){
+			if($_REQUEST['terminal'] == $this->config->get('payment_op_konbini_terminal')){
 				//普通终端号
-				$securecode = $this->config->get('payment_op_creditcard_securecode');
+				$securecode = $this->config->get('payment_op_konbini_securecode');
 				$text_is_3d = '';
-			}elseif($_REQUEST['terminal'] == $this->config->get('payment_op_creditcard_3d_terminal')){
+			}elseif($_REQUEST['terminal'] == $this->config->get('payment_op_konbini_3d_terminal')){
 				//3D终端号
-				$securecode = $this->config->get('payment_op_creditcard_3d_securecode');
+				$securecode = $this->config->get('payment_op_konbini_3d_securecode');
 				$text_is_3d = '[3D] ';
 			}else{
 				$securecode = '';
@@ -543,17 +543,17 @@ class ControllerExtensionPaymentOPCreditCard extends Controller {
 				}else{
 					if ($_REQUEST['payment_status'] == 1 ){
 						//交易成功
-						$this->model_checkout_order->addOrderHistory($_REQUEST['order_number'], $this->config->get('payment_op_creditcard_success_order_status_id'), $message, false);
+						$this->model_checkout_order->addOrderHistory($_REQUEST['order_number'], $this->config->get('payment_op_konbini_success_order_status_id'), $message, false);
 					}elseif ($_REQUEST['payment_status'] == -1){
 						//交易待处理
 						//是否预授权交易
 						if($_REQUEST['payment_authType'] == 1){
 							$message .= '(Pre-auth)';
 						}
-						$this->model_checkout_order->addOrderHistory($_REQUEST['order_number'], $this->config->get('payment_op_creditcard_pending_order_status_id'), $message, false);
+						$this->model_checkout_order->addOrderHistory($_REQUEST['order_number'], $this->config->get('payment_op_konbini_pending_order_status_id'), $message, false);
 					}else{
 						//交易失败
-						$this->model_checkout_order->addOrderHistory($_REQUEST['order_number'], $this->config->get('payment_op_creditcard_failed_order_status_id'), $message, false);
+						$this->model_checkout_order->addOrderHistory($_REQUEST['order_number'], $this->config->get('payment_op_konbini_failed_order_status_id'), $message, false);
 					}
 				}
 				
@@ -576,7 +576,7 @@ class ControllerExtensionPaymentOPCreditCard extends Controller {
 		//是否需要3D验证
 		$is_3d = 0;
 		//获取3D功能下各个币种的金额
-		$currencies_value = $this->config->get('payment_op_creditcard_currencies_value');
+		$currencies_value = $this->config->get('payment_op_konbini_currencies_value');
 	
 		//判断金额是否为空
 		if(isset($currencies_value[$order_currency])){
@@ -593,7 +593,7 @@ class ControllerExtensionPaymentOPCreditCard extends Controller {
 
 	
 		//获取3D功能下国家列表
-		$countries_3d = $this->config->get('payment_op_creditcard_country_array');
+		$countries_3d = $this->config->get('payment_op_konbini_country_array');
 
 		if(isset($countries_3d)){
 			//账单国
@@ -620,16 +620,16 @@ class ControllerExtensionPaymentOPCreditCard extends Controller {
 		if($is_3d ==  0){
 	
 			//终端号
-			$terminal = $this->config->get('payment_op_creditcard_terminal');
+			$terminal = $this->config->get('payment_op_konbini_terminal');
 			//securecode
-			$securecode = $this->config->get('payment_op_creditcard_securecode');
+			$securecode = $this->config->get('payment_op_konbini_securecode');
 			
 		}elseif($is_3d == 1){
 					
 			//3D终端号
-			$terminal= $this->config->get('payment_op_creditcard_3d_terminal');
+			$terminal= $this->config->get('payment_op_konbini_3d_terminal');
 			//3D securecode
-			$securecode = $this->config->get('payment_op_creditcard_3d_securecode');
+			$securecode = $this->config->get('payment_op_konbini_3d_securecode');
 			//是3D交易
 			$_SESSION['is_3d'] = 1;
 		}

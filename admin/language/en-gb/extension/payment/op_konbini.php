@@ -1,12 +1,12 @@
 <?php
 // Heading
-$_['heading_title']      	= 'Oceanpayment CreditCard Payment';
+$_['heading_title']      	= 'Oceanpayment konbini Payment';
 
 // Text 
 $_['text_payment']       	= 'Payment';
-$_['text_success']       	= 'Success: You have modified creditcard account details!';
-$_['text_edit']          	= 'Edit Oceanpayment CreditCard Payment';
-$_['text_op_creditcard'] 	= '<img src="view/image/payment/op_creditcard.png" alt="creditcard" height="25"  title="creditcard" style="border: 1px solid #EEEEEE;" />';
+$_['text_success']       	= 'Success: You have modified Konbini account details!';
+$_['text_edit']          	= 'Edit Oceanpayment konbini Payment';
+$_['text_op_konbini']    	= '<img src="view/image/payment/op-konbini.png" alt="konbini" height="25"  title="konbini" style="border: 1px solid #EEEEEE;" />';
 $_['text_pay']           	= 'https://secure.oceanpayment.com/gateway/service/pay';
 $_['text_test']          	= 'https://secure.oceanpayment.com/gateway/service/test';
 $_['text_pay_iframe']    	= 'Iframe';
@@ -48,7 +48,7 @@ $_['entry_entitys']           = 'Entity';
 
 
 // Error
-$_['error_permission']                = 'Warning: You do not have permission to modify Oceanpayment creditcard!';
+$_['error_permission']                = 'Warning: You do not have permission to modify Oceanpayment Konbini!';
 $_['error_account']                   = 'Account Required!';
 $_['error_terminal']                  = 'Terminal Required!';
 $_['error_securecode']                = 'Securecode Required!';
