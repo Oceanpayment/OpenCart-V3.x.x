@@ -1,12 +1,12 @@
 <?php
 // Heading
-$_['heading_title']      	= 'Oceanpayment AR_Cash Payment';
+$_['heading_title']      	= 'Oceanpayment Boleto Payment';
 
 // Text 
 $_['text_payment']       	= 'Payment';
-$_['text_success']       	= 'Success: You have modified AR_Cash account details!';
-$_['text_edit']          	= 'Edit Oceanpayment AR_Cash Payment';
-$_['text_op_arcash'] 	= '<img src="view/image/payment/op_arcash.png" alt="arcash" height="25"  title="arcash" style="border: 1px solid #EEEEEE;" />';
+$_['text_success']       	= 'Success: You have modified boleto account details!';
+$_['text_edit']          	= 'Edit Oceanpayment boleto Payment';
+$_['text_op_boleto'] 	= '<img src="view/image/payment/op_boleto.png" alt="boleto" height="25"  title="boleto" style="border: 1px solid #EEEEEE;" />';
 $_['text_pay']           	= 'https://secure.oceanpayment.com/gateway/service/pay';
 $_['text_test']          	= 'https://secure.oceanpayment.com/gateway/service/test';
 
@@ -32,7 +32,7 @@ $_['entry_sort_order']      		= 'Sort Order';
 
 
 // Error
-$_['error_permission']                = 'Warning: You do not have permission to modify Oceanpayment AR_Cash!';
+$_['error_permission']                = 'Warning: You do not have permission to modify Oceanpayment boleto!';
 $_['error_account']                   = 'Account Required!';
 $_['error_terminal']                  = 'Terminal Required!';
 $_['error_securecode']                = 'Securecode Required!';

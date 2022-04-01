@@ -1,14 +1,14 @@
 <?php 
-class ModelExtensionPaymentOPArcash extends Model {
+class ModelExtensionPaymentOPBoleto extends Model {
 	private $_limit = ',';
 	
   	public function getMethod($address) {
-		$this->load->language('extension/payment/op_arcash');
+		$this->load->language('extension/payment/op_boleto');
 		
-		if ($this->config->get('payment_op_arcash_status')) {
-      		$query = $this->db->query("SELECT * FROM " . DB_PREFIX . "zone_to_geo_zone WHERE geo_zone_id = '" . (int)$this->config->get('payment_op_arcash_geo_zone_id') . "' AND country_id = '" . (int)$address['country_id'] . "' AND (zone_id = '" . (int)$address['zone_id'] . "' OR zone_id = '0')");
+		if ($this->config->get('payment_op_boleto_status')) {
+      		$query = $this->db->query("SELECT * FROM " . DB_PREFIX . "zone_to_geo_zone WHERE geo_zone_id = '" . (int)$this->config->get('payment_op_boleto_geo_zone_id') . "' AND country_id = '" . (int)$address['country_id'] . "' AND (zone_id = '" . (int)$address['zone_id'] . "' OR zone_id = '0')");
 			
-			if (!$this->config->get('payment_op_arcash_geo_zone_id')) {
+			if (!$this->config->get('payment_op_boleto_geo_zone_id')) {
         		$status = true;
       		} elseif ($query->num_rows) {
       		  	$status = true;
@@ -23,10 +23,10 @@ class ModelExtensionPaymentOPArcash extends Model {
 	
 		if ($status) {  
       		$method_data = array( 
-        		'code'         => 'op_arcash',
+        		'code'         => 'op_boleto',
         		'title'      => $this->language->get('text_title'),
       			'terms'      => '',
-				'sort_order' => $this->config->get('payment_op_arcash_sort_order')
+				'sort_order' => $this->config->get('payment_op_boleto_sort_order')
       		);
     	}
    
