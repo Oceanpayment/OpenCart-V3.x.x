@@ -1,7 +1,7 @@
 <h2>概述</h4>
 Oceanpayment支持主流的开源程序Magento，WordPress，Opencart，Prestashop，Zen Cart等支付插件，安装便捷，节约开发成本和资源。
 
-<h2>Opencart支付插件</h2>
+<h2>Opencart支付插件，只支持V3.0以上版本</h2>
 <h4>介绍</h4>
 OpenCart是世界著名的开源电子商务系统，系统开发语言为PHP。项目托管在GitHub。开发者项目非常活跃，版本更新升级很快。据Alexa网站流量统计显示，OpenCart 已成为世界主流的电子商务建站系统
 
