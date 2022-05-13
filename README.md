@@ -1,17 +1,66 @@
-<h2>概述</h4>
-Oceanpayment支持主流的开源程序Magento，WordPress，Opencart，Prestashop，Zen Cart等支付插件，安装便捷，节约开发成本和资源。
-
-<h2>Opencart支付插件，只支持V3.0以上版本</h2>
-<h4>介绍</h4>
-OpenCart是世界著名的开源电子商务系统，系统开发语言为PHP。项目托管在GitHub。开发者项目非常活跃，版本更新升级很快。据Alexa网站流量统计显示，OpenCart 已成为世界主流的电子商务建站系统
-
+<h2>Overview</h4>
+Oceanpayment supports mainstream open-source payment plug-ins, such as Magento, WordPress, OpenCart, PrestaShop, and Zen Cart, which are easy to install and save development costs and resources. 
+<h2>Opencart plug-in</h2>
+<h4>Introduce</h4>
+OpenCart is a world-renowned open source e-commerce system, the system development language is PHP. The project is hosted on GitHub. The developer project is very active, and the version is updated and upgraded quickly. According to Alexa website traffic statistics, OpenCart has become the world’s mainstream e-commerce website building system.
 <ul>
-  <li>信用卡支付和本地支付插件支持内嵌功能。</li>
-  <li>支持程序版本V1.0~3.0</li>
+  <li>Supports Card Payments and Alternative Payments embedded plug-ins.</li>
+  <li>Support program version V3.0.</li>
 </ul>
-<h4>安装</h4>
+<h4>Plug-in installation</h4>
 <ol>
-    <li>将下载的文件覆盖到opencart网站根目录。</li>
-    <li>启用支付插件。</li>
-    <li>配置Oceanpayment账户信息。</li>
+    <li>Overwrite the downloaded file to the root directory of the opencart website.</li>
+    <li>Enable payment plug-in.</li>
+    <li>Configure Oceanpayment account information.</li>
 </ol>
+<table>
+  <tr>
+    <td>Account</td>
+    <td>Provide by Oceanpayment technical support.</td>
+  </tr>
+  <tr>
+    <td>Terminal</td>
+    <td>Provide by Oceanpayment technical support.</td>
+  </tr>
+  <tr>
+    <td>SecureCode</td>
+    <td>Provide by Oceanpayment technical support.</td>
+  </tr>
+  <tr>
+    <td>3D Authorized Servive</td>
+    <td>Off</td>
+  </tr>
+  <tr>
+    <td>Oceanpayment transation URL</td>
+    <td>Production environment：https://secure.oceanpayment.com/gateway/service/pay<br>
+      Sandbox environment：https://test-secure.oceanpayment.com/gateway/service/pay</td>
+  </tr>
+  <tr>
+    <td>Pay Mode</td>
+    <td>Redirect:Redirect to open payment page<br>Iframe:iframe payment page.</td>
+  </tr>  
+  <tr>
+    <td>Default Order Status</td>
+    <td>pending</td>
+  </tr>
+  <tr>
+    <td>Success Order Status</td>
+    <td>Processed</td>
+  </tr>
+   <tr>
+    <td>Failed Order Status</td>
+    <td>Failed</td>
+  </tr>
+  <tr>
+    <td>Pending Order Status</td>
+    <td>Pending</td>
+  </tr>
+  <tr>
+    <td>Geo Zone</td>
+    <td>All Zones</td>
+  </tr>
+  <tr>
+    <td>Response Code Mode</td>
+    <td>Local</td>
+  </tr>
+</table>
