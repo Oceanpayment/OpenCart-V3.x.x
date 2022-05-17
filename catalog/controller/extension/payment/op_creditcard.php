@@ -374,10 +374,10 @@ class ControllerExtensionPaymentOPCreditCard extends Controller {
 			$local_signValue = hash("sha256",$account.$terminal.$order_number.$order_currency.$order_amount.$order_notes.$card_number.
 					$payment_id.$payment_authType.$payment_status.$payment_details.$payment_risk.$securecode);
 			
-
-			//记录浏览器返回日志
-			$this->returnLog(self::BrowserReturn);
-
+			if($this->config->get('payment_op_creditcard_logs') == 'True') {
+				//记录浏览器返回日志
+				$this->returnLog(self::BrowserReturn);
+			}
 
 	
 
@@ -505,8 +505,10 @@ class ControllerExtensionPaymentOPCreditCard extends Controller {
 		
 		if($_REQUEST['response_type'] == 1){
 			
-			//记录交易推送日志
-			$this->returnLog(self::PUSH);
+			if($this->config->get('payment_op_creditcard_logs') == 'True') {
+				//记录交易推送日志
+				$this->returnLog(self::PUSH);
+			}
 			
 			//签名数据
 			$local_signValue = hash("sha256",$_REQUEST['account'].$_REQUEST['terminal'].$_REQUEST['order_number'].$_REQUEST['order_currency'].$_REQUEST['order_amount'].$_REQUEST['order_notes'].$_REQUEST['card_number'].
