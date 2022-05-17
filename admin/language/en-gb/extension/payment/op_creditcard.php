@@ -13,7 +13,10 @@ $_['text_pay_iframe']    	= 'Iframe';
 $_['text_pay_redirect']  	= 'Redirect';
 $_['text_select_currency']  = '- Select -';
 $_['text_3d_on']    		= 'On';
-$_['text_3d_off'] 			= 'Off';
+$_['text_3d_off'] 		= 'Off';
+$_['text_logs_true'] 		= 'True';
+$_['text_logs_false'] 		= 'False';
+
 
       
 // Entry
@@ -45,6 +48,7 @@ $_['entry_location']           = 'Show/Hide Location';
 $_['entry_locations']             = 'Location';
 $_['entry_entity']            = 'Show/Hide Entity';
 $_['entry_entitys']           = 'Entity';
+$_['entry_logs']              = 'Write The Logs';
 
 
 // Error
