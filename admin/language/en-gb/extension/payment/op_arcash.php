@@ -9,6 +9,8 @@ $_['text_edit']          	= 'Edit Oceanpayment AR_Cash Payment';
 $_['text_op_arcash'] 	= '<img src="view/image/payment/op_arcash.png" alt="arcash" height="25"  title="arcash" style="border: 1px solid #EEEEEE;" />';
 $_['text_pay']           	= 'https://secure.oceanpayment.com/gateway/service/pay';
 $_['text_test']          	= 'https://secure.oceanpayment.com/gateway/service/test';
+$_['text_logs_true'] 		= 'True';
+$_['text_logs_false'] 		= 'False';
 
 
 
@@ -26,6 +28,7 @@ $_['entry_pending_order_status'] 	= 'Pending Order Status';
 $_['entry_geo_zone']             	= 'Geo Zone';
 $_['entry_status']       			= 'Status';
 $_['entry_sort_order']      		= 'Sort Order';
+$_['entry_logs']              = 'Write The Logs';
 
 
 
