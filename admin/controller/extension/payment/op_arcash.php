@@ -30,6 +30,8 @@ class ControllerExtensionPaymentOPArcash extends Controller {
 		$data['text_select_currency'] = $this->language->get('text_select_currency');
 		$data['text_select_all'] = $this->language->get('text_select_all');
 		$data['text_unselect_all'] = $this->language->get('text_unselect_all');
+		$data['text_logs_true'] = $this->language->get('text_logs_true');
+		$data['text_logs_false'] = $this->language->get('text_logs_false');
 		
 		$data['entry_account'] = $this->language->get('entry_account');
 		$data['entry_terminal'] = $this->language->get('entry_terminal');
@@ -47,6 +49,7 @@ class ControllerExtensionPaymentOPArcash extends Controller {
 		$data['entry_geo_zone'] = $this->language->get('entry_geo_zone');
 		$data['entry_status'] = $this->language->get('entry_status');
 		$data['entry_sort_order'] = $this->language->get('entry_sort_order');
+		$data['entry_logs'] = $this->language->get('entry_logs');
 
 		$data['button_save'] = $this->language->get('button_save');
 		$data['button_cancel'] = $this->language->get('button_cancel');
@@ -130,6 +133,12 @@ class ControllerExtensionPaymentOPArcash extends Controller {
 			$data['payment_op_arcash_transaction'] = $this->request->post['payment_op_arcash_transaction'];
 		} else {
 			$data['payment_op_arcash_transaction'] = $this->config->get('payment_op_arcash_transaction');
+		}
+		
+		if (isset($this->request->post['payment_op_arcash_logs'])) {
+			$data['payment_op_arcash_logs'] = $this->request->post['payment_op_arcash_logs'];
+		} else {
+			$data['payment_op_arcash_logs'] = $this->config->get('payment_op_arcash_logs');
 		}
 		
 		if (isset($this->request->post['payment_op_arcash_default_order_status_id'])) {
