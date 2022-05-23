@@ -21,20 +21,20 @@ class ControllerExtensionPaymentOPKlarna extends Controller {
 
         $data['heading_title'] = $this->language->get('heading_title');
         $data['text_edit'] = $this->language->get('text_edit');
-        //测试是否可以删除开始
+      
         $data['text_enabled'] = $this->language->get('text_enabled');
         $data['text_disabled'] = $this->language->get('text_disabled');
         $data['text_all_zones'] = $this->language->get('text_all_zones');
-        //结束
+    
         $data['text_pay'] = $this->language->get('text_pay');
         $data['text_test'] = $this->language->get('text_test');
         $data['text_pay_iframe'] = $this->language->get('text_pay_iframe');
         $data['text_pay_redirect'] = $this->language->get('text_pay_redirect');
         $data['text_select_currency'] = $this->language->get('text_select_currency');
-        //测试是否可以删除开始
+      
         $data['text_select_all'] = $this->language->get('text_select_all');
         $data['text_unselect_all'] = $this->language->get('text_unselect_all');
-        //结束
+    
         $data['text_logs_true'] = $this->language->get('text_logs_true');
         $data['text_logs_false'] = $this->language->get('text_logs_false');
 
@@ -53,10 +53,10 @@ class ControllerExtensionPaymentOPKlarna extends Controller {
         $data['entry_geo_zone'] = $this->language->get('entry_geo_zone');
         $data['entry_status'] = $this->language->get('entry_status');
         $data['entry_sort_order'] = $this->language->get('entry_sort_order');
-        //测试是否可以删除开始
+      
         $data['button_save'] = $this->language->get('button_save');
         $data['button_cancel'] = $this->language->get('button_cancel');
-        //结束
+       
         $data['entry_location'] = $this->language->get('entry_location');
         $data['entry_locations'] = $this->language->get('entry_locations');
         $data['entry_entity'] = $this->language->get('entry_entity');
