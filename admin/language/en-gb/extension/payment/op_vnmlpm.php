@@ -1,12 +1,12 @@
 <?php
 // Heading
-$_['heading_title']      	= 'Oceanpayment YunShanFu Payment';
+$_['heading_title']      	= 'Oceanpayment VNM_LPM Payment';
 
 // Text 
 $_['text_payment']       	= 'Payment';
-$_['text_success']       	= 'Success: You have modified YunShanFu account details!';
-$_['text_edit']          	= 'Edit Oceanpayment YunShanFu Payment';
-$_['text_op_yunshanfu'] 	= '<img src="view/image/payment/op_yunshanfu.png" alt="yunshanfu" height="25"  title="yunshanfu" style="border: 1px solid #EEEEEE;" />';
+$_['text_success']       	= 'Success: You have modified VNM_LPM account details!';
+$_['text_edit']          	= 'Edit Oceanpayment VNM_LPM Payment';
+$_['text_op_vnmlpm'] 	    = '<img src="view/image/payment/op_vnmlpm.png" alt="vnmlpm" height="25"  title="vnmlpm" style="border: 1px solid #EEEEEE;" />';
 $_['text_pay']           	= 'https://secure.oceanpayment.com/gateway/service/pay';
 $_['text_test']          	= 'https://test-secure.oceanpayment.com/gateway/service/pay';
 $_['text_pay_iframe']    	= 'Iframe';
@@ -40,7 +40,7 @@ $_['entry_entitys']                 = 'Entity';
 
 
 // Error
-$_['error_permission']                = 'Warning: You do not have permission to modify Oceanpayment YunShanFu!';
+$_['error_permission']                = 'Warning: You do not have permission to modify Oceanpayment VNM_LPM!';
 $_['error_account']                   = 'Account Required!';
 $_['error_terminal']                  = 'Terminal Required!';
 $_['error_securecode']                = 'Securecode Required!';
