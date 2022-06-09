@@ -3,7 +3,7 @@
         <img src="catalog/view/theme/default/image/loading.gif"  />
     </div>
 </div>
-<form action="{{ action }}" method="post" id="checkout_korewallet" name="checkout_korewallet">
+<form action="{{ action }}" method="post" id="checkout_pix" name="checkout_pix">
   <input type="hidden" name="account" value="{{ account }}" />
   <input type="hidden" name="terminal" value="{{ terminal }}" />
   <input type="hidden" name="order_number" value="{{ order_number }}" />
@@ -31,6 +31,8 @@
   <input type="hidden" name="ship_state" value="{{ ship_state }}" />
   <input type="hidden" name="ship_country" value="{{ ship_country }}" />
   <input type="hidden" name="ship_addr" value="{{ ship_addr }}" />
+  <input type="hidden" name="pay_bankCode" value="{{ pay_bankCode }}" />
+  <input type="hidden" name="pay_cpf" value="{{ pay_cpf }}" />
   <input type="hidden" name="productName" value="{{ productName }}" />
   <input type="hidden" name="productSku" value="{{ productSku }}" />
   <input type="hidden" name="productNum" value="{{ productNum }}" />
@@ -42,6 +44,6 @@
 </form>
 
 <script type="text/javascript">
-	document.getElementById('checkout_korewallet').submit();
+	document.getElementById('checkout_pix').submit();
 </script>
 

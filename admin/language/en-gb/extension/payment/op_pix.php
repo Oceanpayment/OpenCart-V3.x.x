@@ -1,12 +1,12 @@
 <?php
 // Heading
-$_['heading_title']      	= 'Oceanpayment korewallet Payment';
+$_['heading_title']      	= 'Oceanpayment PIX Payment';
 
 // Text 
 $_['text_payment']       	= 'Payment';
-$_['text_success']       	= 'Success: You have modified KOR_eWallet account details!';
-$_['text_edit']          	= 'Edit Oceanpayment KOR_eWallet Payment';
-$_['text_op_korewallet'] 	= '<img src="view/image/payment/op_korewallet.png" alt="korewallet" height="25"  title="korewallet" style="border: 1px solid #EEEEEE;" />';
+$_['text_success']       	= 'Success: You have modified pix account details!';
+$_['text_edit']          	= 'Edit Oceanpayment PIX Payment';
+$_['text_op_pix'] 	        = '<img src="view/image/payment/op_pix.png" alt="pix" height="25"  title="pix" style="border: 1px solid #EEEEEE;" />';
 $_['text_pay']           	= 'https://secure.oceanpayment.com/gateway/service/pay';
 $_['text_test']          	= 'https://test-secure.oceanpayment.com/gateway/service/pay';
 $_['text_pay_iframe']    	= 'Iframe';
@@ -40,7 +40,7 @@ $_['entry_entitys']                 = 'Entity';
 
 
 // Error
-$_['error_permission']                = 'Warning: You do not have permission to modify Oceanpayment KOR_eWallet!';
+$_['error_permission']                = 'Warning: You do not have permission to modify Oceanpayment PIX!';
 $_['error_account']                   = 'Account Required!';
 $_['error_terminal']                  = 'Terminal Required!';
 $_['error_securecode']                = 'Securecode Required!';
