@@ -1,6 +1,6 @@
 <?php
 
-class ControllerExtensionPaymentOPGcash extends Controller {
+class ControllerExtensionPaymentOPKorcreditcard extends Controller {
 	
 	const PUSH 			= "[PUSH]";
 	const BrowserReturn = "[Browser Return]";	
@@ -12,16 +12,16 @@ class ControllerExtensionPaymentOPGcash extends Controller {
 		
 		
 		$data['button_confirm'] = $this->language->get('button_confirm');
-		$data['action'] = 'index.php?route=extension/payment/op_gcash/op_gcash_form';
+		$data['action'] = 'index.php?route=extension/payment/op_korcreditcard/op_korcreditcard_form';
 		
 		
 		$order_info = $this->model_checkout_order->getOrder($this->session->data['order_id']);
 		
-		return $this->load->view('extension/payment/op_gcash', $data);
+		return $this->load->view('extension/payment/op_korcreditcard', $data);
 	}
 
 	
-	public function op_gcash_form() {
+	public function op_korcreditcard_form() {
 		
 		$this->load->model('checkout/order');
 		$order_info = $this->model_checkout_order->getOrder($this->session->data['order_id']);
@@ -30,13 +30,13 @@ class ControllerExtensionPaymentOPGcash extends Controller {
 		//判断是否为空订单
 		if (!empty($order_info)) {
 			
-			$this->load->model('extension/payment/op_gcash');
-			$product_info = $this->model_extension_payment_op_gcash->getOrderProducts($this->session->data['order_id']);
+			$this->load->model('extension/payment/op_korcreditcard');
+			$product_info = $this->model_extension_payment_op_korcreditcard->getOrderProducts($this->session->data['order_id']);
 			
 			//获取订单详情
 			$productDetails = $this->getProductItems($product_info);
 			//获取消费者详情
-			$customer_info = $this->model_extension_payment_op_gcash->getCustomerDetails($order_info['customer_id']);
+			$customer_info = $this->model_extension_payment_op_korcreditcard->getCustomerDetails($order_info['customer_id']);
 			
 			
 			if (!$this->request->server['HTTPS']) {
@@ -46,7 +46,7 @@ class ControllerExtensionPaymentOPGcash extends Controller {
 			}
 			
 			//提交网关
-			$action = $this->config->get('payment_op_gcash_transaction');
+			$action = $this->config->get('payment_op_korcreditcard_transaction');
 			$data['action'] = $action;
 			
 			//订单号
@@ -62,12 +62,12 @@ class ControllerExtensionPaymentOPGcash extends Controller {
 			$data['order_currency'] = $order_currency;
 			
 
-			$validate_arr['terminal'] = $this->config->get('payment_op_gcash_terminal');
-			$validate_arr['securecode'] = $this->config->get('payment_op_gcash_securecode');
+			$validate_arr['terminal'] = $this->config->get('payment_op_korcreditcard_terminal');
+			$validate_arr['securecode'] = $this->config->get('payment_op_korcreditcard_securecode');
 
 
 			//商户号
-			$account = $this->config->get('payment_op_gcash_account');
+			$account = $this->config->get('payment_op_korcreditcard_account');
 			$data['account'] = $account;
 				
 			//终端号
@@ -79,11 +79,11 @@ class ControllerExtensionPaymentOPGcash extends Controller {
 			
 			
 			//返回地址
-			$backUrl = $base_url.'index.php?route=extension/payment/op_gcash/callback';
+			$backUrl = $base_url.'index.php?route=extension/payment/op_korcreditcard/callback';
 			$data['backUrl'] = $backUrl;
 			
 			//服务器响应地址
-			$noticeUrl = $base_url.'index.php?route=extension/payment/op_gcash/notice';
+			$noticeUrl = $base_url.'index.php?route=extension/payment/op_korcreditcard/notice';
 			$data['noticeUrl'] = $noticeUrl;
 			
 			//备注
@@ -91,7 +91,7 @@ class ControllerExtensionPaymentOPGcash extends Controller {
 			$data['order_notes'] = $order_notes;
 			
 			//支付方式
-			$methods = "GCash";
+			$methods = "KOR_Credit Card";
 			$data['methods'] = $methods;
 
 			//账单人姓名
@@ -274,12 +274,12 @@ class ControllerExtensionPaymentOPGcash extends Controller {
 			$data['header'] = $this->load->controller('common/header');
 			
 			//支付模式Pay Mode
-			if($this->config->get('payment_op_gcash_pay_mode') == 1){
+			if($this->config->get('payment_op_korcreditcard_pay_mode') == 1){
 				//内嵌Iframe
-				$this->response->setOutput($this->load->view('extension/payment/op_gcash_iframe', $data));
+				$this->response->setOutput($this->load->view('extension/payment/op_korcreditcard_iframe', $data));
 			}else{
 				//跳转Redirect
-				$this->response->setOutput($this->load->view('extension/payment/op_gcash_form', $data));
+				$this->response->setOutput($this->load->view('extension/payment/op_korcreditcard_form', $data));
 			}
 
 		}else{		
@@ -292,7 +292,7 @@ class ControllerExtensionPaymentOPGcash extends Controller {
 	
 	public function callback() {
 		if (isset($this->request->post['order_number']) && !(empty($this->request->post['order_number']))) {
-			$this->language->load('extension/payment/op_gcash');
+			$this->language->load('extension/payment/op_korcreditcard');
 		
 			$data['title'] = sprintf($this->language->get('heading_title'), $this->config->get('config_name'));
 
@@ -321,7 +321,7 @@ class ControllerExtensionPaymentOPGcash extends Controller {
 			
 	
 			//返回信息
-			$account = $this->config->get('payment_op_gcash_account');
+			$account = $this->config->get('payment_op_korcreditcard_account');
 			$terminal = $this->request->post['terminal'];
 			$response_type = $this->request->post['response_type'];
 			$payment_id = $this->request->post['payment_id'];
@@ -349,9 +349,9 @@ class ControllerExtensionPaymentOPGcash extends Controller {
 			
 			
 			//匹配终端号
-			if($terminal == $this->config->get('payment_op_gcash_terminal')){
+			if($terminal == $this->config->get('payment_op_korcreditcard_terminal')){
 				//普通终端号
-				$securecode = $this->config->get('payment_op_gcash_securecode');
+				$securecode = $this->config->get('payment_op_korcreditcard_securecode');
 			}else{
 				$securecode = '';
 			}
@@ -391,7 +391,7 @@ class ControllerExtensionPaymentOPGcash extends Controller {
 					if($ErrorCode == 20061){	 
 						//排除订单号重复(20061)的交易
 						$data['continue'] = $this->url->link('checkout/cart');
-						$this->response->setOutput($this->load->view('extension/payment/op_gcash_failure', $data));
+						$this->response->setOutput($this->load->view('extension/payment/op_korcreditcard_failure', $data));
 
 					}else{
 						if ($payment_status == 1 ){  
@@ -399,10 +399,10 @@ class ControllerExtensionPaymentOPGcash extends Controller {
 							//清除coupon
 							unset($this->session->data['coupon']);
 							
-							$this->model_checkout_order->addOrderHistory($this->request->post['order_number'], $this->config->get('payment_op_gcash_success_order_status_id'), $message, true);
+							$this->model_checkout_order->addOrderHistory($this->request->post['order_number'], $this->config->get('payment_op_korcreditcard_success_order_status_id'), $message, true);
 							
 							$data['continue'] = HTTPS_SERVER . 'index.php?route=checkout/success';
-							$this->response->setOutput($this->load->view('extension/payment/op_gcash_success', $data));
+							$this->response->setOutput($this->load->view('extension/payment/op_korcreditcard_success', $data));
 
 						}elseif ($payment_status == -1 ){   
 							//交易待处理 
@@ -410,17 +410,17 @@ class ControllerExtensionPaymentOPGcash extends Controller {
 							if($payment_authType == 1){						
 								$message .= '(Pre-auth)';
 							}
-							$this->model_checkout_order->addOrderHistory($this->request->post['order_number'], $this->config->get('payment_op_gcash_pending_order_status_id'), $message, false);
+							$this->model_checkout_order->addOrderHistory($this->request->post['order_number'], $this->config->get('payment_op_korcreditcard_pending_order_status_id'), $message, false);
 								
 							$data['continue'] = $this->url->link('checkout/cart');
-							$this->response->setOutput($this->load->view('extension/payment/op_gcash_success', $data));
+							$this->response->setOutput($this->load->view('extension/payment/op_korcreditcard_success', $data));
 	
 						}else{     
 							//交易失败
-							$this->model_checkout_order->addOrderHistory($this->request->post['order_number'], $this->config->get('payment_op_gcash_failed_order_status_id'), $message, false);
+							$this->model_checkout_order->addOrderHistory($this->request->post['order_number'], $this->config->get('payment_op_korcreditcard_failed_order_status_id'), $message, false);
 							
 							$data['continue'] = $this->url->link('checkout/cart');
-							$this->response->setOutput($this->load->view('extension/payment/op_gcash_failure', $data));
+							$this->response->setOutput($this->load->view('extension/payment/op_korcreditcard_failure', $data));
 
 						}
  					}								
@@ -428,10 +428,10 @@ class ControllerExtensionPaymentOPGcash extends Controller {
 			
 			}else {     
 				//数据签名对比失败
-				$this->model_checkout_order->addOrderHistory($this->request->post['order_number'], $this->config->get('op_gcash_failed_order_status_id'), $message, false);
+				$this->model_checkout_order->addOrderHistory($this->request->post['order_number'], $this->config->get('op_korcreditcard_failed_order_status_id'), $message, false);
 							
 				$data['continue'] = $this->url->link('checkout/cart');
-				$this->response->setOutput($this->load->view('extension/payment/op_gcash_failure', $data));
+				$this->response->setOutput($this->load->view('extension/payment/op_korcreditcard_failure', $data));
 					
 			}
 		}
@@ -473,9 +473,9 @@ class ControllerExtensionPaymentOPGcash extends Controller {
 				
 					
 			//匹配终端号
-			if($_REQUEST['terminal'] == $this->config->get('payment_op_gcash_terminal')){
+			if($_REQUEST['terminal'] == $this->config->get('payment_op_korcreditcard_terminal')){
 				//普通终端号
-				$securecode = $this->config->get('payment_op_gcash_securecode');
+				$securecode = $this->config->get('payment_op_korcreditcard_securecode');
 			}else{
 				$securecode = '';
 			}
@@ -525,17 +525,17 @@ class ControllerExtensionPaymentOPGcash extends Controller {
 				}else{
 					if ($_REQUEST['payment_status'] == 1 ){
 						//交易成功
-						$this->model_checkout_order->addOrderHistory($_REQUEST['order_number'], $this->config->get('payment_op_gcash_success_order_status_id'), $message, false);
+						$this->model_checkout_order->addOrderHistory($_REQUEST['order_number'], $this->config->get('payment_op_korcreditcard_success_order_status_id'), $message, false);
 					}elseif ($_REQUEST['payment_status'] == -1){
 						//交易待处理
 						//是否预授权交易
 						if($_REQUEST['payment_authType'] == 1){
 							$message .= '(Pre-auth)';
 						}
-						$this->model_checkout_order->addOrderHistory($_REQUEST['order_number'], $this->config->get('payment_op_gcash_pending_order_status_id'), $message, false);
+						$this->model_checkout_order->addOrderHistory($_REQUEST['order_number'], $this->config->get('payment_op_korcreditcard_pending_order_status_id'), $message, false);
 					}else{
 						//交易失败
-						$this->model_checkout_order->addOrderHistory($_REQUEST['order_number'], $this->config->get('payment_op_gcash_failed_order_status_id'), $message, false);
+						$this->model_checkout_order->addOrderHistory($_REQUEST['order_number'], $this->config->get('payment_op_korcreditcard_failed_order_status_id'), $message, false);
 					}
 				}
 				
