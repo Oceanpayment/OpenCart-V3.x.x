@@ -1,14 +1,14 @@
 <?php 
-class ModelExtensionPaymentOPDana extends Model {
+class ModelExtensionPaymentOPGcash extends Model {
 	private $_limit = ',';
 	
   	public function getMethod($address) {
-		$this->load->language('extension/payment/op_dana');
+		$this->load->language('extension/payment/op_gcash');
 		
-		if ($this->config->get('payment_op_dana_status')) {
-      		$query = $this->db->query("SELECT * FROM " . DB_PREFIX . "zone_to_geo_zone WHERE geo_zone_id = '" . (int)$this->config->get('payment_op_dana_geo_zone_id') . "' AND country_id = '" . (int)$address['country_id'] . "' AND (zone_id = '" . (int)$address['zone_id'] . "' OR zone_id = '0')");
+		if ($this->config->get('payment_op_gcash_status')) {
+      		$query = $this->db->query("SELECT * FROM " . DB_PREFIX . "zone_to_geo_zone WHERE geo_zone_id = '" . (int)$this->config->get('payment_op_gcash_geo_zone_id') . "' AND country_id = '" . (int)$address['country_id'] . "' AND (zone_id = '" . (int)$address['zone_id'] . "' OR zone_id = '0')");
 			
-			if (!$this->config->get('payment_op_dana_geo_zone_id')) {
+			if (!$this->config->get('payment_op_gcash_geo_zone_id')) {
         		$status = true;
       		} elseif ($query->num_rows) {
       		  	$status = true;
@@ -23,10 +23,10 @@ class ModelExtensionPaymentOPDana extends Model {
 	
 		if ($status) {  
       		$method_data = array( 
-        		'code'         => 'op_dana',
+        		'code'         => 'op_gcash',
         		'title'      => $this->language->get('text_title'),
       			'terms'      => '',
-				'sort_order' => $this->config->get('payment_op_dana_sort_order')
+				'sort_order' => $this->config->get('payment_op_gcash_sort_order')
       		);
     	}
    
