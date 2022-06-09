@@ -1,9 +1,9 @@
 <?php 
-class ControllerExtensionPaymentOPAtome extends Controller {
+class ControllerExtensionPaymentOPBocpay extends Controller {
 	private $error = array(); 
 
 	public function index() {
-		$this->load->language('extension/payment/op_atome');
+		$this->load->language('extension/payment/op_bocpay');
 		
 		$this->document->setTitle($this->language->get('heading_title'));
 		
@@ -12,7 +12,7 @@ class ControllerExtensionPaymentOPAtome extends Controller {
 		if (($this->request->server['REQUEST_METHOD'] == 'POST') && ($this->validate())) {
 			$this->load->model('setting/setting');
 			
-			$this->model_setting_setting->editSetting('payment_op_atome', $this->request->post);
+			$this->model_setting_setting->editSetting('payment_op_bocpay', $this->request->post);
 			
 			$this->session->data['success'] = $this->language->get('text_success');
 			
@@ -102,69 +102,69 @@ class ControllerExtensionPaymentOPAtome extends Controller {
 
    		$data['breadcrumbs'][] = array(
        		'text' => $this->language->get('heading_title'),
-   			'href' => $this->url->link('extension/payment/op_atome', 'user_token=' . $this->session->data['user_token'], 'SSL'),
+   			'href' => $this->url->link('extension/payment/op_bocpay', 'user_token=' . $this->session->data['user_token'], 'SSL'),
    		);
 
-		$data['action'] = $this->url->link('extension/payment/op_atome', 'user_token=' . $this->session->data['user_token'], 'SSL');
+		$data['action'] = $this->url->link('extension/payment/op_bocpay', 'user_token=' . $this->session->data['user_token'], 'SSL');
 
 		$data['cancel'] = $this->url->link('marketplace/extension', 'user_token=' . $this->session->data['user_token'].'&type=payment', 'SSL');
 
-		if (isset($this->request->post['payment_op_atome_account'])) {
-			$data['payment_op_atome_account'] = $this->request->post['payment_op_atome_account'];
+		if (isset($this->request->post['payment_op_bocpay_account'])) {
+			$data['payment_op_bocpay_account'] = $this->request->post['payment_op_bocpay_account'];
 		} else {
-			$data['payment_op_atome_account'] = $this->config->get('payment_op_atome_account');
+			$data['payment_op_bocpay_account'] = $this->config->get('payment_op_bocpay_account');
 		}
 
-		if (isset($this->request->post['payment_op_atome_terminal'])) {
-			$data['payment_op_atome_terminal'] = $this->request->post['payment_op_atome_terminal'];
+		if (isset($this->request->post['payment_op_bocpay_terminal'])) {
+			$data['payment_op_bocpay_terminal'] = $this->request->post['payment_op_bocpay_terminal'];
 		} else {
-			$data['payment_op_atome_terminal'] = $this->config->get('payment_op_atome_terminal');
+			$data['payment_op_bocpay_terminal'] = $this->config->get('payment_op_bocpay_terminal');
 		}
 
-		if (isset($this->request->post['payment_op_atome_securecode'])) {
-			$data['payment_op_atome_securecode'] = $this->request->post['payment_op_atome_securecode'];
+		if (isset($this->request->post['payment_op_bocpay_securecode'])) {
+			$data['payment_op_bocpay_securecode'] = $this->request->post['payment_op_bocpay_securecode'];
 		} else {
-			$data['payment_op_atome_securecode'] = $this->config->get('payment_op_atome_securecode');
+			$data['payment_op_bocpay_securecode'] = $this->config->get('payment_op_bocpay_securecode');
 		}
 		
 	
 		
 		
-		$data['callback'] = HTTP_CATALOG . 'index.php?route=extension/payment/op_atome/callback';
+		$data['callback'] = HTTP_CATALOG . 'index.php?route=extension/payment/op_bocpay/callback';
 
 		
-		if (isset($this->request->post['payment_op_atome_transaction'])) {
-			$data['payment_op_atome_transaction'] = $this->request->post['payment_op_atome_transaction'];
+		if (isset($this->request->post['payment_op_bocpay_transaction'])) {
+			$data['payment_op_bocpay_transaction'] = $this->request->post['payment_op_bocpay_transaction'];
 		} else {
-			$data['payment_op_atome_transaction'] = $this->config->get('payment_op_atome_transaction');
+			$data['payment_op_bocpay_transaction'] = $this->config->get('payment_op_bocpay_transaction');
 		}
 		
-		if (isset($this->request->post['payment_op_atome_pay_mode'])) {
-			$data['payment_op_atome_pay_mode'] = $this->request->post['payment_op_atome_pay_mode'];
+		if (isset($this->request->post['payment_op_bocpay_pay_mode'])) {
+			$data['payment_op_bocpay_pay_mode'] = $this->request->post['payment_op_bocpay_pay_mode'];
 		} else {
-			$data['payment_op_atome_pay_mode'] = $this->config->get('payment_op_atome_pay_mode');
+			$data['payment_op_bocpay_pay_mode'] = $this->config->get('payment_op_bocpay_pay_mode');
 		}
 		
-		if (isset($this->request->post['payment_op_atome_default_order_status_id'])) {
-			$data['payment_op_atome_default_order_status_id'] = $this->request->post['payment_op_atome_default_order_status_id'];
+		if (isset($this->request->post['payment_op_bocpay_default_order_status_id'])) {
+			$data['payment_op_bocpay_default_order_status_id'] = $this->request->post['payment_op_bocpay_default_order_status_id'];
 		} else {
-			$data['payment_op_atome_default_order_status_id'] = $this->config->get('payment_op_atome_default_order_status_id');
+			$data['payment_op_bocpay_default_order_status_id'] = $this->config->get('payment_op_bocpay_default_order_status_id');
 		} 
 		/* add status */
-		if (isset($this->request->post['payment_op_atome_success_order_status_id'])) {
-			$data['payment_op_atome_success_order_status_id'] = $this->request->post['payment_op_atome_success_order_status_id'];
+		if (isset($this->request->post['payment_op_bocpay_success_order_status_id'])) {
+			$data['payment_op_bocpay_success_order_status_id'] = $this->request->post['payment_op_bocpay_success_order_status_id'];
 		} else {
-			$data['payment_op_atome_success_order_status_id'] = $this->config->get('payment_op_atome_success_order_status_id');
+			$data['payment_op_bocpay_success_order_status_id'] = $this->config->get('payment_op_bocpay_success_order_status_id');
 		}
-		if (isset($this->request->post['payment_op_atome_failed_order_status_id'])) {
-			$data['payment_op_atome_failed_order_status_id'] = $this->request->post['payment_op_atome_failed_order_status_id'];
+		if (isset($this->request->post['payment_op_bocpay_failed_order_status_id'])) {
+			$data['payment_op_bocpay_failed_order_status_id'] = $this->request->post['payment_op_bocpay_failed_order_status_id'];
 		} else {
-			$data['payment_op_atome_failed_order_status_id'] = $this->config->get('payment_op_atome_failed_order_status_id');
+			$data['payment_op_bocpay_failed_order_status_id'] = $this->config->get('payment_op_bocpay_failed_order_status_id');
 		}
-		if (isset($this->request->post['payment_op_atome_pending_order_status_id'])) {
-			$data['payment_op_atome_pending_order_status_id'] = $this->request->post['payment_op_atome_pending_order_status_id'];
+		if (isset($this->request->post['payment_op_bocpay_pending_order_status_id'])) {
+			$data['payment_op_bocpay_pending_order_status_id'] = $this->request->post['payment_op_bocpay_pending_order_status_id'];
 		} else {
-			$data['payment_op_atome_pending_order_status_id'] = $this->config->get('payment_op_atome_pending_order_status_id');
+			$data['payment_op_bocpay_pending_order_status_id'] = $this->config->get('payment_op_bocpay_pending_order_status_id');
 		}
 		
 		
@@ -172,50 +172,50 @@ class ControllerExtensionPaymentOPAtome extends Controller {
 		
 		$data['order_statuses'] = $this->model_localisation_order_status->getOrderStatuses();
 
-		if (isset($this->request->post['payment_op_atome_geo_zone_id'])) {
-			$data['payment_op_atome_geo_zone_id'] = $this->request->post['payment_op_atome_geo_zone_id'];
+		if (isset($this->request->post['payment_op_bocpay_geo_zone_id'])) {
+			$data['payment_op_bocpay_geo_zone_id'] = $this->request->post['payment_op_bocpay_geo_zone_id'];
 		} else {
-			$data['payment_op_atome_geo_zone_id'] = $this->config->get('payment_op_atome_geo_zone_id');
+			$data['payment_op_bocpay_geo_zone_id'] = $this->config->get('payment_op_bocpay_geo_zone_id');
 		}
 
 		$this->load->model('localisation/geo_zone');
 										
 		$data['geo_zones'] = $this->model_localisation_geo_zone->getGeoZones();
 		
-		if (isset($this->request->post['payment_op_atome_status'])) {
-			$data['payment_op_atome_status'] = $this->request->post['payment_op_atome_status'];
+		if (isset($this->request->post['payment_op_bocpay_status'])) {
+			$data['payment_op_bocpay_status'] = $this->request->post['payment_op_bocpay_status'];
 		} else {
-			$data['payment_op_atome_status'] = $this->config->get('payment_op_atome_status');
+			$data['payment_op_bocpay_status'] = $this->config->get('payment_op_bocpay_status');
 		}
 		
-		if (isset($this->request->post['payment_op_atome_sort_order'])) {
-			$data['payment_op_atome_sort_order'] = $this->request->post['payment_op_atome_sort_order'];
+		if (isset($this->request->post['payment_op_bocpay_sort_order'])) {
+			$data['payment_op_bocpay_sort_order'] = $this->request->post['payment_op_bocpay_sort_order'];
 		} else {
-			$data['payment_op_atome_sort_order'] = $this->config->get('payment_op_atome_sort_order');
+			$data['payment_op_bocpay_sort_order'] = $this->config->get('payment_op_bocpay_sort_order');
 		}
 		
-		if (isset($this->request->post['payment_op_atome_location'])) {
-          $data['payment_op_atome_location'] = $this->request->post['payment_op_atome_location'];
+		if (isset($this->request->post['payment_op_bocpay_location'])) {
+          $data['payment_op_bocpay_location'] = $this->request->post['payment_op_bocpay_location'];
 		  } else {
-			  $data['payment_op_atome_location'] = $this->config->get('payment_op_atome_location');
+			  $data['payment_op_bocpay_location'] = $this->config->get('payment_op_bocpay_location');
 		  }
 
-		  if (isset($this->request->post['payment_op_atome_locations'])) {
-			  $data['payment_op_atome_locations'] = $this->request->post['payment_op_atome_locations'];
+		  if (isset($this->request->post['payment_op_bocpay_locations'])) {
+			  $data['payment_op_bocpay_locations'] = $this->request->post['payment_op_bocpay_locations'];
 		  } else {
-			  $data['payment_op_atome_locations'] = $this->config->get('payment_op_atome_locations');
+			  $data['payment_op_bocpay_locations'] = $this->config->get('payment_op_bocpay_locations');
 		  }
 
-		  if (isset($this->request->post['payment_op_atome_entity'])) {
-			  $data['payment_op_atome_entity'] = $this->request->post['payment_op_atome_entity'];
+		  if (isset($this->request->post['payment_op_bocpay_entity'])) {
+			  $data['payment_op_bocpay_entity'] = $this->request->post['payment_op_bocpay_entity'];
 		  } else {
-			  $data['payment_op_atome_entity'] = $this->config->get('payment_op_atome_entity');
+			  $data['payment_op_bocpay_entity'] = $this->config->get('payment_op_bocpay_entity');
 		  }
 
-		  if (isset($this->request->post['payment_op_atome_entitys'])) {
-			  $data['payment_op_atome_entitys'] = $this->request->post['payment_op_atome_entitys'];
+		  if (isset($this->request->post['payment_op_bocpay_entitys'])) {
+			  $data['payment_op_bocpay_entitys'] = $this->request->post['payment_op_bocpay_entitys'];
 		  } else {
-			  $data['payment_op_atome_entitys'] = $this->config->get('payment_op_atome_entitys');
+			  $data['payment_op_bocpay_entitys'] = $this->config->get('payment_op_bocpay_entitys');
 		  }
 
 		
@@ -226,24 +226,24 @@ class ControllerExtensionPaymentOPAtome extends Controller {
 			$data['column_left'] = $this->load->controller('common/column_left');
 			$data['footer'] = $this->load->controller('common/footer');
 
-			$this->response->setOutput($this->load->view('extension/payment/op_atome', $data));
+			$this->response->setOutput($this->load->view('extension/payment/op_bocpay', $data));
 		}
 		
 
 	private function validate() {
-		if (!$this->user->hasPermission('modify', 'extension/payment/op_atome')) {
+		if (!$this->user->hasPermission('modify', 'extension/payment/op_bocpay')) {
 			$this->error['warning'] = $this->language->get('error_permission');
 		}
 
-		if (!$this->request->post['payment_op_atome_account']) {
+		if (!$this->request->post['payment_op_bocpay_account']) {
 			$this->error['account'] = $this->language->get('error_account');
 		}
 
-		if (!$this->request->post['payment_op_atome_terminal']) {
+		if (!$this->request->post['payment_op_bocpay_terminal']) {
 			$this->error['terminal'] = $this->language->get('error_terminal');
 		}
 
-		if (!$this->request->post['payment_op_atome_securecode']) {
+		if (!$this->request->post['payment_op_bocpay_securecode']) {
 			$this->error['securecode'] = $this->language->get('error_securecode');
 		}
 		

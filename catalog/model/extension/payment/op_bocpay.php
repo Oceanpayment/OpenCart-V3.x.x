@@ -1,14 +1,14 @@
 <?php 
-class ModelExtensionPaymentOPAtome extends Model {
+class ModelExtensionPaymentOPBocpay extends Model {
 	private $_limit = ',';
 	
   	public function getMethod($address) {
-		$this->load->language('extension/payment/op_atome');
+		$this->load->language('extension/payment/op_bocpay');
 		
-		if ($this->config->get('payment_op_atome_status')) {
-      		$query = $this->db->query("SELECT * FROM " . DB_PREFIX . "zone_to_geo_zone WHERE geo_zone_id = '" . (int)$this->config->get('payment_op_atome_geo_zone_id') . "' AND country_id = '" . (int)$address['country_id'] . "' AND (zone_id = '" . (int)$address['zone_id'] . "' OR zone_id = '0')");
+		if ($this->config->get('payment_op_bocpay_status')) {
+      		$query = $this->db->query("SELECT * FROM " . DB_PREFIX . "zone_to_geo_zone WHERE geo_zone_id = '" . (int)$this->config->get('payment_op_bocpay_geo_zone_id') . "' AND country_id = '" . (int)$address['country_id'] . "' AND (zone_id = '" . (int)$address['zone_id'] . "' OR zone_id = '0')");
 			
-			if (!$this->config->get('payment_op_atome_geo_zone_id')) {
+			if (!$this->config->get('payment_op_bocpay_geo_zone_id')) {
         		$status = true;
       		} elseif ($query->num_rows) {
       		  	$status = true;
@@ -23,10 +23,10 @@ class ModelExtensionPaymentOPAtome extends Model {
 	
 		if ($status) {  
       		$method_data = array( 
-        		'code'         => 'op_atome',
+        		'code'         => 'op_bocpay',
         		'title'      => $this->language->get('text_title'),
       			'terms'      => '',
-				'sort_order' => $this->config->get('payment_op_atome_sort_order')
+				'sort_order' => $this->config->get('payment_op_bocpay_sort_order')
       		);
     	}
    

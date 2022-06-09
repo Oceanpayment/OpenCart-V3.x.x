@@ -3,8 +3,8 @@
 $_['heading_title']     = 'Thank you for shopping with %s .... ';
 
 // Text
-$_['text_title']        = 'Atome Payment <br/><img src="catalog/view/theme/default/image/op_atome.png" alt="Atome">';
-$_['text_response']     = 'Response from Atome:';
+$_['text_title']        = 'BOCPay Payment <br/><img src="catalog/view/theme/default/image/op_bocpay.png" alt="BOCPay">';
+$_['text_response']     = 'Response from BOCPay:';
 $_['text_success']      = 'Your payment was successfully received.';
 $_['text_success_wait'] = 'whilst we finish processing your order.<br>If you are not automatically re-directed in 10 seconds, please click <a href="%s" target="_top" >here</a>.';
 $_['text_failure']      = 'Your payment has been cancelled!';

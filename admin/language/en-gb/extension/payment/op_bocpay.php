@@ -1,12 +1,12 @@
 <?php
 // Heading
-$_['heading_title']      	= 'Oceanpayment Atome Payment';
+$_['heading_title']      	= 'Oceanpayment BOCPay Payment';
 
 // Text 
 $_['text_payment']       	= 'Payment';
-$_['text_success']       	= 'Success: You have modified atome account details!';
-$_['text_edit']          	= 'Edit Oceanpayment Atome Payment';
-$_['text_op_atome'] 	    = '<img src="view/image/payment/op_atome.png" alt="atome" height="25"  title="atome" style="border: 1px solid #EEEEEE;" />';
+$_['text_success']       	= 'Success: You have modified BOCPay account details!';
+$_['text_edit']          	= 'Edit Oceanpayment BOCPay Payment';
+$_['text_op_bocpay'] 	    = '<img src="view/image/payment/op_bocpay.png" alt="bocpay" height="25"  title="bocpay" style="border: 1px solid #EEEEEE;" />';
 $_['text_pay']           	= 'https://secure.oceanpayment.com/gateway/service/pay';
 $_['text_test']          	= 'https://test-secure.oceanpayment.com/gateway/service/pay';
 $_['text_pay_iframe']    	= 'Iframe';
@@ -40,7 +40,7 @@ $_['entry_entitys']                 = 'Entity';
 
 
 // Error
-$_['error_permission']                = 'Warning: You do not have permission to modify Oceanpayment Atome!';
+$_['error_permission']                = 'Warning: You do not have permission to modify Oceanpayment BOCPay!';
 $_['error_account']                   = 'Account Required!';
 $_['error_terminal']                  = 'Terminal Required!';
 $_['error_securecode']                = 'Securecode Required!';
