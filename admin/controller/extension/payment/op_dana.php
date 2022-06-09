@@ -1,9 +1,9 @@
 <?php 
-class ControllerExtensionPaymentOPBpi extends Controller {
+class ControllerExtensionPaymentOPDana extends Controller {
 	private $error = array(); 
 
 	public function index() {
-		$this->load->language('extension/payment/op_bpi');
+		$this->load->language('extension/payment/op_dana');
 		
 		$this->document->setTitle($this->language->get('heading_title'));
 		
@@ -12,7 +12,7 @@ class ControllerExtensionPaymentOPBpi extends Controller {
 		if (($this->request->server['REQUEST_METHOD'] == 'POST') && ($this->validate())) {
 			$this->load->model('setting/setting');
 			
-			$this->model_setting_setting->editSetting('payment_op_bpi', $this->request->post);
+			$this->model_setting_setting->editSetting('payment_op_dana', $this->request->post);
 			
 			$this->session->data['success'] = $this->language->get('text_success');
 			
@@ -102,69 +102,69 @@ class ControllerExtensionPaymentOPBpi extends Controller {
 
    		$data['breadcrumbs'][] = array(
        		'text' => $this->language->get('heading_title'),
-   			'href' => $this->url->link('extension/payment/op_bpi', 'user_token=' . $this->session->data['user_token'], 'SSL'),
+   			'href' => $this->url->link('extension/payment/op_dana', 'user_token=' . $this->session->data['user_token'], 'SSL'),
    		);
 
-		$data['action'] = $this->url->link('extension/payment/op_bpi', 'user_token=' . $this->session->data['user_token'], 'SSL');
+		$data['action'] = $this->url->link('extension/payment/op_dana', 'user_token=' . $this->session->data['user_token'], 'SSL');
 
 		$data['cancel'] = $this->url->link('marketplace/extension', 'user_token=' . $this->session->data['user_token'].'&type=payment', 'SSL');
 
-		if (isset($this->request->post['payment_op_bpi_account'])) {
-			$data['payment_op_bpi_account'] = $this->request->post['payment_op_bpi_account'];
+		if (isset($this->request->post['payment_op_dana_account'])) {
+			$data['payment_op_dana_account'] = $this->request->post['payment_op_dana_account'];
 		} else {
-			$data['payment_op_bpi_account'] = $this->config->get('payment_op_bpi_account');
+			$data['payment_op_dana_account'] = $this->config->get('payment_op_dana_account');
 		}
 
-		if (isset($this->request->post['payment_op_bpi_terminal'])) {
-			$data['payment_op_bpi_terminal'] = $this->request->post['payment_op_bpi_terminal'];
+		if (isset($this->request->post['payment_op_dana_terminal'])) {
+			$data['payment_op_dana_terminal'] = $this->request->post['payment_op_dana_terminal'];
 		} else {
-			$data['payment_op_bpi_terminal'] = $this->config->get('payment_op_bpi_terminal');
+			$data['payment_op_dana_terminal'] = $this->config->get('payment_op_dana_terminal');
 		}
 
-		if (isset($this->request->post['payment_op_bpi_securecode'])) {
-			$data['payment_op_bpi_securecode'] = $this->request->post['payment_op_bpi_securecode'];
+		if (isset($this->request->post['payment_op_dana_securecode'])) {
+			$data['payment_op_dana_securecode'] = $this->request->post['payment_op_dana_securecode'];
 		} else {
-			$data['payment_op_bpi_securecode'] = $this->config->get('payment_op_bpi_securecode');
+			$data['payment_op_dana_securecode'] = $this->config->get('payment_op_dana_securecode');
 		}
 		
 	
 		
 		
-		$data['callback'] = HTTP_CATALOG . 'index.php?route=extension/payment/op_bpi/callback';
+		$data['callback'] = HTTP_CATALOG . 'index.php?route=extension/payment/op_dana/callback';
 
 		
-		if (isset($this->request->post['payment_op_bpi_transaction'])) {
-			$data['payment_op_bpi_transaction'] = $this->request->post['payment_op_bpi_transaction'];
+		if (isset($this->request->post['payment_op_dana_transaction'])) {
+			$data['payment_op_dana_transaction'] = $this->request->post['payment_op_dana_transaction'];
 		} else {
-			$data['payment_op_bpi_transaction'] = $this->config->get('payment_op_bpi_transaction');
+			$data['payment_op_dana_transaction'] = $this->config->get('payment_op_dana_transaction');
 		}
 		
-		if (isset($this->request->post['payment_op_bpi_pay_mode'])) {
-			$data['payment_op_bpi_pay_mode'] = $this->request->post['payment_op_bpi_pay_mode'];
+		if (isset($this->request->post['payment_op_dana_pay_mode'])) {
+			$data['payment_op_dana_pay_mode'] = $this->request->post['payment_op_dana_pay_mode'];
 		} else {
-			$data['payment_op_bpi_pay_mode'] = $this->config->get('payment_op_bpi_pay_mode');
+			$data['payment_op_dana_pay_mode'] = $this->config->get('payment_op_dana_pay_mode');
 		}
 		
-		if (isset($this->request->post['payment_op_bpi_default_order_status_id'])) {
-			$data['payment_op_bpi_default_order_status_id'] = $this->request->post['payment_op_bpi_default_order_status_id'];
+		if (isset($this->request->post['payment_op_dana_default_order_status_id'])) {
+			$data['payment_op_dana_default_order_status_id'] = $this->request->post['payment_op_dana_default_order_status_id'];
 		} else {
-			$data['payment_op_bpi_default_order_status_id'] = $this->config->get('payment_op_bpi_default_order_status_id');
+			$data['payment_op_dana_default_order_status_id'] = $this->config->get('payment_op_dana_default_order_status_id');
 		} 
 		/* add status */
-		if (isset($this->request->post['payment_op_bpi_success_order_status_id'])) {
-			$data['payment_op_bpi_success_order_status_id'] = $this->request->post['payment_op_bpi_success_order_status_id'];
+		if (isset($this->request->post['payment_op_dana_success_order_status_id'])) {
+			$data['payment_op_dana_success_order_status_id'] = $this->request->post['payment_op_dana_success_order_status_id'];
 		} else {
-			$data['payment_op_bpi_success_order_status_id'] = $this->config->get('payment_op_bpi_success_order_status_id');
+			$data['payment_op_dana_success_order_status_id'] = $this->config->get('payment_op_dana_success_order_status_id');
 		}
-		if (isset($this->request->post['payment_op_bpi_failed_order_status_id'])) {
-			$data['payment_op_bpi_failed_order_status_id'] = $this->request->post['payment_op_bpi_failed_order_status_id'];
+		if (isset($this->request->post['payment_op_dana_failed_order_status_id'])) {
+			$data['payment_op_dana_failed_order_status_id'] = $this->request->post['payment_op_dana_failed_order_status_id'];
 		} else {
-			$data['payment_op_bpi_failed_order_status_id'] = $this->config->get('payment_op_bpi_failed_order_status_id');
+			$data['payment_op_dana_failed_order_status_id'] = $this->config->get('payment_op_dana_failed_order_status_id');
 		}
-		if (isset($this->request->post['payment_op_bpi_pending_order_status_id'])) {
-			$data['payment_op_bpi_pending_order_status_id'] = $this->request->post['payment_op_bpi_pending_order_status_id'];
+		if (isset($this->request->post['payment_op_dana_pending_order_status_id'])) {
+			$data['payment_op_dana_pending_order_status_id'] = $this->request->post['payment_op_dana_pending_order_status_id'];
 		} else {
-			$data['payment_op_bpi_pending_order_status_id'] = $this->config->get('payment_op_bpi_pending_order_status_id');
+			$data['payment_op_dana_pending_order_status_id'] = $this->config->get('payment_op_dana_pending_order_status_id');
 		}
 		
 		
@@ -172,50 +172,50 @@ class ControllerExtensionPaymentOPBpi extends Controller {
 		
 		$data['order_statuses'] = $this->model_localisation_order_status->getOrderStatuses();
 
-		if (isset($this->request->post['payment_op_bpi_geo_zone_id'])) {
-			$data['payment_op_bpi_geo_zone_id'] = $this->request->post['payment_op_bpi_geo_zone_id'];
+		if (isset($this->request->post['payment_op_dana_geo_zone_id'])) {
+			$data['payment_op_dana_geo_zone_id'] = $this->request->post['payment_op_dana_geo_zone_id'];
 		} else {
-			$data['payment_op_bpi_geo_zone_id'] = $this->config->get('payment_op_bpi_geo_zone_id');
+			$data['payment_op_dana_geo_zone_id'] = $this->config->get('payment_op_dana_geo_zone_id');
 		}
 
 		$this->load->model('localisation/geo_zone');
 										
 		$data['geo_zones'] = $this->model_localisation_geo_zone->getGeoZones();
 		
-		if (isset($this->request->post['payment_op_bpi_status'])) {
-			$data['payment_op_bpi_status'] = $this->request->post['payment_op_bpi_status'];
+		if (isset($this->request->post['payment_op_dana_status'])) {
+			$data['payment_op_dana_status'] = $this->request->post['payment_op_dana_status'];
 		} else {
-			$data['payment_op_bpi_status'] = $this->config->get('payment_op_bpi_status');
+			$data['payment_op_dana_status'] = $this->config->get('payment_op_dana_status');
 		}
 		
-		if (isset($this->request->post['payment_op_bpi_sort_order'])) {
-			$data['payment_op_bpi_sort_order'] = $this->request->post['payment_op_bpi_sort_order'];
+		if (isset($this->request->post['payment_op_dana_sort_order'])) {
+			$data['payment_op_dana_sort_order'] = $this->request->post['payment_op_dana_sort_order'];
 		} else {
-			$data['payment_op_bpi_sort_order'] = $this->config->get('payment_op_bpi_sort_order');
+			$data['payment_op_dana_sort_order'] = $this->config->get('payment_op_dana_sort_order');
 		}
 		
-		if (isset($this->request->post['payment_op_bpi_location'])) {
-          $data['payment_op_bpi_location'] = $this->request->post['payment_op_bpi_location'];
+		if (isset($this->request->post['payment_op_dana_location'])) {
+          $data['payment_op_dana_location'] = $this->request->post['payment_op_dana_location'];
 		  } else {
-			  $data['payment_op_bpi_location'] = $this->config->get('payment_op_bpi_location');
+			  $data['payment_op_dana_location'] = $this->config->get('payment_op_dana_location');
 		  }
 
-		  if (isset($this->request->post['payment_op_bpi_locations'])) {
-			  $data['payment_op_bpi_locations'] = $this->request->post['payment_op_bpi_locations'];
+		  if (isset($this->request->post['payment_op_dana_locations'])) {
+			  $data['payment_op_dana_locations'] = $this->request->post['payment_op_dana_locations'];
 		  } else {
-			  $data['payment_op_bpi_locations'] = $this->config->get('payment_op_bpi_locations');
+			  $data['payment_op_dana_locations'] = $this->config->get('payment_op_dana_locations');
 		  }
 
-		  if (isset($this->request->post['payment_op_bpi_entity'])) {
-			  $data['payment_op_bpi_entity'] = $this->request->post['payment_op_bpi_entity'];
+		  if (isset($this->request->post['payment_op_dana_entity'])) {
+			  $data['payment_op_dana_entity'] = $this->request->post['payment_op_dana_entity'];
 		  } else {
-			  $data['payment_op_bpi_entity'] = $this->config->get('payment_op_bpi_entity');
+			  $data['payment_op_dana_entity'] = $this->config->get('payment_op_dana_entity');
 		  }
 
-		  if (isset($this->request->post['payment_op_bpi_entitys'])) {
-			  $data['payment_op_bpi_entitys'] = $this->request->post['payment_op_bpi_entitys'];
+		  if (isset($this->request->post['payment_op_dana_entitys'])) {
+			  $data['payment_op_dana_entitys'] = $this->request->post['payment_op_dana_entitys'];
 		  } else {
-			  $data['payment_op_bpi_entitys'] = $this->config->get('payment_op_bpi_entitys');
+			  $data['payment_op_dana_entitys'] = $this->config->get('payment_op_dana_entitys');
 		  }
 
 		
@@ -226,24 +226,24 @@ class ControllerExtensionPaymentOPBpi extends Controller {
 			$data['column_left'] = $this->load->controller('common/column_left');
 			$data['footer'] = $this->load->controller('common/footer');
 
-			$this->response->setOutput($this->load->view('extension/payment/op_bpi', $data));
+			$this->response->setOutput($this->load->view('extension/payment/op_dana', $data));
 		}
 		
 
 	private function validate() {
-		if (!$this->user->hasPermission('modify', 'extension/payment/op_bpi')) {
+		if (!$this->user->hasPermission('modify', 'extension/payment/op_dana')) {
 			$this->error['warning'] = $this->language->get('error_permission');
 		}
 
-		if (!$this->request->post['payment_op_bpi_account']) {
+		if (!$this->request->post['payment_op_dana_account']) {
 			$this->error['account'] = $this->language->get('error_account');
 		}
 
-		if (!$this->request->post['payment_op_bpi_terminal']) {
+		if (!$this->request->post['payment_op_dana_terminal']) {
 			$this->error['terminal'] = $this->language->get('error_terminal');
 		}
 
-		if (!$this->request->post['payment_op_bpi_securecode']) {
+		if (!$this->request->post['payment_op_dana_securecode']) {
 			$this->error['securecode'] = $this->language->get('error_securecode');
 		}
 		

@@ -1,6 +1,6 @@
 <?php
 
-class ControllerExtensionPaymentOPBpi extends Controller {
+class ControllerExtensionPaymentOPDana extends Controller {
 	
 	const PUSH 			= "[PUSH]";
 	const BrowserReturn = "[Browser Return]";	
@@ -12,16 +12,16 @@ class ControllerExtensionPaymentOPBpi extends Controller {
 		
 		
 		$data['button_confirm'] = $this->language->get('button_confirm');
-		$data['action'] = 'index.php?route=extension/payment/op_bpi/op_bpi_form';
+		$data['action'] = 'index.php?route=extension/payment/op_dana/op_dana_form';
 		
 		
 		$order_info = $this->model_checkout_order->getOrder($this->session->data['order_id']);
 		
-		return $this->load->view('extension/payment/op_bpi', $data);
+		return $this->load->view('extension/payment/op_dana', $data);
 	}
 
 	
-	public function op_bpi_form() {
+	public function op_dana_form() {
 		
 		$this->load->model('checkout/order');
 		$order_info = $this->model_checkout_order->getOrder($this->session->data['order_id']);
@@ -30,13 +30,13 @@ class ControllerExtensionPaymentOPBpi extends Controller {
 		//判断是否为空订单
 		if (!empty($order_info)) {
 			
-			$this->load->model('extension/payment/op_bpi');
-			$product_info = $this->model_extension_payment_op_bpi->getOrderProducts($this->session->data['order_id']);
+			$this->load->model('extension/payment/op_dana');
+			$product_info = $this->model_extension_payment_op_dana->getOrderProducts($this->session->data['order_id']);
 			
 			//获取订单详情
 			$productDetails = $this->getProductItems($product_info);
 			//获取消费者详情
-			$customer_info = $this->model_extension_payment_op_bpi->getCustomerDetails($order_info['customer_id']);
+			$customer_info = $this->model_extension_payment_op_dana->getCustomerDetails($order_info['customer_id']);
 			
 			
 			if (!$this->request->server['HTTPS']) {
@@ -46,7 +46,7 @@ class ControllerExtensionPaymentOPBpi extends Controller {
 			}
 			
 			//提交网关
-			$action = $this->config->get('payment_op_bpi_transaction');
+			$action = $this->config->get('payment_op_dana_transaction');
 			$data['action'] = $action;
 			
 			//订单号
@@ -62,12 +62,12 @@ class ControllerExtensionPaymentOPBpi extends Controller {
 			$data['order_currency'] = $order_currency;
 			
 
-			$validate_arr['terminal'] = $this->config->get('payment_op_bpi_terminal');
-			$validate_arr['securecode'] = $this->config->get('payment_op_bpi_securecode');
+			$validate_arr['terminal'] = $this->config->get('payment_op_dana_terminal');
+			$validate_arr['securecode'] = $this->config->get('payment_op_dana_securecode');
 
 
 			//商户号
-			$account = $this->config->get('payment_op_bpi_account');
+			$account = $this->config->get('payment_op_dana_account');
 			$data['account'] = $account;
 				
 			//终端号
@@ -79,11 +79,11 @@ class ControllerExtensionPaymentOPBpi extends Controller {
 			
 			
 			//返回地址
-			$backUrl = $base_url.'index.php?route=extension/payment/op_bpi/callback';
+			$backUrl = $base_url.'index.php?route=extension/payment/op_dana/callback';
 			$data['backUrl'] = $backUrl;
 			
 			//服务器响应地址
-			$noticeUrl = $base_url.'index.php?route=extension/payment/op_bpi/notice';
+			$noticeUrl = $base_url.'index.php?route=extension/payment/op_dana/notice';
 			$data['noticeUrl'] = $noticeUrl;
 			
 			//备注
@@ -91,7 +91,7 @@ class ControllerExtensionPaymentOPBpi extends Controller {
 			$data['order_notes'] = $order_notes;
 			
 			//支付方式
-			$methods = "BPI";
+			$methods = "DANA";
 			$data['methods'] = $methods;
 
 			//账单人姓名
@@ -274,12 +274,12 @@ class ControllerExtensionPaymentOPBpi extends Controller {
 			$data['header'] = $this->load->controller('common/header');
 			
 			//支付模式Pay Mode
-			if($this->config->get('payment_op_bpi_pay_mode') == 1){
+			if($this->config->get('payment_op_dana_pay_mode') == 1){
 				//内嵌Iframe
-				$this->response->setOutput($this->load->view('extension/payment/op_bpi_iframe', $data));
+				$this->response->setOutput($this->load->view('extension/payment/op_dana_iframe', $data));
 			}else{
 				//跳转Redirect
-				$this->response->setOutput($this->load->view('extension/payment/op_bpi_form', $data));
+				$this->response->setOutput($this->load->view('extension/payment/op_dana_form', $data));
 			}
 
 		}else{		
@@ -292,7 +292,7 @@ class ControllerExtensionPaymentOPBpi extends Controller {
 	
 	public function callback() {
 		if (isset($this->request->post['order_number']) && !(empty($this->request->post['order_number']))) {
-			$this->language->load('extension/payment/op_bpi');
+			$this->language->load('extension/payment/op_dana');
 		
 			$data['title'] = sprintf($this->language->get('heading_title'), $this->config->get('config_name'));
 
@@ -321,7 +321,7 @@ class ControllerExtensionPaymentOPBpi extends Controller {
 			
 	
 			//返回信息
-			$account = $this->config->get('payment_op_bpi_account');
+			$account = $this->config->get('payment_op_dana_account');
 			$terminal = $this->request->post['terminal'];
 			$response_type = $this->request->post['response_type'];
 			$payment_id = $this->request->post['payment_id'];
@@ -349,9 +349,9 @@ class ControllerExtensionPaymentOPBpi extends Controller {
 			
 			
 			//匹配终端号
-			if($terminal == $this->config->get('payment_op_bpi_terminal')){
+			if($terminal == $this->config->get('payment_op_dana_terminal')){
 				//普通终端号
-				$securecode = $this->config->get('payment_op_bpi_securecode');
+				$securecode = $this->config->get('payment_op_dana_securecode');
 			}else{
 				$securecode = '';
 			}
@@ -391,7 +391,7 @@ class ControllerExtensionPaymentOPBpi extends Controller {
 					if($ErrorCode == 20061){	 
 						//排除订单号重复(20061)的交易
 						$data['continue'] = $this->url->link('checkout/cart');
-						$this->response->setOutput($this->load->view('extension/payment/op_bpi_failure', $data));
+						$this->response->setOutput($this->load->view('extension/payment/op_dana_failure', $data));
 
 					}else{
 						if ($payment_status == 1 ){  
@@ -399,10 +399,10 @@ class ControllerExtensionPaymentOPBpi extends Controller {
 							//清除coupon
 							unset($this->session->data['coupon']);
 							
-							$this->model_checkout_order->addOrderHistory($this->request->post['order_number'], $this->config->get('payment_op_bpi_success_order_status_id'), $message, true);
+							$this->model_checkout_order->addOrderHistory($this->request->post['order_number'], $this->config->get('payment_op_dana_success_order_status_id'), $message, true);
 							
 							$data['continue'] = HTTPS_SERVER . 'index.php?route=checkout/success';
-							$this->response->setOutput($this->load->view('extension/payment/op_bpi_success', $data));
+							$this->response->setOutput($this->load->view('extension/payment/op_dana_success', $data));
 
 						}elseif ($payment_status == -1 ){   
 							//交易待处理 
@@ -410,17 +410,17 @@ class ControllerExtensionPaymentOPBpi extends Controller {
 							if($payment_authType == 1){						
 								$message .= '(Pre-auth)';
 							}
-							$this->model_checkout_order->addOrderHistory($this->request->post['order_number'], $this->config->get('payment_op_bpi_pending_order_status_id'), $message, false);
+							$this->model_checkout_order->addOrderHistory($this->request->post['order_number'], $this->config->get('payment_op_dana_pending_order_status_id'), $message, false);
 								
 							$data['continue'] = $this->url->link('checkout/cart');
-							$this->response->setOutput($this->load->view('extension/payment/op_bpi_success', $data));
+							$this->response->setOutput($this->load->view('extension/payment/op_dana_success', $data));
 	
 						}else{     
 							//交易失败
-							$this->model_checkout_order->addOrderHistory($this->request->post['order_number'], $this->config->get('payment_op_bpi_failed_order_status_id'), $message, false);
+							$this->model_checkout_order->addOrderHistory($this->request->post['order_number'], $this->config->get('payment_op_dana_failed_order_status_id'), $message, false);
 							
 							$data['continue'] = $this->url->link('checkout/cart');
-							$this->response->setOutput($this->load->view('extension/payment/op_bpi_failure', $data));
+							$this->response->setOutput($this->load->view('extension/payment/op_dana_failure', $data));
 
 						}
  					}								
@@ -428,10 +428,10 @@ class ControllerExtensionPaymentOPBpi extends Controller {
 			
 			}else {     
 				//数据签名对比失败
-				$this->model_checkout_order->addOrderHistory($this->request->post['order_number'], $this->config->get('op_bpi_failed_order_status_id'), $message, false);
+				$this->model_checkout_order->addOrderHistory($this->request->post['order_number'], $this->config->get('op_dana_failed_order_status_id'), $message, false);
 							
 				$data['continue'] = $this->url->link('checkout/cart');
-				$this->response->setOutput($this->load->view('extension/payment/op_bpi_failure', $data));
+				$this->response->setOutput($this->load->view('extension/payment/op_dana_failure', $data));
 					
 			}
 		}
@@ -473,9 +473,9 @@ class ControllerExtensionPaymentOPBpi extends Controller {
 				
 					
 			//匹配终端号
-			if($_REQUEST['terminal'] == $this->config->get('payment_op_bpi_terminal')){
+			if($_REQUEST['terminal'] == $this->config->get('payment_op_dana_terminal')){
 				//普通终端号
-				$securecode = $this->config->get('payment_op_bpi_securecode');
+				$securecode = $this->config->get('payment_op_dana_securecode');
 			}else{
 				$securecode = '';
 			}
@@ -525,17 +525,17 @@ class ControllerExtensionPaymentOPBpi extends Controller {
 				}else{
 					if ($_REQUEST['payment_status'] == 1 ){
 						//交易成功
-						$this->model_checkout_order->addOrderHistory($_REQUEST['order_number'], $this->config->get('payment_op_bpi_success_order_status_id'), $message, false);
+						$this->model_checkout_order->addOrderHistory($_REQUEST['order_number'], $this->config->get('payment_op_dana_success_order_status_id'), $message, false);
 					}elseif ($_REQUEST['payment_status'] == -1){
 						//交易待处理
 						//是否预授权交易
 						if($_REQUEST['payment_authType'] == 1){
 							$message .= '(Pre-auth)';
 						}
-						$this->model_checkout_order->addOrderHistory($_REQUEST['order_number'], $this->config->get('payment_op_bpi_pending_order_status_id'), $message, false);
+						$this->model_checkout_order->addOrderHistory($_REQUEST['order_number'], $this->config->get('payment_op_dana_pending_order_status_id'), $message, false);
 					}else{
 						//交易失败
-						$this->model_checkout_order->addOrderHistory($_REQUEST['order_number'], $this->config->get('payment_op_bpi_failed_order_status_id'), $message, false);
+						$this->model_checkout_order->addOrderHistory($_REQUEST['order_number'], $this->config->get('payment_op_dana_failed_order_status_id'), $message, false);
 					}
 				}
 				
