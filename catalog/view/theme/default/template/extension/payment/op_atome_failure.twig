@@ -1,0 +1,26 @@
+<html xmlns="http://www.w3.org/1999/xhtml" dir="{{ direction }}" lang="{{ language }}" xml:lang="{{ language }}">
+<head>
+<title>{{ title }}</title>
+<base href="{{ base }}" />
+<script>
+function goto(){
+    window.parent.location.href="{{ text_failure_url }}";
+}
+function auto(){
+    setTimeout("goto()",5000);
+}
+</script>
+</head>
+<body onload="auto();">
+<div style="text-align: center;">
+  <p><?php echo $text_response; ?></p>
+  <div style="border: 1px solid #DDDDDD; margin-bottom: 20px; width: 350px; margin-left: auto; margin-right: auto;">
+    <atome ITEM=banner />
+  </div>
+  <p>{{ text_failure }}</p>
+  <p style="color:red">{{ payment_details }}</p>
+  <p>{{ payment_solutions }}</p>
+  <p>{{ text_failure_wait }}</p>
+</div>
+</body>
+</html>
