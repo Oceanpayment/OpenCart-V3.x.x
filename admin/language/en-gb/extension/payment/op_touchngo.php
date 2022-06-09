@@ -1,12 +1,12 @@
 <?php
 // Heading
-$_['heading_title']      	= 'Oceanpayment Rabbit-LinePay Payment';
+$_['heading_title']      	= 'Oceanpayment TouchnGo Payment';
 
 // Text 
 $_['text_payment']       	= 'Payment';
-$_['text_success']       	= 'Success: You have modified rabbitlinepay account details!';
-$_['text_edit']          	= 'Edit Oceanpayment Rabbit-LinePay Payment';
-$_['text_op_rabbitlinepay'] = '<img src="view/image/payment/op_rabbitlinepay.png" alt="rabbitlinepay" height="25"  title="rabbitlinepay" style="border: 1px solid #EEEEEE;" />';
+$_['text_success']       	= 'Success: You have modified TouchnGo account details!';
+$_['text_edit']          	= 'Edit Oceanpayment TouchnGo Payment';
+$_['text_op_touchngo'] 	    = '<img src="view/image/payment/op_touchngo.png" alt="touchngo" height="25"  title="touchngo" style="border: 1px solid #EEEEEE;" />';
 $_['text_pay']           	= 'https://secure.oceanpayment.com/gateway/service/pay';
 $_['text_test']          	= 'https://test-secure.oceanpayment.com/gateway/service/pay';
 $_['text_pay_iframe']    	= 'Iframe';
@@ -40,7 +40,7 @@ $_['entry_entitys']                 = 'Entity';
 
 
 // Error
-$_['error_permission']                = 'Warning: You do not have permission to modify Oceanpayment Rabbit-LinePay!';
+$_['error_permission']                = 'Warning: You do not have permission to modify Oceanpayment TouchnGo!';
 $_['error_account']                   = 'Account Required!';
 $_['error_terminal']                  = 'Terminal Required!';
 $_['error_securecode']                = 'Securecode Required!';

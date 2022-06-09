@@ -3,7 +3,7 @@
   <div class="page-header">
     <div class="container-fluid">
       <div class="pull-right">
-        <button type="submit" form="form-op_rabbitlinepay" data-toggle="tooltip" title="{{ button_save }}" class="btn btn-primary"><i class="fa fa-save"></i></button>
+        <button type="submit" form="form-op_touchngo" data-toggle="tooltip" title="{{ button_save }}" class="btn btn-primary"><i class="fa fa-save"></i></button>
         <a href="{{ cancel }}" data-toggle="tooltip" title="{{ button_cancel }}" class="btn btn-default"><i class="fa fa-reply"></i></a></div>
       <h1>{{ heading_title }}</h1>
       <ul class="breadcrumb">
@@ -24,11 +24,11 @@
 	    <h3 class="panel-title"><i class="fa fa-pencil"></i> {{ text_edit }}</h3>
 	  </div>
 	  <div class="panel-body">
-	 	 <form action="{{ action }}" method="post" enctype="multipart/form-data" id="form-op_rabbitlinepay" class="form-horizontal">
+	 	 <form action="{{ action }}" method="post" enctype="multipart/form-data" id="form-op_touchngo" class="form-horizontal">
 	 	 	<div class="form-group required">
 	            <label class="col-sm-2 control-label" for="input-account">{{ entry_account }}</label>
 	            <div class="col-sm-10">
-	              <input type="text" name="payment_op_rabbitlinepay_account" value="{{ payment_op_rabbitlinepay_account }}" placeholder="{{ entry_account }}" id="input-account" class="form-control" />
+	              <input type="text" name="payment_op_touchngo_account" value="{{ payment_op_touchngo_account }}" placeholder="{{ entry_account }}" id="input-account" class="form-control" />
 					{% if error_account  %}
 	              <div class="text-danger">{{ error_account }}</div>
                     {% endif %}
@@ -37,7 +37,7 @@
 	        <div class="form-group required">
 	            <label class="col-sm-2 control-label" for="input-terminal">{{ entry_terminal }}</label>
 	            <div class="col-sm-10">
-	              <input type="text" name="payment_op_rabbitlinepay_terminal" value="{{ payment_op_rabbitlinepay_terminal }}" placeholder="{{ entry_terminal }}" id="input-terminal" class="form-control" />
+	              <input type="text" name="payment_op_touchngo_terminal" value="{{ payment_op_touchngo_terminal }}" placeholder="{{ entry_terminal }}" id="input-terminal" class="form-control" />
 					{% if error_terminal  %}
 	              <div class="text-danger">{{ error_terminal }}</div>
 					{% endif %}
@@ -46,7 +46,7 @@
 	        <div class="form-group required">
 	            <label class="col-sm-2 control-label" for="input-securecode">{{ entry_securecode }}</label>
 	            <div class="col-sm-10">
-	              <input type="text" name="payment_op_rabbitlinepay_securecode" value="{{ payment_op_rabbitlinepay_securecode }}" placeholder="{{ entry_securecode }}" id="input-securecode" class="form-control" />
+	              <input type="text" name="payment_op_touchngo_securecode" value="{{ payment_op_touchngo_securecode }}" placeholder="{{ entry_securecode }}" id="input-securecode" class="form-control" />
 				  {% if  error_securecode  %}
 	              <div class="text-danger">{{ error_securecode }}</div>
 	              {% endif %}
@@ -59,14 +59,14 @@
 	        <div class="form-group">
 	            <label class="col-sm-2 control-label" for="input-transaction">{{ entry_transaction }}</label>
 	            <div class="col-sm-10">
-					<select name="payment_op_rabbitlinepay_transaction" id="input-transaction" class="form-control">
-                        {% if payment_op_rabbitlinepay_transaction == text_pay %}
+					<select name="payment_op_touchngo_transaction" id="input-transaction" class="form-control">
+                        {% if payment_op_touchngo_transaction == text_pay %}
 							<option value="{{ text_pay }}" selected="selected">{{ text_pay }}</option>
                         {% else %}
 							<option value="{{ text_pay }}">{{ text_pay }}</option>
                         {% endif %}
 
-                        {% if payment_op_rabbitlinepay_transaction == text_test %}
+                        {% if payment_op_touchngo_transaction == text_test %}
 							<option value="{{ text_test }}" selected="selected">{{ text_test }}</option>
                         {% else %}
 							<option value="{{ text_test }}">{{ text_test }}</option>
@@ -77,14 +77,14 @@
 	        <div class="form-group">
 	            <label class="col-sm-2 control-label" for="input-pay-mode">{{ entry_pay_mode }}</label>
 	            <div class="col-sm-10">
-	              <select name="payment_op_rabbitlinepay_pay_mode" id="input-pay-mode" class="form-control">
-					{% if payment_op_rabbitlinepay_pay_mode == 1 %}
+	              <select name="payment_op_touchngo_pay_mode" id="input-pay-mode" class="form-control">
+					{% if payment_op_touchngo_pay_mode == 1 %}
 	                <option value="1" selected="selected">{{ text_pay_iframe }}</option>
 					{% else %}
 	                <option value="1">{{ text_pay_iframe }}</option>
 	                {% endif %}
 
-					{% if payment_op_rabbitlinepay_pay_mode == 0 %}
+					{% if payment_op_touchngo_pay_mode == 0 %}
 	                <option value="0" selected="selected">{{ text_pay_redirect }}</option>
                       {% else %}
 	                <option value="0">{{ text_pay_redirect }}</option>
@@ -95,9 +95,9 @@
 	        <div class="form-group">
 	            <label class="col-sm-2 control-label" for="input-default-order-status">{{ entry_default_order_status }}</label>
 	            <div class="col-sm-10">
-					<select name="payment_op_rabbitlinepay_default_order_status_id" id="input-default-order-status" class="form-control">
+					<select name="payment_op_touchngo_default_order_status_id" id="input-default-order-status" class="form-control">
                         {% for order_status in order_statuses  %}
-                            {% if order_status.order_status_id == payment_op_rabbitlinepay_default_order_status_id %}
+                            {% if order_status.order_status_id == payment_op_touchngo_default_order_status_id %}
 								<option value="{{ order_status.order_status_id}}" selected="selected">{{ order_status.name }}</option>
                             {% else %}
 								<option value="{{ order_status.order_status_id }}">{{ order_status.name }}</option>
@@ -109,9 +109,9 @@
 			 <div class="form-group">
 				 <label class="col-sm-2 control-label" for="input-success-order-status">{{ entry_success_order_status }}</label>
 				 <div class="col-sm-10">
-					 <select name="payment_op_rabbitlinepay_success_order_status_id" id="input-success-order-status" class="form-control">
+					 <select name="payment_op_touchngo_success_order_status_id" id="input-success-order-status" class="form-control">
                          {% for order_status in order_statuses %}
-                             {% if order_status.order_status_id == payment_op_rabbitlinepay_success_order_status_id %}
+                             {% if order_status.order_status_id == payment_op_touchngo_success_order_status_id %}
 								 <option value="{{ order_status.order_status_id}}" selected="selected">{{ order_status.name }}</option>
                              {% else %}
 								 <option value="{{ order_status.order_status_id}}">{{ order_status.name}}</option>
@@ -123,9 +123,9 @@
 			 <div class="form-group">
 				 <label class="col-sm-2 control-label" for="input-failed-order-status">{{ entry_failed_order_status }}</label>
 				 <div class="col-sm-10">
-					 <select name="payment_op_rabbitlinepay_failed_order_status_id" id="input-failed-order-status" class="form-control">
+					 <select name="payment_op_touchngo_failed_order_status_id" id="input-failed-order-status" class="form-control">
                          {% for order_status in order_statuses %}
-                             {% if order_status.order_status_id == payment_op_rabbitlinepay_failed_order_status_id %}
+                             {% if order_status.order_status_id == payment_op_touchngo_failed_order_status_id %}
 								 <option value="{{ order_status.order_status_id }}" selected="selected">{{ order_status.name }}</option>
                              {% else %}
 								 <option value="{{ order_status.order_status_id }}">{{ order_status.name }}</option>
@@ -137,9 +137,9 @@
 			 <div class="form-group">
 				 <label class="col-sm-2 control-label" for="input-pending-order-status">{{ entry_pending_order_status }}</label>
 				 <div class="col-sm-10">
-					 <select name="payment_op_rabbitlinepay_pending_order_status_id" id="input-pending-order-status" class="form-control">
+					 <select name="payment_op_touchngo_pending_order_status_id" id="input-pending-order-status" class="form-control">
                          {% for order_status in order_statuses %}
-                             {% if order_status.order_status_id  == payment_op_rabbitlinepay_pending_order_status_id %}
+                             {% if order_status.order_status_id  == payment_op_touchngo_pending_order_status_id %}
 								 <option value="{{ order_status.order_status_id }}" selected="selected">{{ order_status.name }}</option>
                              {% else %}
 								 <option value="{{ order_status.order_status_id }}">{{ order_status.name }}</option>
@@ -151,10 +151,10 @@
 			 <div class="form-group">
 				 <label class="col-sm-2 control-label" for="input-geo-zone">{{ entry_geo_zone }}</label>
 				 <div class="col-sm-10">
-					 <select name="payment_op_rabbitlinepay_geo_zone_id" id="input-geo-zone" class="form-control">
+					 <select name="payment_op_touchngo_geo_zone_id" id="input-geo-zone" class="form-control">
 						 <option value="0">{{ text_all_zones }}</option>
                          {% for geo_zone in geo_zones %}
-                             {% if geo_zone.geo_zone_id == payment_op_rabbitlinepay_geo_zone_id %}
+                             {% if geo_zone.geo_zone_id == payment_op_touchngo_geo_zone_id %}
 								 <option value="{{ geo_zone.geo_zone_id }}" selected="selected">{{ geo_zone.name }}</option>
                              {% else %}
 								 <option value="{{ geo_zone.geo_zone_id }}">{{ geo_zone.name }}</option>
@@ -166,8 +166,8 @@
 			 <div class="form-group">
 				 <label class="col-sm-2 control-label" for="input-status">{{ entry_status }}</label>
 				 <div class="col-sm-10">
-					 <select name="payment_op_rabbitlinepay_status" id="input-status" class="form-control">
-                         {% if payment_op_rabbitlinepay_status %}
+					 <select name="payment_op_touchngo_status" id="input-status" class="form-control">
+                         {% if payment_op_touchngo_status %}
 							 <option value="1" selected="selected">{{ text_enabled }}</option>
 							 <option value="0">{{ text_disabled }}</option>
                          {% else %}
@@ -180,7 +180,7 @@
 			 <div class="form-group">
 				 <label class="col-sm-2 control-label" for="input-sort-order">{{ entry_sort_order }}</label>
 				 <div class="col-sm-10">
-					 <input type="text" name="payment_op_rabbitlinepay_sort_order" value="{{ payment_op_rabbitlinepay_sort_order }}" placeholder="{{ entry_sort_order }}" id="input-sort-order" class="form-control" />
+					 <input type="text" name="payment_op_touchngo_sort_order" value="{{ payment_op_touchngo_sort_order }}" placeholder="{{ entry_sort_order }}" id="input-sort-order" class="form-control" />
 				 </div>
 			 </div>
 			
@@ -188,8 +188,8 @@
 			<div class="form-group">
 			 <label class="col-sm-2 control-label" for="input-location">{{ entry_location }}</label>
 			 <div class="col-sm-10">
-				<select name="payment_op_rabbitlinepay_location" id="input-location" class="form-control">
-					{% if payment_op_rabbitlinepay_location %}
+				<select name="payment_op_touchngo_location" id="input-location" class="form-control">
+					{% if payment_op_touchngo_location %}
 				   <option value="1" selected="selected">{{ text_show }}</option>
 				   <option value="0">{{ text_hide }}</option>
 				   {% else %}
@@ -202,14 +202,14 @@
 			<div class="form-group ">
 			 <label class="col-sm-2 control-label" for="input-locations">{{ entry_locations }}</label>
 			 <div class="col-sm-10">
-				<input type="text" name="payment_op_rabbitlinepay_locations" value="{{ payment_op_rabbitlinepay_locations }}" placeholder="{{ entry_locations }}" id="input-terminal" class="form-control" />
+				<input type="text" name="payment_op_touchngo_locations" value="{{ payment_op_touchngo_locations }}" placeholder="{{ entry_locations }}" id="input-terminal" class="form-control" />
 			 </div>
 			</div>
 			<div class="form-group">
 			 <label class="col-sm-2 control-label" for="input-entity">{{ entry_entity }}</label>
 			 <div class="col-sm-10">
-				<select name="payment_op_rabbitlinepay_entity" id="input-location" class="form-control">
-					{% if payment_op_rabbitlinepay_entity %}
+				<select name="payment_op_touchngo_entity" id="input-location" class="form-control">
+					{% if payment_op_touchngo_entity %}
 				   <option value="1" selected="selected">{{ text_shows }}</option>
 				   <option value="0">{{ text_hides }}</option>
 				   {% else %}
@@ -222,7 +222,7 @@
 			<div class="form-group ">
 			 <label class="col-sm-2 control-label" for="input-entitys">{{ entry_entitys }}</label>
 			 <div class="col-sm-10">
-				<input type="text" name="payment_op_rabbitlinepay_entitys" value="{{ payment_op_rabbitlinepay_entitys }}" placeholder="{{ entry_entitys }}" id="input-terminal" class="form-control" />
+				<input type="text" name="payment_op_touchngo_entitys" value="{{ payment_op_touchngo_entitys }}" placeholder="{{ entry_entitys }}" id="input-terminal" class="form-control" />
 			 </div>
 			</div>
 
