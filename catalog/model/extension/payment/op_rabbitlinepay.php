@@ -1,14 +1,14 @@
 <?php 
-class ModelExtensionPaymentOPPix extends Model {
+class ModelExtensionPaymentOPRabbitlinepay extends Model {
 	private $_limit = ',';
 	
   	public function getMethod($address) {
-		$this->load->language('extension/payment/op_pix');
+		$this->load->language('extension/payment/op_rabbitlinepay');
 		
-		if ($this->config->get('payment_op_pix_status')) {
-      		$query = $this->db->query("SELECT * FROM " . DB_PREFIX . "zone_to_geo_zone WHERE geo_zone_id = '" . (int)$this->config->get('payment_op_pix_geo_zone_id') . "' AND country_id = '" . (int)$address['country_id'] . "' AND (zone_id = '" . (int)$address['zone_id'] . "' OR zone_id = '0')");
+		if ($this->config->get('payment_op_rabbitlinepay_status')) {
+      		$query = $this->db->query("SELECT * FROM " . DB_PREFIX . "zone_to_geo_zone WHERE geo_zone_id = '" . (int)$this->config->get('payment_op_rabbitlinepay_geo_zone_id') . "' AND country_id = '" . (int)$address['country_id'] . "' AND (zone_id = '" . (int)$address['zone_id'] . "' OR zone_id = '0')");
 			
-			if (!$this->config->get('payment_op_pix_geo_zone_id')) {
+			if (!$this->config->get('payment_op_rabbitlinepay_geo_zone_id')) {
         		$status = true;
       		} elseif ($query->num_rows) {
       		  	$status = true;
@@ -23,10 +23,10 @@ class ModelExtensionPaymentOPPix extends Model {
 	
 		if ($status) {  
       		$method_data = array( 
-        		'code'         => 'op_pix',
+        		'code'         => 'op_rabbitlinepay',
         		'title'      => $this->language->get('text_title'),
       			'terms'      => '',
-				'sort_order' => $this->config->get('payment_op_pix_sort_order')
+				'sort_order' => $this->config->get('payment_op_rabbitlinepay_sort_order')
       		);
     	}
    

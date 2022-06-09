@@ -1,6 +1,6 @@
 <?php
 
-class ControllerExtensionPaymentOPPix extends Controller {
+class ControllerExtensionPaymentOPRabbitlinepay extends Controller {
 	
 	const PUSH 			= "[PUSH]";
 	const BrowserReturn = "[Browser Return]";	
@@ -12,16 +12,16 @@ class ControllerExtensionPaymentOPPix extends Controller {
 		
 		
 		$data['button_confirm'] = $this->language->get('button_confirm');
-		$data['action'] = 'index.php?route=extension/payment/op_pix/op_pix_form';
+		$data['action'] = 'index.php?route=extension/payment/op_rabbitlinepay/op_rabbitlinepay_form';
 		
 		
 		$order_info = $this->model_checkout_order->getOrder($this->session->data['order_id']);
 		
-		return $this->load->view('extension/payment/op_pix', $data);
+		return $this->load->view('extension/payment/op_rabbitlinepay', $data);
 	}
 
 	
-	public function op_pix_form() {
+	public function op_rabbitlinepay_form() {
 		
 		$this->load->model('checkout/order');
 		$order_info = $this->model_checkout_order->getOrder($this->session->data['order_id']);
@@ -30,13 +30,13 @@ class ControllerExtensionPaymentOPPix extends Controller {
 		//判断是否为空订单
 		if (!empty($order_info)) {
 			
-			$this->load->model('extension/payment/op_pix');
-			$product_info = $this->model_extension_payment_op_pix->getOrderProducts($this->session->data['order_id']);
+			$this->load->model('extension/payment/op_rabbitlinepay');
+			$product_info = $this->model_extension_payment_op_rabbitlinepay->getOrderProducts($this->session->data['order_id']);
 			
 			//获取订单详情
 			$productDetails = $this->getProductItems($product_info);
 			//获取消费者详情
-			$customer_info = $this->model_extension_payment_op_pix->getCustomerDetails($order_info['customer_id']);
+			$customer_info = $this->model_extension_payment_op_rabbitlinepay->getCustomerDetails($order_info['customer_id']);
 			
 			
 			if (!$this->request->server['HTTPS']) {
@@ -46,7 +46,7 @@ class ControllerExtensionPaymentOPPix extends Controller {
 			}
 			
 			//提交网关
-			$action = $this->config->get('payment_op_pix_transaction');
+			$action = $this->config->get('payment_op_rabbitlinepay_transaction');
 			$data['action'] = $action;
 			
 			//订单号
@@ -62,12 +62,12 @@ class ControllerExtensionPaymentOPPix extends Controller {
 			$data['order_currency'] = $order_currency;
 			
 
-			$validate_arr['terminal'] = $this->config->get('payment_op_pix_terminal');
-			$validate_arr['securecode'] = $this->config->get('payment_op_pix_securecode');
+			$validate_arr['terminal'] = $this->config->get('payment_op_rabbitlinepay_terminal');
+			$validate_arr['securecode'] = $this->config->get('payment_op_rabbitlinepay_securecode');
 
 
 			//商户号
-			$account = $this->config->get('payment_op_pix_account');
+			$account = $this->config->get('payment_op_rabbitlinepay_account');
 			$data['account'] = $account;
 				
 			//终端号
@@ -79,11 +79,11 @@ class ControllerExtensionPaymentOPPix extends Controller {
 			
 			
 			//返回地址
-			$backUrl = $base_url.'index.php?route=extension/payment/op_pix/callback';
+			$backUrl = $base_url.'index.php?route=extension/payment/op_rabbitlinepay/callback';
 			$data['backUrl'] = $backUrl;
 			
 			//服务器响应地址
-			$noticeUrl = $base_url.'index.php?route=extension/payment/op_pix/notice';
+			$noticeUrl = $base_url.'index.php?route=extension/payment/op_rabbitlinepay/notice';
 			$data['noticeUrl'] = $noticeUrl;
 			
 			//备注
@@ -91,7 +91,7 @@ class ControllerExtensionPaymentOPPix extends Controller {
 			$data['order_notes'] = $order_notes;
 			
 			//支付方式
-			$methods = "PIX";
+			$methods = "Rabbit-LinePay";
 			$data['methods'] = $methods;
 
 			//账单人姓名
@@ -135,13 +135,6 @@ class ControllerExtensionPaymentOPPix extends Controller {
 			//账单人邮编
 			$billing_zip = $order_info['payment_postcode'];
 			$data['billing_zip'] = $billing_zip;
-
-			//cpf
-			$pay_cpf = $_POST['pay_cpf'];
-			$data['pay_cpf'] = $pay_cpf;
-			//银行代码
-			$pay_bankCode = 'PQ';
-			$data['pay_bankCode'] = $pay_bankCode;
 			 
 			//加密串
 			$signValue = hash("sha256",$account.$terminal.$backUrl.$order_number.$order_currency.$order_amount.$billing_firstName.$billing_lastName.$billing_email.$securecode);
@@ -246,8 +239,6 @@ class ControllerExtensionPaymentOPPix extends Controller {
 					"ship_city = "         .$ship_city . "\r\n".
 					"ship_addr = "  	   .$ship_addr . "\r\n".
 					"ship_zip = "          .$ship_zip . "\r\n".
-					"pay_cpf = "           .$pay_cpf . "\r\n".
-					"pay_bankCode = "      .$pay_bankCode . "\r\n".
 					"methods = "           .$methods . "\r\n".
 					"signValue = "         .$signValue . "\r\n".
 					"productName = "       .$productName . "\r\n".
@@ -283,12 +274,12 @@ class ControllerExtensionPaymentOPPix extends Controller {
 			$data['header'] = $this->load->controller('common/header');
 			
 			//支付模式Pay Mode
-			if($this->config->get('payment_op_pix_pay_mode') == 1){
+			if($this->config->get('payment_op_rabbitlinepay_pay_mode') == 1){
 				//内嵌Iframe
-				$this->response->setOutput($this->load->view('extension/payment/op_pix_iframe', $data));
+				$this->response->setOutput($this->load->view('extension/payment/op_rabbitlinepay_iframe', $data));
 			}else{
 				//跳转Redirect
-				$this->response->setOutput($this->load->view('extension/payment/op_pix_form', $data));
+				$this->response->setOutput($this->load->view('extension/payment/op_rabbitlinepay_form', $data));
 			}
 
 		}else{		
@@ -301,7 +292,7 @@ class ControllerExtensionPaymentOPPix extends Controller {
 	
 	public function callback() {
 		if (isset($this->request->post['order_number']) && !(empty($this->request->post['order_number']))) {
-			$this->language->load('extension/payment/op_pix');
+			$this->language->load('extension/payment/op_rabbitlinepay');
 		
 			$data['title'] = sprintf($this->language->get('heading_title'), $this->config->get('config_name'));
 
@@ -330,7 +321,7 @@ class ControllerExtensionPaymentOPPix extends Controller {
 			
 	
 			//返回信息
-			$account = $this->config->get('payment_op_pix_account');
+			$account = $this->config->get('payment_op_rabbitlinepay_account');
 			$terminal = $this->request->post['terminal'];
 			$response_type = $this->request->post['response_type'];
 			$payment_id = $this->request->post['payment_id'];
@@ -358,9 +349,9 @@ class ControllerExtensionPaymentOPPix extends Controller {
 			
 			
 			//匹配终端号
-			if($terminal == $this->config->get('payment_op_pix_terminal')){
+			if($terminal == $this->config->get('payment_op_rabbitlinepay_terminal')){
 				//普通终端号
-				$securecode = $this->config->get('payment_op_pix_securecode');
+				$securecode = $this->config->get('payment_op_rabbitlinepay_securecode');
 			}else{
 				$securecode = '';
 			}
@@ -400,7 +391,7 @@ class ControllerExtensionPaymentOPPix extends Controller {
 					if($ErrorCode == 20061){	 
 						//排除订单号重复(20061)的交易
 						$data['continue'] = $this->url->link('checkout/cart');
-						$this->response->setOutput($this->load->view('extension/payment/op_pix_failure', $data));
+						$this->response->setOutput($this->load->view('extension/payment/op_rabbitlinepay_failure', $data));
 
 					}else{
 						if ($payment_status == 1 ){  
@@ -408,10 +399,10 @@ class ControllerExtensionPaymentOPPix extends Controller {
 							//清除coupon
 							unset($this->session->data['coupon']);
 							
-							$this->model_checkout_order->addOrderHistory($this->request->post['order_number'], $this->config->get('payment_op_pix_success_order_status_id'), $message, true);
+							$this->model_checkout_order->addOrderHistory($this->request->post['order_number'], $this->config->get('payment_op_rabbitlinepay_success_order_status_id'), $message, true);
 							
 							$data['continue'] = HTTPS_SERVER . 'index.php?route=checkout/success';
-							$this->response->setOutput($this->load->view('extension/payment/op_pix_success', $data));
+							$this->response->setOutput($this->load->view('extension/payment/op_rabbitlinepay_success', $data));
 
 						}elseif ($payment_status == -1 ){   
 							//交易待处理 
@@ -419,17 +410,17 @@ class ControllerExtensionPaymentOPPix extends Controller {
 							if($payment_authType == 1){						
 								$message .= '(Pre-auth)';
 							}
-							$this->model_checkout_order->addOrderHistory($this->request->post['order_number'], $this->config->get('payment_op_pix_pending_order_status_id'), $message, false);
+							$this->model_checkout_order->addOrderHistory($this->request->post['order_number'], $this->config->get('payment_op_rabbitlinepay_pending_order_status_id'), $message, false);
 								
 							$data['continue'] = $this->url->link('checkout/cart');
-							$this->response->setOutput($this->load->view('extension/payment/op_pix_success', $data));
+							$this->response->setOutput($this->load->view('extension/payment/op_rabbitlinepay_success', $data));
 	
 						}else{     
 							//交易失败
-							$this->model_checkout_order->addOrderHistory($this->request->post['order_number'], $this->config->get('payment_op_pix_failed_order_status_id'), $message, false);
+							$this->model_checkout_order->addOrderHistory($this->request->post['order_number'], $this->config->get('payment_op_rabbitlinepay_failed_order_status_id'), $message, false);
 							
 							$data['continue'] = $this->url->link('checkout/cart');
-							$this->response->setOutput($this->load->view('extension/payment/op_pix_failure', $data));
+							$this->response->setOutput($this->load->view('extension/payment/op_rabbitlinepay_failure', $data));
 
 						}
  					}								
@@ -437,10 +428,10 @@ class ControllerExtensionPaymentOPPix extends Controller {
 			
 			}else {     
 				//数据签名对比失败
-				$this->model_checkout_order->addOrderHistory($this->request->post['order_number'], $this->config->get('op_pix_failed_order_status_id'), $message, false);
+				$this->model_checkout_order->addOrderHistory($this->request->post['order_number'], $this->config->get('op_rabbitlinepay_failed_order_status_id'), $message, false);
 							
 				$data['continue'] = $this->url->link('checkout/cart');
-				$this->response->setOutput($this->load->view('extension/payment/op_pix_failure', $data));
+				$this->response->setOutput($this->load->view('extension/payment/op_rabbitlinepay_failure', $data));
 					
 			}
 		}
@@ -482,9 +473,9 @@ class ControllerExtensionPaymentOPPix extends Controller {
 				
 					
 			//匹配终端号
-			if($_REQUEST['terminal'] == $this->config->get('payment_op_pix_terminal')){
+			if($_REQUEST['terminal'] == $this->config->get('payment_op_rabbitlinepay_terminal')){
 				//普通终端号
-				$securecode = $this->config->get('payment_op_pix_securecode');
+				$securecode = $this->config->get('payment_op_rabbitlinepay_securecode');
 			}else{
 				$securecode = '';
 			}
@@ -534,17 +525,17 @@ class ControllerExtensionPaymentOPPix extends Controller {
 				}else{
 					if ($_REQUEST['payment_status'] == 1 ){
 						//交易成功
-						$this->model_checkout_order->addOrderHistory($_REQUEST['order_number'], $this->config->get('payment_op_pix_success_order_status_id'), $message, false);
+						$this->model_checkout_order->addOrderHistory($_REQUEST['order_number'], $this->config->get('payment_op_rabbitlinepay_success_order_status_id'), $message, false);
 					}elseif ($_REQUEST['payment_status'] == -1){
 						//交易待处理
 						//是否预授权交易
 						if($_REQUEST['payment_authType'] == 1){
 							$message .= '(Pre-auth)';
 						}
-						$this->model_checkout_order->addOrderHistory($_REQUEST['order_number'], $this->config->get('payment_op_pix_pending_order_status_id'), $message, false);
+						$this->model_checkout_order->addOrderHistory($_REQUEST['order_number'], $this->config->get('payment_op_rabbitlinepay_pending_order_status_id'), $message, false);
 					}else{
 						//交易失败
-						$this->model_checkout_order->addOrderHistory($_REQUEST['order_number'], $this->config->get('payment_op_pix_failed_order_status_id'), $message, false);
+						$this->model_checkout_order->addOrderHistory($_REQUEST['order_number'], $this->config->get('payment_op_rabbitlinepay_failed_order_status_id'), $message, false);
 					}
 				}
 				
