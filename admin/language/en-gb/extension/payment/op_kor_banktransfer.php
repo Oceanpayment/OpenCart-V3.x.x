@@ -1,17 +1,19 @@
 <?php
 // Heading
-$_['heading_title']      	= 'Oceanpayment KOR_Credit Card Payment';
+$_['heading_title']      	= 'Oceanpayment KOR_BankTransfer Payment';
 
 // Text 
 $_['text_payment']       	= 'Payment';
-$_['text_success']       	= 'Success: You have modified kor_credit_card account details!';
-$_['text_edit']          	= 'Edit Oceanpayment KOR_Credit Card Payment';
-$_['text_op_korcreditcard'] = '<img src="view/image/payment/op_korcreditcard.png" alt="korcreditcard" height="25"  title="korcreditcard" style="border: 1px solid #EEEEEE;" />';
+$_['text_success']       	= 'Success: You have modified KOR_BankTransfer account details!';
+$_['text_edit']          	= 'Edit Oceanpayment KOR_BankTransfer Payment';
+$_['text_op_kor_banktransfer'] = '<img src="view/image/payment/op_kor_banktransfer.png" alt="kor_banktransfer" height="25"  title="kor_banktransfer" style="border: 1px solid #EEEEEE;" />';
 $_['text_pay']           	= 'https://secure.oceanpayment.com/gateway/service/pay';
 $_['text_test']          	= 'https://test-secure.oceanpayment.com/gateway/service/pay';
 $_['text_pay_iframe']    	= 'Iframe';
 $_['text_pay_redirect']  	= 'Redirect';
 $_['text_select_currency']  = '- Select -';
+$_['text_logs_true'] 		= 'True';
+$_['text_logs_false'] 		= 'False';
 
       
 // Entry
@@ -37,10 +39,11 @@ $_['entry_location']           = 'Show/Hide Location';
 $_['entry_locations']             = 'Location';
 $_['entry_entity']            = 'Show/Hide Entity';
 $_['entry_entitys']           = 'Entity';
+$_['entry_logs']              = 'Write The Logs';
 
 
 // Error
-$_['error_permission']                = 'Warning: You do not have permission to modify Oceanpayment KOR_Credit Card!';
+$_['error_permission']                = 'Warning: You do not have permission to modify Oceanpayment KOR_BankTransfer!';
 $_['error_account']                   = 'Account Required!';
 $_['error_terminal']                  = 'Terminal Required!';
 $_['error_securecode']                = 'Securecode Required!';
