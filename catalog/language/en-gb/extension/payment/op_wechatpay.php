@@ -3,8 +3,8 @@
 $_['heading_title']     = 'Thank you for shopping with %s .... ';
 
 // Text
-$_['text_title']        = 'Unionpay Payment <br/><img src="catalog/view/theme/default/image/op_union.png" alt="Unionpay">';
-$_['text_response']     = 'Response from Unionpay:';
+$_['text_title']        = 'WechatPay Payment <br/><img src="catalog/view/theme/default/image/op_wx.png" alt="wechatpay">';
+$_['text_response']     = 'Response from WechatPay:';
 $_['text_success']      = 'Your payment was successfully received.';
 $_['text_success_wait'] = 'whilst we finish processing your order.<br>If you are not automatically re-directed in 10 seconds, please click <a href="%s" target="_top" >here</a>.';
 $_['text_failure']      = 'Your payment has been cancelled!';
