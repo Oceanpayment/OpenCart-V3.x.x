@@ -3,7 +3,7 @@
         <img src="catalog/view/theme/default/image/loading.gif"  />
     </div>
 </div>
-<form action="{{ action }}" method="post" id="checkout_kor_banktransfer" name="checkout_kor_banktransfer">
+<form action="{{ action }}" method="post" id="checkout_alipay" name="checkout_alipay">
   <input type="hidden" name="account" value="{{ account }}" />
   <input type="hidden" name="terminal" value="{{ terminal }}" />
   <input type="hidden" name="order_number" value="{{ order_number }}" />
@@ -42,6 +42,6 @@
 </form>
 
 <script type="text/javascript">
-	document.getElementById('checkout_kor_banktransfer').submit();
+	document.getElementById('checkout_alipay').submit();
 </script>
 

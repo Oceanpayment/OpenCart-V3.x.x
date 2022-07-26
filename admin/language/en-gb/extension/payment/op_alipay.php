@@ -1,19 +1,17 @@
 <?php
 // Heading
-$_['heading_title']      	= 'Oceanpayment KOR_BankTransfer Payment';
+$_['heading_title']      	= 'Oceanpayment Alipay Payment';
 
 // Text 
 $_['text_payment']       	= 'Payment';
-$_['text_success']       	= 'Success: You have modified KOR_BankTransfer account details!';
-$_['text_edit']          	= 'Edit Oceanpayment KOR_BankTransfer Payment';
-$_['text_op_kor_banktransfer'] = '<img src="view/image/payment/op_kor_banktransfer.png" alt="kor_banktransfer" height="25"  title="kor_banktransfer" style="border: 1px solid #EEEEEE;" />';
+$_['text_success']       	= 'Success: You have modified alipay account details!';
+$_['text_edit']          	= 'Edit Oceanpayment Alipay Payment';
+$_['text_op_alipay'] 	    = '<img src="view/image/payment/op_alipay.png" alt="alipay" height="25"  title="alipay" style="border: 1px solid #EEEEEE;" />';
 $_['text_pay']           	= 'https://secure.oceanpayment.com/gateway/service/pay';
 $_['text_test']          	= 'https://test-secure.oceanpayment.com/gateway/service/pay';
 $_['text_pay_iframe']    	= 'Iframe';
 $_['text_pay_redirect']  	= 'Redirect';
 $_['text_select_currency']  = '- Select -';
-$_['text_logs_true'] 		= 'True';
-$_['text_logs_false'] 		= 'False';
 
       
 // Entry
@@ -30,20 +28,19 @@ $_['entry_geo_zone']             	= 'Geo Zone';
 $_['entry_status']       			= 'Status';
 $_['entry_sort_order']      		= 'Sort Order';
 
-$_['text_hide']        = 'Hide';
-$_['text_show']          = 'Show';
-$_['text_hides']          = 'Hide';
-$_['text_shows']         = 'Show';
+$_['text_hide']                     = 'Hide';
+$_['text_show']                     = 'Show';
+$_['text_hides']                    = 'Hide';
+$_['text_shows']                    = 'Show';
 
-$_['entry_location']           = 'Show/Hide Location';
-$_['entry_locations']             = 'Location';
-$_['entry_entity']            = 'Show/Hide Entity';
-$_['entry_entitys']           = 'Entity';
-$_['entry_logs']              = 'Write The Logs';
+$_['entry_location']                = 'Show/Hide Location';
+$_['entry_locations']               = 'Location';
+$_['entry_entity']                  = 'Show/Hide Entity';
+$_['entry_entitys']                 = 'Entity';
 
 
 // Error
-$_['error_permission']                = 'Warning: You do not have permission to modify Oceanpayment KOR_BankTransfer!';
+$_['error_permission']                = 'Warning: You do not have permission to modify Oceanpayment Alipay!';
 $_['error_account']                   = 'Account Required!';
 $_['error_terminal']                  = 'Terminal Required!';
 $_['error_securecode']                = 'Securecode Required!';
