@@ -1,6 +1,6 @@
 <?php
 
-class ControllerExtensionPaymentOPAlipay extends Controller {
+class ControllerExtensionPaymentOPAlipayHK extends Controller {
 	
 	const PUSH 			= "[PUSH]";
 	const BrowserReturn = "[Browser Return]";	
@@ -12,16 +12,16 @@ class ControllerExtensionPaymentOPAlipay extends Controller {
 		
 		
 		$data['button_confirm'] = $this->language->get('button_confirm');
-		$data['action'] = 'index.php?route=extension/payment/op_alipay/op_alipay_form';
+		$data['action'] = 'index.php?route=extension/payment/op_alipayhk/op_alipayhk_form';
 		
 		
 		$order_info = $this->model_checkout_order->getOrder($this->session->data['order_id']);
 		
-		return $this->load->view('extension/payment/op_alipay', $data);
+		return $this->load->view('extension/payment/op_alipayhk', $data);
 	}
 
 	
-	public function op_alipay_form() {
+	public function op_alipayhk_form() {
 		
 		$this->load->model('checkout/order');
 		$order_info = $this->model_checkout_order->getOrder($this->session->data['order_id']);
@@ -30,13 +30,13 @@ class ControllerExtensionPaymentOPAlipay extends Controller {
 		//判断是否为空订单
 		if (!empty($order_info)) {
 			
-			$this->load->model('extension/payment/op_alipay');
-			$product_info = $this->model_extension_payment_op_alipay->getOrderProducts($this->session->data['order_id']);
+			$this->load->model('extension/payment/op_alipayhk');
+			$product_info = $this->model_extension_payment_op_alipayhk->getOrderProducts($this->session->data['order_id']);
 			
 			//获取订单详情
 			$productDetails = $this->getProductItems($product_info);
 			//获取消费者详情
-			$customer_info = $this->model_extension_payment_op_alipay->getCustomerDetails($order_info['customer_id']);
+			$customer_info = $this->model_extension_payment_op_alipayhk->getCustomerDetails($order_info['customer_id']);
 			
 			
 			if (!$this->request->server['HTTPS']) {
@@ -46,7 +46,7 @@ class ControllerExtensionPaymentOPAlipay extends Controller {
 			}
 			
 			//提交网关
-			$action = $this->config->get('payment_op_alipay_transaction');
+			$action = $this->config->get('payment_op_alipayhk_transaction');
 			$data['action'] = $action;
 			
 			//订单号
@@ -62,12 +62,12 @@ class ControllerExtensionPaymentOPAlipay extends Controller {
 			$data['order_currency'] = $order_currency;
 			
 
-			$validate_arr['terminal'] = $this->config->get('payment_op_alipay_terminal');
-			$validate_arr['securecode'] = $this->config->get('payment_op_alipay_securecode');
+			$validate_arr['terminal'] = $this->config->get('payment_op_alipayhk_terminal');
+			$validate_arr['securecode'] = $this->config->get('payment_op_alipayhk_securecode');
 
 
 			//商户号
-			$account = $this->config->get('payment_op_alipay_account');
+			$account = $this->config->get('payment_op_alipayhk_account');
 			$data['account'] = $account;
 				
 			//终端号
@@ -79,11 +79,11 @@ class ControllerExtensionPaymentOPAlipay extends Controller {
 			
 			
 			//返回地址
-			$backUrl = $base_url.'index.php?route=extension/payment/op_alipay/callback';
+			$backUrl = $base_url.'index.php?route=extension/payment/op_alipayhk/callback';
 			$data['backUrl'] = $backUrl;
 			
 			//服务器响应地址
-			$noticeUrl = $base_url.'index.php?route=extension/payment/op_alipay/notice';
+			$noticeUrl = $base_url.'index.php?route=extension/payment/op_alipayhk/notice';
 			$data['noticeUrl'] = $noticeUrl;
 			
 			//备注
@@ -94,14 +94,14 @@ class ControllerExtensionPaymentOPAlipay extends Controller {
 			$methods = $this->Source();
 			$data['methods'] = $methods;
 
-
 			//账单人名
 			$billing_firstName = $this->OceanHtmlSpecialChars($order_info['payment_firstname']);
 			$data['billing_firstName'] = $billing_firstName;
-
+			
 			//账单人姓
 			$billing_lastName = $this->OceanHtmlSpecialChars($order_info['payment_lastname']);
 			$data['billing_lastName'] = $billing_lastName;
+			
 			 
 			//账单人邮箱
 			$billing_email = $this->OceanHtmlSpecialChars($order_info['email']);
@@ -142,11 +142,12 @@ class ControllerExtensionPaymentOPAlipay extends Controller {
 			//收货人名
 			$ship_firstName = $order_info['shipping_firstname'];
 			$data['ship_firstName'] = $ship_firstName;
-
+			
 			//收货人姓
 			$ship_lastName = $order_info['shipping_lastname'];
 			$data['ship_lastName'] = $ship_lastName;
-			
+
+
 			//收货人手机
 			$ship_phone = $order_info['telephone'];
 			$data['ship_phone'] = $ship_phone;
@@ -273,12 +274,12 @@ class ControllerExtensionPaymentOPAlipay extends Controller {
 			$data['header'] = $this->load->controller('common/header');
 			
 			//支付模式Pay Mode
-			if($this->config->get('payment_op_alipay_pay_mode') == 1){
+			if($this->config->get('payment_op_alipayhk_pay_mode') == 1){
 				//内嵌Iframe
-				$this->response->setOutput($this->load->view('extension/payment/op_alipay_iframe', $data));
+				$this->response->setOutput($this->load->view('extension/payment/op_alipayhk_iframe', $data));
 			}else{
 				//跳转Redirect
-				$this->response->setOutput($this->load->view('extension/payment/op_alipay_form', $data));
+				$this->response->setOutput($this->load->view('extension/payment/op_alipayhk_form', $data));
 			}
 
 		}else{		
@@ -291,7 +292,7 @@ class ControllerExtensionPaymentOPAlipay extends Controller {
 	
 	public function callback() {
 		if (isset($this->request->post['order_number']) && !(empty($this->request->post['order_number']))) {
-			$this->language->load('extension/payment/op_alipay');
+			$this->language->load('extension/payment/op_alipayhk');
 		
 			$data['title'] = sprintf($this->language->get('heading_title'), $this->config->get('config_name'));
 
@@ -320,7 +321,7 @@ class ControllerExtensionPaymentOPAlipay extends Controller {
 			
 	
 			//返回信息
-			$account = $this->config->get('payment_op_alipay_account');
+			$account = $this->config->get('payment_op_alipayhk_account');
 			$terminal = $this->request->post['terminal'];
 			$response_type = $this->request->post['response_type'];
 			$payment_id = $this->request->post['payment_id'];
@@ -348,9 +349,9 @@ class ControllerExtensionPaymentOPAlipay extends Controller {
 			
 			
 			//匹配终端号
-			if($terminal == $this->config->get('payment_op_alipay_terminal')){
+			if($terminal == $this->config->get('payment_op_hk_terminal')){
 				//普通终端号
-				$securecode = $this->config->get('payment_op_alipay_securecode');
+				$securecode = $this->config->get('payment_op_alipayhk_securecode');
 			}else{
 				$securecode = '';
 			}
@@ -390,7 +391,7 @@ class ControllerExtensionPaymentOPAlipay extends Controller {
 					if($ErrorCode == 20061){	 
 						//排除订单号重复(20061)的交易
 						$data['continue'] = $this->url->link('checkout/cart');
-						$this->response->setOutput($this->load->view('extension/payment/op_alipay_failure', $data));
+						$this->response->setOutput($this->load->view('extension/payment/op_alipayhk_failure', $data));
 
 					}else{
 						if ($payment_status == 1 ){  
@@ -398,10 +399,10 @@ class ControllerExtensionPaymentOPAlipay extends Controller {
 							//清除coupon
 							unset($this->session->data['coupon']);
 							
-							$this->model_checkout_order->addOrderHistory($this->request->post['order_number'], $this->config->get('payment_op_alipay_success_order_status_id'), $message, true);
+							$this->model_checkout_order->addOrderHistory($this->request->post['order_number'], $this->config->get('payment_op_alipayhk_success_order_status_id'), $message, true);
 							
 							$data['continue'] = HTTPS_SERVER . 'index.php?route=checkout/success';
-							$this->response->setOutput($this->load->view('extension/payment/op_alipay_success', $data));
+							$this->response->setOutput($this->load->view('extension/payment/op_alipayhk_success', $data));
 
 						}elseif ($payment_status == -1 ){   
 							//交易待处理 
@@ -409,17 +410,17 @@ class ControllerExtensionPaymentOPAlipay extends Controller {
 							if($payment_authType == 1){						
 								$message .= '(Pre-auth)';
 							}
-							$this->model_checkout_order->addOrderHistory($this->request->post['order_number'], $this->config->get('payment_op_alipay_pending_order_status_id'), $message, false);
+							$this->model_checkout_order->addOrderHistory($this->request->post['order_number'], $this->config->get('payment_op_alipayhk_pending_order_status_id'), $message, false);
 								
 							$data['continue'] = $this->url->link('checkout/cart');
-							$this->response->setOutput($this->load->view('extension/payment/op_alipay_success', $data));
+							$this->response->setOutput($this->load->view('extension/payment/op_alipayhk_success', $data));
 	
 						}else{     
 							//交易失败
-							$this->model_checkout_order->addOrderHistory($this->request->post['order_number'], $this->config->get('payment_op_alipay_failed_order_status_id'), $message, false);
+							$this->model_checkout_order->addOrderHistory($this->request->post['order_number'], $this->config->get('payment_op_alipayhk_failed_order_status_id'), $message, false);
 							
 							$data['continue'] = $this->url->link('checkout/cart');
-							$this->response->setOutput($this->load->view('extension/payment/op_alipay_failure', $data));
+							$this->response->setOutput($this->load->view('extension/payment/op_alipayhk_failure', $data));
 
 						}
  					}								
@@ -427,10 +428,10 @@ class ControllerExtensionPaymentOPAlipay extends Controller {
 			
 			}else {     
 				//数据签名对比失败
-				$this->model_checkout_order->addOrderHistory($this->request->post['order_number'], $this->config->get('op_alipay_failed_order_status_id'), $message, false);
+				$this->model_checkout_order->addOrderHistory($this->request->post['order_number'], $this->config->get('op_alipayhk_failed_order_status_id'), $message, false);
 							
 				$data['continue'] = $this->url->link('checkout/cart');
-				$this->response->setOutput($this->load->view('extension/payment/op_alipay_failure', $data));
+				$this->response->setOutput($this->load->view('extension/payment/op_alipayhk_failure', $data));
 					
 			}
 		}
@@ -472,9 +473,9 @@ class ControllerExtensionPaymentOPAlipay extends Controller {
 				
 					
 			//匹配终端号
-			if($_REQUEST['terminal'] == $this->config->get('payment_op_alipay_terminal')){
+			if($_REQUEST['terminal'] == $this->config->get('payment_op_hk_terminal')){
 				//普通终端号
-				$securecode = $this->config->get('payment_op_alipay_securecode');
+				$securecode = $this->config->get('payment_op_alipayhk_securecode');
 			}else{
 				$securecode = '';
 			}
@@ -524,17 +525,17 @@ class ControllerExtensionPaymentOPAlipay extends Controller {
 				}else{
 					if ($_REQUEST['payment_status'] == 1 ){
 						//交易成功
-						$this->model_checkout_order->addOrderHistory($_REQUEST['order_number'], $this->config->get('payment_op_alipay_success_order_status_id'), $message, false);
+						$this->model_checkout_order->addOrderHistory($_REQUEST['order_number'], $this->config->get('payment_op_alipayhk_success_order_status_id'), $message, false);
 					}elseif ($_REQUEST['payment_status'] == -1){
 						//交易待处理
 						//是否预授权交易
 						if($_REQUEST['payment_authType'] == 1){
 							$message .= '(Pre-auth)';
 						}
-						$this->model_checkout_order->addOrderHistory($_REQUEST['order_number'], $this->config->get('payment_op_alipay_pending_order_status_id'), $message, false);
+						$this->model_checkout_order->addOrderHistory($_REQUEST['order_number'], $this->config->get('payment_op_alipayhk_pending_order_status_id'), $message, false);
 					}else{
 						//交易失败
-						$this->model_checkout_order->addOrderHistory($_REQUEST['order_number'], $this->config->get('payment_op_alipay_failed_order_status_id'), $message, false);
+						$this->model_checkout_order->addOrderHistory($_REQUEST['order_number'], $this->config->get('payment_op_alipayhk_failed_order_status_id'), $message, false);
 					}
 				}
 				
@@ -633,41 +634,42 @@ class ControllerExtensionPaymentOPAlipay extends Controller {
 	
 	}
 
-	/**
-	 * 检验是否移动端
-	 */
-	function isMobile(){
-		// 如果有HTTP_X_WAP_PROFILE则一定是移动设备
-		if (isset ($_SERVER['HTTP_X_WAP_PROFILE'])){
-			return true;
-		}
-		// 如果via信息含有wap则一定是移动设备,部分服务商会屏蔽该信息
-		if (isset ($_SERVER['HTTP_VIA'])){
-			// 找不到为flase,否则为true
-			return stristr($_SERVER['HTTP_VIA'], "wap") ? true : false;
-		}
-		// 判断手机发送的客户端标志
-		if (isset ($_SERVER['HTTP_USER_AGENT'])){
-			$clientkeywords = array (
-				'nokia','sony','ericsson','mot','samsung','htc','sgh','lg','sharp','sie-','philips','panasonic','alcatel',
-				'lenovo','iphone','ipod','blackberry','meizu','android','netfront','symbian','ucweb','windowsce','palm',
-				'operamini','operamobi','openwave','nexusone','cldc','midp','wap','mobile'
-			);
-			// 从HTTP_USER_AGENT中查找手机浏览器的关键字
-			if (preg_match("/(" . implode('|', $clientkeywords) . ")/i", strtolower($_SERVER['HTTP_USER_AGENT']))){
-				return true;
+       /**
+         * 检验是否移动端
+         */
+   function isMobile(){
+			// 如果有HTTP_X_WAP_PROFILE则一定是移动设备
+			if (isset ($_SERVER['HTTP_X_WAP_PROFILE'])){
+					return true;
 			}
-		}
-		// 判断协议
-		if (isset ($_SERVER['HTTP_ACCEPT'])){
-			// 如果只支持wml并且不支持html那一定是移动设备
-			// 如果支持wml和html但是wml在html之前则是移动设备
-			if ((strpos($_SERVER['HTTP_ACCEPT'], 'vnd.wap.wml') !== false) && (strpos($_SERVER['HTTP_ACCEPT'], 'text/html') === false || (strpos($_SERVER['HTTP_ACCEPT'], 'vnd.wap.wml') < strpos($_SERVER['HTTP_ACCEPT'], 'text/html')))){
-				return true;
+			// 如果via信息含有wap则一定是移动设备,部分服务商会屏蔽该信息
+			if (isset ($_SERVER['HTTP_VIA'])){
+					// 找不到为flase,否则为true
+					return stristr($_SERVER['HTTP_VIA'], "wap") ? true : false;
 			}
-		}
-		return false;
-	}
+			// 判断手机发送的客户端标志
+			if (isset ($_SERVER['HTTP_USER_AGENT'])){
+					$clientkeywords = array (
+							'nokia','sony','ericsson','mot','samsung','htc','sgh','lg','sharp','sie-','philips','panasonic','alcatel',
+							'lenovo','iphone','ipod','blackberry','meizu','android','netfront','symbian','ucweb','windowsce','palm',
+							'operamini','operamobi','openwave','nexusone','cldc','midp','wap','mobile'
+					);
+					// 从HTTP_USER_AGENT中查找手机浏览器的关键字
+					if (preg_match("/(" . implode('|', $clientkeywords) . ")/i", strtolower($_SERVER['HTTP_USER_AGENT']))){
+							return true;
+					}
+			}
+			// 判断协议
+			if (isset ($_SERVER['HTTP_ACCEPT'])){
+					// 如果只支持wml并且不支持html那一定是移动设备
+					// 如果支持wml和html但是wml在html之前则是移动设备
+					if ((strpos($_SERVER['HTTP_ACCEPT'], 'vnd.wap.wml') !== false) && (strpos($_SERVER['HTTP_ACCEPT'], 'text/html') === false || (strpos($_SERVER['HTTP_ACCEPT'], 'vnd.wap.wml') < strpos($_SERVER['HTTP_ACCEPT'], 'text/html')))){
+							return true;
+					}
+			}
+			return false;
+	}	
+
 	/**
 	 * 判断终端来源
 	 */
