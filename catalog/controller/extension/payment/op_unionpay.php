@@ -287,7 +287,6 @@ class ControllerExtensionPaymentOPUnionpay extends Controller {
 		
 	}
 	
-	
 	public function callback() {
 		if (isset($this->request->post['order_number']) && !(empty($this->request->post['order_number']))) {
 			$this->language->load('extension/payment/op_unionpay');
