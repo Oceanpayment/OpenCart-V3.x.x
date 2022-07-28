@@ -1,12 +1,12 @@
 <?php
 // Heading
-$_['heading_title']      	= 'Oceanpayment Unionpay Payment';
+$_['heading_title']      	= 'Oceanpayment FPS Payment';
 
 // Text 
 $_['text_payment']       	= 'Payment';
-$_['text_success']       	= 'Success: You have modified unionpay account details!';
-$_['text_edit']          	= 'Edit Oceanpayment Unionpay Payment';
-$_['text_op_unionpay'] 	    = '<img src="view/image/payment/op_union.png" alt="union" height="25"  title="union" style="border: 1px solid #EEEEEE;" />';
+$_['text_success']       	= 'Success: You have modified  account details!';
+$_['text_edit']          	= 'Edit Oceanpayment FPS Payment';
+$_['text_op_fps'] 	    = '<img src="view/image/payment/op_FPS.png" alt="fps" height="25"  title="fps" style="border: 1px solid #EEEEEE;" />';
 $_['text_pay']           	= 'https://secure.oceanpayment.com/gateway/service/pay';
 $_['text_test']          	= 'https://test-secure.oceanpayment.com/gateway/service/pay';
 $_['text_pay_iframe']    	= 'Iframe';
@@ -40,7 +40,7 @@ $_['entry_entitys']                 = 'Entity';
 
 
 // Error
-$_['error_permission']                = 'Warning: You do not have permission to modify Oceanpayment Unionpay!';
+$_['error_permission']                = 'Warning: You do not have permission to modify Oceanpayment FPS!';
 $_['error_account']                   = 'Account Required!';
 $_['error_terminal']                  = 'Terminal Required!';
 $_['error_securecode']                = 'Securecode Required!';
