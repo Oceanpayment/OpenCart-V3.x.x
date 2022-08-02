@@ -1,12 +1,12 @@
 <?php
 // Heading
-$_['heading_title']      	= 'Oceanpayment SamsungPay Payment';
+$_['heading_title']      	= 'Oceanpayment SSGPay Payment';
 
 // Text 
 $_['text_payment']       	= 'Payment';
-$_['text_success']       	= 'Success: You have modified SamsungPay account details!';
-$_['text_edit']          	= 'Edit Oceanpayment SamsungPay Payment';
-$_['text_op_korsamsungpay'] = '<img src="view/image/payment/op_SamsungPay.png" alt="SamsungPay" height="25"  title="SamsungPay" style="border: 1px solid #EEEEEE;" />';
+$_['text_success']       	= 'Success: You have modified SSGPay account details!';
+$_['text_edit']          	= 'Edit Oceanpayment SSGPay Payment';
+$_['text_op_korssgpay'] = '<img src="view/image/payment/op_SSGPAY.png" alt="SSGPay" height="25"  title="SSGPay" style="border: 1px solid #EEEEEE;" />';
 $_['text_pay']           	= 'https://secure.oceanpayment.com/gateway/service/pay';
 $_['text_test']          	= 'https://test-secure.oceanpayment.com/gateway/service/pay';
 $_['text_pay_iframe']    	= 'Iframe';
@@ -40,7 +40,7 @@ $_['entry_entitys']           = 'Entity';
 
 
 // Error
-$_['error_permission']                = 'Warning: You do not have permission to modify Oceanpayment SamsungPay!';
+$_['error_permission']                = 'Warning: You do not have permission to modify Oceanpayment SSGPay!';
 $_['error_account']                   = 'Account Required!';
 $_['error_terminal']                  = 'Terminal Required!';
 $_['error_securecode']                = 'Securecode Required!';
