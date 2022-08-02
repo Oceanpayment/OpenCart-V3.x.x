@@ -1,12 +1,12 @@
 <?php
 // Heading
-$_['heading_title']      	= 'Oceanpayment Lpay Payment';
+$_['heading_title']      	= 'Oceanpayment NaverPay Payment';
 
 // Text 
 $_['text_payment']       	= 'Payment';
-$_['text_success']       	= 'Success: You have modified Lpay account details!';
-$_['text_edit']          	= 'Edit Oceanpayment Lpay Payment';
-$_['text_op_korlpay']       = '<img src="view/image/payment/op_LPay.png" alt="Lpay" height="25"  title="Lpay" style="border: 1px solid #EEEEEE;" />';
+$_['text_success']       	= 'Success: You have modified NaverPay account details!';
+$_['text_edit']          	= 'Edit Oceanpayment NaverPay Payment';
+$_['text_op_kornaverpay'] = '<img src="view/image/payment/op_NaverPay.png" alt="NaverPay" height="25"  title="NaverPay" style="border: 1px solid #EEEEEE;" />';
 $_['text_pay']           	= 'https://secure.oceanpayment.com/gateway/service/pay';
 $_['text_test']          	= 'https://test-secure.oceanpayment.com/gateway/service/pay';
 $_['text_pay_iframe']    	= 'Iframe';
@@ -40,7 +40,7 @@ $_['entry_entitys']           = 'Entity';
 
 
 // Error
-$_['error_permission']                = 'Warning: You do not have permission to modify Oceanpayment Lpay!';
+$_['error_permission']                = 'Warning: You do not have permission to modify Oceanpayment NaverPay!';
 $_['error_account']                   = 'Account Required!';
 $_['error_terminal']                  = 'Terminal Required!';
 $_['error_securecode']                = 'Securecode Required!';
