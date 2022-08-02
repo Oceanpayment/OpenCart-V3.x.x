@@ -1,9 +1,9 @@
 <?php 
-class ControllerExtensionPaymentOPFps extends Controller {
+class ControllerExtensionPaymentOPKorlpay extends Controller {
 	private $error = array(); 
 
 	public function index() {
-		$this->load->language('extension/payment/op_fps');
+		$this->load->language('extension/payment/op_korlpay');
 		
 		$this->document->setTitle($this->language->get('heading_title'));
 		
@@ -12,7 +12,7 @@ class ControllerExtensionPaymentOPFps extends Controller {
 		if (($this->request->server['REQUEST_METHOD'] == 'POST') && ($this->validate())) {
 			$this->load->model('setting/setting');
 			
-			$this->model_setting_setting->editSetting('payment_op_fps', $this->request->post);
+			$this->model_setting_setting->editSetting('payment_op_korlpay', $this->request->post);
 			
 			$this->session->data['success'] = $this->language->get('text_success');
 			
@@ -102,69 +102,69 @@ class ControllerExtensionPaymentOPFps extends Controller {
 
    		$data['breadcrumbs'][] = array(
        		'text' => $this->language->get('heading_title'),
-   			'href' => $this->url->link('extension/payment/op_fps', 'user_token=' . $this->session->data['user_token'], 'SSL'),
+   			'href' => $this->url->link('extension/payment/op_korlpay', 'user_token=' . $this->session->data['user_token'], 'SSL'),
    		);
 
-		$data['action'] = $this->url->link('extension/payment/op_fps', 'user_token=' . $this->session->data['user_token'], 'SSL');
+		$data['action'] = $this->url->link('extension/payment/op_korlpay', 'user_token=' . $this->session->data['user_token'], 'SSL');
 
 		$data['cancel'] = $this->url->link('marketplace/extension', 'user_token=' . $this->session->data['user_token'].'&type=payment', 'SSL');
 
-		if (isset($this->request->post['payment_op_fps_account'])) {
-			$data['payment_op_fps_account'] = $this->request->post['payment_op_fps_account'];
+		if (isset($this->request->post['payment_op_korlpay_account'])) {
+			$data['payment_op_korlpay_account'] = $this->request->post['payment_op_korlpay_account'];
 		} else {
-			$data['payment_op_fps_account'] = $this->config->get('payment_op_fps_account');
+			$data['payment_op_korlpay_account'] = $this->config->get('payment_op_korlpay_account');
 		}
 
-		if (isset($this->request->post['payment_op_fps_terminal'])) {
-			$data['payment_op_fps_terminal'] = $this->request->post['payment_op_fps_terminal'];
+		if (isset($this->request->post['payment_op_korlpay_terminal'])) {
+			$data['payment_op_korlpay_terminal'] = $this->request->post['payment_op_korlpay_terminal'];
 		} else {
-			$data['payment_op_fps_terminal'] = $this->config->get('payment_op_fps_terminal');
+			$data['payment_op_korlpay_terminal'] = $this->config->get('payment_op_korlpay_terminal');
 		}
 
-		if (isset($this->request->post['payment_op_fps_securecode'])) {
-			$data['payment_op_fps_securecode'] = $this->request->post['payment_op_fps_securecode'];
+		if (isset($this->request->post['payment_op_korlpay_securecode'])) {
+			$data['payment_op_korlpay_securecode'] = $this->request->post['payment_op_korlpay_securecode'];
 		} else {
-			$data['payment_op_fps_securecode'] = $this->config->get('payment_op_fps_securecode');
+			$data['payment_op_korlpay_securecode'] = $this->config->get('payment_op_korlpay_securecode');
 		}
 		
 	
 		
 		
-		$data['callback'] = HTTP_CATALOG . 'index.php?route=extension/payment/op_fps/callback';
+		$data['callback'] = HTTP_CATALOG . 'index.php?route=extension/payment/op_korlpay/callback';
 
 		
-		if (isset($this->request->post['payment_op_fps_transaction'])) {
-			$data['payment_op_fps_transaction'] = $this->request->post['payment_op_fps_transaction'];
+		if (isset($this->request->post['payment_op_korlpay_transaction'])) {
+			$data['payment_op_korlpay_transaction'] = $this->request->post['payment_op_korlpay_transaction'];
 		} else {
-			$data['payment_op_fps_transaction'] = $this->config->get('payment_op_fps_transaction');
+			$data['payment_op_korlpay_transaction'] = $this->config->get('payment_op_korlpay_transaction');
 		}
 		
-		if (isset($this->request->post['payment_op_fps_pay_mode'])) {
-			$data['payment_op_fps_pay_mode'] = $this->request->post['payment_op_fps_pay_mode'];
+		if (isset($this->request->post['payment_op_korlpay_pay_mode'])) {
+			$data['payment_op_korlpay_pay_mode'] = $this->request->post['payment_op_korlpay_pay_mode'];
 		} else {
-			$data['payment_op_fps_pay_mode'] = $this->config->get('payment_op_fps_pay_mode');
+			$data['payment_op_korlpay_pay_mode'] = $this->config->get('payment_op_korlpay_pay_mode');
 		}
 		
-		if (isset($this->request->post['payment_op_fps_default_order_status_id'])) {
-			$data['payment_op_fps_default_order_status_id'] = $this->request->post['payment_op_fps_default_order_status_id'];
+		if (isset($this->request->post['payment_op_korlpay_default_order_status_id'])) {
+			$data['payment_op_korlpay_default_order_status_id'] = $this->request->post['payment_op_korlpay_default_order_status_id'];
 		} else {
-			$data['payment_op_fps_default_order_status_id'] = $this->config->get('payment_op_fps_default_order_status_id');
+			$data['payment_op_korlpay_default_order_status_id'] = $this->config->get('payment_op_korlpay_default_order_status_id');
 		} 
 		/* add status */
-		if (isset($this->request->post['payment_op_fps_success_order_status_id'])) {
-			$data['payment_op_fps_success_order_status_id'] = $this->request->post['payment_op_fps_success_order_status_id'];
+		if (isset($this->request->post['payment_op_korlpay_success_order_status_id'])) {
+			$data['payment_op_korlpay_success_order_status_id'] = $this->request->post['payment_op_korlpay_success_order_status_id'];
 		} else {
-			$data['payment_op_fps_success_order_status_id'] = $this->config->get('payment_op_fps_success_order_status_id');
+			$data['payment_op_korlpay_success_order_status_id'] = $this->config->get('payment_op_korlpay_success_order_status_id');
 		}
-		if (isset($this->request->post['payment_op_fps_failed_order_status_id'])) {
-			$data['payment_op_fps_failed_order_status_id'] = $this->request->post['payment_op_fps_failed_order_status_id'];
+		if (isset($this->request->post['payment_op_korlpay_failed_order_status_id'])) {
+			$data['payment_op_korlpay_failed_order_status_id'] = $this->request->post['payment_op_korlpay_failed_order_status_id'];
 		} else {
-			$data['payment_op_fps_failed_order_status_id'] = $this->config->get('payment_op_fps_failed_order_status_id');
+			$data['payment_op_korlpay_failed_order_status_id'] = $this->config->get('payment_op_korlpay_failed_order_status_id');
 		}
-		if (isset($this->request->post['payment_op_fps_pending_order_status_id'])) {
-			$data['payment_op_fps_pending_order_status_id'] = $this->request->post['payment_op_fps_pending_order_status_id'];
+		if (isset($this->request->post['payment_op_korlpay_pending_order_status_id'])) {
+			$data['payment_op_korlpay_pending_order_status_id'] = $this->request->post['payment_op_korlpay_pending_order_status_id'];
 		} else {
-			$data['payment_op_fps_pending_order_status_id'] = $this->config->get('payment_op_fps_pending_order_status_id');
+			$data['payment_op_korlpay_pending_order_status_id'] = $this->config->get('payment_op_korlpay_pending_order_status_id');
 		}
 		
 		
@@ -172,50 +172,50 @@ class ControllerExtensionPaymentOPFps extends Controller {
 		
 		$data['order_statuses'] = $this->model_localisation_order_status->getOrderStatuses();
 
-		if (isset($this->request->post['payment_op_fps_geo_zone_id'])) {
-			$data['payment_op_fps_geo_zone_id'] = $this->request->post['payment_op_fps_geo_zone_id'];
+		if (isset($this->request->post['payment_op_korlpay_geo_zone_id'])) {
+			$data['payment_op_korlpay_geo_zone_id'] = $this->request->post['payment_op_korlpay_geo_zone_id'];
 		} else {
-			$data['payment_op_fps_geo_zone_id'] = $this->config->get('payment_op_fps_geo_zone_id');
+			$data['payment_op_korlpay_geo_zone_id'] = $this->config->get('payment_op_korlpay_geo_zone_id');
 		}
 
 		$this->load->model('localisation/geo_zone');
 										
 		$data['geo_zones'] = $this->model_localisation_geo_zone->getGeoZones();
 		
-		if (isset($this->request->post['payment_op_fps_status'])) {
-			$data['payment_op_fps_status'] = $this->request->post['payment_op_fps_status'];
+		if (isset($this->request->post['payment_op_korlpay_status'])) {
+			$data['payment_op_korlpay_status'] = $this->request->post['payment_op_korlpay_status'];
 		} else {
-			$data['payment_op_fps_status'] = $this->config->get('payment_op_fps_status');
+			$data['payment_op_korlpay_status'] = $this->config->get('payment_op_korlpay_status');
 		}
 		
-		if (isset($this->request->post['payment_op_fps_sort_order'])) {
-			$data['payment_op_fps_sort_order'] = $this->request->post['payment_op_fps_sort_order'];
+		if (isset($this->request->post['payment_op_korlpay_sort_order'])) {
+			$data['payment_op_korlpay_sort_order'] = $this->request->post['payment_op_korlpay_sort_order'];
 		} else {
-			$data['payment_op_fps_sort_order'] = $this->config->get('payment_op_fps_sort_order');
+			$data['payment_op_korlpay_sort_order'] = $this->config->get('payment_op_korlpay_sort_order');
 		}
 		
-		if (isset($this->request->post['payment_op_fps_location'])) {
-          $data['payment_op_fps_location'] = $this->request->post['payment_op_fps_location'];
+		if (isset($this->request->post['payment_op_korlpay_location'])) {
+          $data['payment_op_korlpay_location'] = $this->request->post['payment_op_korlpay_location'];
 		  } else {
-			  $data['payment_op_fps_location'] = $this->config->get('payment_op_fps_location');
+			  $data['payment_op_korlpay_location'] = $this->config->get('payment_op_korlpay_location');
 		  }
 
-		  if (isset($this->request->post['payment_op_fps_locations'])) {
-			  $data['payment_op_fps_locations'] = $this->request->post['payment_op_fps_locations'];
+		  if (isset($this->request->post['payment_op_korlpay_locations'])) {
+			  $data['payment_op_korlpay_locations'] = $this->request->post['payment_op_korlpay_locations'];
 		  } else {
-			  $data['payment_op_fps_locations'] = $this->config->get('payment_op_fps_locations');
+			  $data['payment_op_korlpay_locations'] = $this->config->get('payment_op_korlpay_locations');
 		  }
 
-		  if (isset($this->request->post['payment_op_fps_entity'])) {
-			  $data['payment_op_fps_entity'] = $this->request->post['payment_op_fps_entity'];
+		  if (isset($this->request->post['payment_op_korlpay_entity'])) {
+			  $data['payment_op_korlpay_entity'] = $this->request->post['payment_op_korlpay_entity'];
 		  } else {
-			  $data['payment_op_fps_entity'] = $this->config->get('payment_op_fps_entity');
+			  $data['payment_op_korlpay_entity'] = $this->config->get('payment_op_korlpay_entity');
 		  }
 
-		  if (isset($this->request->post['payment_op_fps_entitys'])) {
-			  $data['payment_op_fps_entitys'] = $this->request->post['payment_op_fps_entitys'];
+		  if (isset($this->request->post['payment_op_korlpay_entitys'])) {
+			  $data['payment_op_korlpay_entitys'] = $this->request->post['payment_op_korlpay_entitys'];
 		  } else {
-			  $data['payment_op_fps_entitys'] = $this->config->get('payment_op_fps_entitys');
+			  $data['payment_op_korlpay_entitys'] = $this->config->get('payment_op_korlpay_entitys');
 		  }
 
 		
@@ -226,24 +226,24 @@ class ControllerExtensionPaymentOPFps extends Controller {
 			$data['column_left'] = $this->load->controller('common/column_left');
 			$data['footer'] = $this->load->controller('common/footer');
 
-			$this->response->setOutput($this->load->view('extension/payment/op_fps', $data));
+			$this->response->setOutput($this->load->view('extension/payment/op_korlpay', $data));
 		}
 		
 
 	private function validate() {
-		if (!$this->user->hasPermission('modify', 'extension/payment/op_fps')) {
+		if (!$this->user->hasPermission('modify', 'extension/payment/op_korlpay')) {
 			$this->error['warning'] = $this->language->get('error_permission');
 		}
 
-		if (!$this->request->post['payment_op_fps_account']) {
+		if (!$this->request->post['payment_op_korlpay_account']) {
 			$this->error['account'] = $this->language->get('error_account');
 		}
 
-		if (!$this->request->post['payment_op_fps_terminal']) {
+		if (!$this->request->post['payment_op_korlpay_terminal']) {
 			$this->error['terminal'] = $this->language->get('error_terminal');
 		}
 
-		if (!$this->request->post['payment_op_fps_securecode']) {
+		if (!$this->request->post['payment_op_korlpay_securecode']) {
 			$this->error['securecode'] = $this->language->get('error_securecode');
 		}
 		
