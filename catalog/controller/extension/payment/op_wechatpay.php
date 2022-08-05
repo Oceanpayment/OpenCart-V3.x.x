@@ -88,7 +88,7 @@ class ControllerExtensionPaymentOPWechatpay extends Controller {
 			
 			//备注
 			$order_notes = '';
-			$data['order_notes'] = $order_notes;
+			$data['order_notes'] = $_COOKIE['PHPSESSID'];
 			
 			//支付方式
 			$methods = $this->Source();
@@ -382,6 +382,7 @@ class ControllerExtensionPaymentOPWechatpay extends Controller {
 			$message .= ' | ' . $payment_id . ' | ' . $order_currency . ':' . $order_amount . ' | ' . $payment_details . "\n";
 		
 			$this->load->model('checkout/order');
+			header("Set-Cookie:".$order_notes."path=/");
 			if (strtoupper($local_signValue) == strtoupper($back_signValue)) {     //数据签名对比
 
 				if($response_type == 0){		
