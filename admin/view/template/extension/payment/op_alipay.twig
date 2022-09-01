@@ -74,24 +74,7 @@
 					</select>
 	            </div>
 	        </div>
-	        <div class="form-group">
-	            <label class="col-sm-2 control-label" for="input-pay-mode">{{ entry_pay_mode }}</label>
-	            <div class="col-sm-10">
-	              <select name="payment_op_alipay_pay_mode" id="input-pay-mode" class="form-control">
-					{% if payment_op_alipay_pay_mode == 1 %}
-	                <option value="1" selected="selected">{{ text_pay_iframe }}</option>
-					{% else %}
-	                <option value="1">{{ text_pay_iframe }}</option>
-	                {% endif %}
-
-					{% if payment_op_alipay_pay_mode == 0 %}
-	                <option value="0" selected="selected">{{ text_pay_redirect }}</option>
-                      {% else %}
-	                <option value="0">{{ text_pay_redirect }}</option>
-                    {% endif %}
-	              </select>
-	            </div>
-	        </div>
+	        
 	        <div class="form-group">
 	            <label class="col-sm-2 control-label" for="input-default-order-status">{{ entry_default_order_status }}</label>
 	            <div class="col-sm-10">
