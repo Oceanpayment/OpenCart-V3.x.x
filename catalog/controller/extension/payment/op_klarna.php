@@ -81,7 +81,10 @@ class ControllerExtensionPaymentOPKlarna extends Controller {
             //securecode
             $securecode = $validate_arr['securecode'];
 
-
+            //支付方式
+	    $methods = 'Klarna';
+            $data['methods'] = $methods;
+		
             //返回地址
             $backUrl = $base_url.'index.php?route=extension/payment/op_klarna/callback';
             $data['backUrl'] = $backUrl;
