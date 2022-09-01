@@ -271,16 +271,10 @@ class ControllerExtensionPaymentOPAlipay extends Controller {
 			$data['content_bottom'] = $this->load->controller('common/content_bottom');
 			$data['footer'] = $this->load->controller('common/footer');
 			$data['header'] = $this->load->controller('common/header');
+						
+			//跳转Redirect
+			$this->response->setOutput($this->load->view('extension/payment/op_alipay_form', $data));
 			
-			//支付模式Pay Mode
-			if($this->config->get('payment_op_alipay_pay_mode') == 1){
-				//内嵌Iframe
-				$this->response->setOutput($this->load->view('extension/payment/op_alipay_iframe', $data));
-			}else{
-				//跳转Redirect
-				$this->response->setOutput($this->load->view('extension/payment/op_alipay_form', $data));
-			}
-
 		}else{		
 			$this->response->redirect($this->url->link('checkout/cart'));
 		}
