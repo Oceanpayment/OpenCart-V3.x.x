@@ -6,7 +6,7 @@
 <form action="{{ action }}" method="post" id="checkout_klarna" name="checkout_klarna">
     <input type="hidden" name="account" value="{{ account }}" />
     <input type="hidden" name="terminal" value="{{ terminal }}" />
-    <input type="hidden" name="terminal" value="{{ methods }}" />
+    <input type="hidden" id="methods" name="methods" value="{{ methods }}" />
     <input type="hidden" name="order_number" value="{{ order_number }}" />
     <input type="hidden" name="order_currency" value="{{ order_currency }}" />
     <input type="hidden" name="order_amount" value="{{ order_amount }}" />
