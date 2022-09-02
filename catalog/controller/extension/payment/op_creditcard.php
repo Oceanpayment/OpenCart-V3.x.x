@@ -103,11 +103,11 @@ class ControllerExtensionPaymentOPCreditCard extends Controller {
 			$data['methods'] = $methods;
 			
 			//账单人名
-			$billing_firstName = $this->OceanHtmlSpecialChars($order_info['payment_firstname']);
+			$billing_firstName = substr(urlencode($this->OceanHtmlSpecialChars($order_info['payment_firstname'])),0,50);
 			$data['billing_firstName'] = $billing_firstName;
 			
 			//账单人姓
-			$billing_lastName = $this->OceanHtmlSpecialChars($order_info['payment_lastname']);
+			$billing_lastName = substr(urlencode($this->OceanHtmlSpecialChars($order_info['payment_lastname'])),0,50);
 			$data['billing_lastName'] = $billing_lastName;
 			 
 			//账单人邮箱
@@ -147,11 +147,11 @@ class ControllerExtensionPaymentOPCreditCard extends Controller {
 			$data['signValue'] = $signValue;
 				
 			//收货人名
-			$ship_firstName = $order_info['shipping_firstname'];
+			$ship_firstName = substr(urlencode($this->OceanHtmlSpecialChars($order_info['shipping_firstname'])),0,50);
 			$data['ship_firstName'] = $ship_firstName;
 			
 			//收货人姓
-			$ship_lastName = $order_info['shipping_lastname'];
+			$ship_lastName = substr(urlencode($this->OceanHtmlSpecialChars($order_info['shipping_lastname'])),0,50);
 			$data['ship_lastName'] = $ship_lastName;
 			
 			//收货人手机
