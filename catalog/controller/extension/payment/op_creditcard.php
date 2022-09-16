@@ -103,11 +103,11 @@ class ControllerExtensionPaymentOPCreditCard extends Controller {
 			$data['methods'] = $methods;
 			
 			//账单人名
-			$billing_firstName = substr(urlencode($this->OceanHtmlSpecialChars($order_info['payment_firstname']))),0,50);
+			$billing_firstName = substr(urlencode($this->OceanHtmlSpecialChars($order_info['payment_firstname'])),0,50);
 			$data['billing_firstName'] = $billing_firstName;
 			
 			//账单人姓
-			$billing_lastName = substr(urlencode($this->OceanHtmlSpecialChars($order_info['payment_lastname']))),0,50);
+			$billing_lastName = substr(urlencode($this->OceanHtmlSpecialChars($order_info['payment_lastname'])),0,50);
 			$data['billing_lastName'] = $billing_lastName;
 			 
 			//账单人邮箱
