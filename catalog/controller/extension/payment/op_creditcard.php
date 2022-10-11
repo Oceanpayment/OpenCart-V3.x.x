@@ -147,11 +147,11 @@ class ControllerExtensionPaymentOPCreditCard extends Controller {
 			$data['signValue'] = $signValue;
 				
 			//收货人名
-			$ship_firstName = substr(urlencode($this->OceanHtmlSpecialChars($order_info['shipping_firstname']))),0,50);
+			$ship_firstName = substr(urlencode($this->OceanHtmlSpecialChars($order_info['shipping_firstname'])),0,50);
 			$data['ship_firstName'] = $ship_firstName;
 			
 			//收货人姓
-			$ship_lastName = substr(urlencode($this->OceanHtmlSpecialChars($order_info['shipping_lastname']))),0,50);
+			$ship_lastName = substr(urlencode($this->OceanHtmlSpecialChars($order_info['shipping_lastname'])),0,50);
 			$data['ship_lastName'] = $ship_lastName;
 			
 			//收货人手机
