@@ -25,6 +25,7 @@ class ControllerExtensionPaymentOPAlipayHK extends Controller {
 		
 		$this->load->model('checkout/order');
 		$order_info = $this->model_checkout_order->getOrder($this->session->data['order_id']);
+		$this->model_checkout_order->addOrderHistory($this->session->data['order_id'], $this->config->get('payment_op_alipayhk_default_order_status_id'), '', false);
 
 		
 		//判断是否为空订单
@@ -349,7 +350,7 @@ class ControllerExtensionPaymentOPAlipayHK extends Controller {
 			
 			
 			//匹配终端号
-			if($terminal == $this->config->get('payment_op_hk_terminal')){
+			if($terminal == $this->config->get('payment_op_alipayhk_terminal')){
 				//普通终端号
 				$securecode = $this->config->get('payment_op_alipayhk_securecode');
 			}else{
@@ -474,7 +475,7 @@ class ControllerExtensionPaymentOPAlipayHK extends Controller {
 				
 					
 			//匹配终端号
-			if($_REQUEST['terminal'] == $this->config->get('payment_op_hk_terminal')){
+			if($_REQUEST['terminal'] == $this->config->get('payment_op_alipayhk_terminal')){
 				//普通终端号
 				$securecode = $this->config->get('payment_op_alipayhk_securecode');
 			}else{
