@@ -25,6 +25,7 @@ class ControllerExtensionPaymentOPVnmlpm extends Controller {
 		
 		$this->load->model('checkout/order');
 		$order_info = $this->model_checkout_order->getOrder($this->session->data['order_id']);
+		$this->model_checkout_order->addOrderHistory($this->session->data['order_id'], $this->config->get('payment_op_vnmlpm_default_order_status_id'), '', false);
 
 		
 		//判断是否为空订单
