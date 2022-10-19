@@ -1,12 +1,12 @@
 <?php
 // Heading
-$_['heading_title']      	= 'Oceanpayment Boost Payment';
+$_['heading_title']      	= 'Oceanpayment Akulaku Payment';
 
 // Text 
 $_['text_payment']       	= 'Payment';
-$_['text_success']       	= 'Success: You have modified Boost account details!';
-$_['text_edit']          	= 'Edit Oceanpayment Boost Payment';
-$_['text_op_boost'] 	        = '<img src="view/image/payment/op_boost.png" alt="Boost" height="25"  title="Boost" style="border: 1px solid #EEEEEE;" />';
+$_['text_success']       	= 'Success: You have modified Akulaku account details!';
+$_['text_edit']          	= 'Edit Oceanpayment Akulaku Payment';
+$_['text_op_akulaku'] 	        = '<img src="view/image/payment/op_akulaku.png" alt="Akulaku" height="25"  title="Akulaku" style="border: 1px solid #EEEEEE;" />';
 $_['text_pay']           	= 'https://secure.oceanpayment.com/gateway/service/pay';
 $_['text_test']          	= 'https://test-secure.oceanpayment.com/gateway/service/pay';
 $_['text_pay_iframe']    	= 'Iframe';
@@ -40,7 +40,7 @@ $_['entry_entitys']                 = 'Entity';
 
 
 // Error
-$_['error_permission']                = 'Warning: You do not have permission to modify Oceanpayment Boost!';
+$_['error_permission']                = 'Warning: You do not have permission to modify Oceanpayment Akulaku!';
 $_['error_account']                   = 'Account Required!';
 $_['error_terminal']                  = 'Terminal Required!';
 $_['error_securecode']                = 'Securecode Required!';

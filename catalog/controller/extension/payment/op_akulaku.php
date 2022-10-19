@@ -1,6 +1,6 @@
 <?php
 
-class ControllerExtensionPaymentOPBoost extends Controller {
+class ControllerExtensionPaymentOPAkulaku extends Controller {
 	
 	const PUSH 			= "[PUSH]";
 	const BrowserReturn = "[Browser Return]";	
@@ -12,32 +12,32 @@ class ControllerExtensionPaymentOPBoost extends Controller {
 		
 		
 		$data['button_confirm'] = $this->language->get('button_confirm');
-		$data['action'] = 'index.php?route=extension/payment/op_boost/op_boost_form';
+		$data['action'] = 'index.php?route=extension/payment/op_akulaku/op_akulaku_form';
 		
 		
 		$order_info = $this->model_checkout_order->getOrder($this->session->data['order_id']);
 		
-		return $this->load->view('extension/payment/op_boost', $data);
+		return $this->load->view('extension/payment/op_akulaku', $data);
 	}
 
 	
-	public function op_boost_form() {
+	public function op_akulaku_form() {
 		
 		$this->load->model('checkout/order');
 		$order_info = $this->model_checkout_order->getOrder($this->session->data['order_id']);
-		$this->model_checkout_order->addOrderHistory($this->session->data['order_id'], $this->config->get('payment_op_boost_default_order_status_id'), '', false);
+		$this->model_checkout_order->addOrderHistory($this->session->data['order_id'], $this->config->get('payment_op_akulaku_default_order_status_id'), '', false);
 
 		
 		//判断是否为空订单
 		if (!empty($order_info)) {
 			
-			$this->load->model('extension/payment/op_boost');
-			$product_info = $this->model_extension_payment_op_boost->getOrderProducts($this->session->data['order_id']);
+			$this->load->model('extension/payment/op_akulaku');
+			$product_info = $this->model_extension_payment_op_akulaku->getOrderProducts($this->session->data['order_id']);
 			
 			//获取订单详情
 			$productDetails = $this->getProductItems($product_info);
 			//获取消费者详情
-			$customer_info = $this->model_extension_payment_op_boost->getCustomerDetails($order_info['customer_id']);
+			$customer_info = $this->model_extension_payment_op_akulaku->getCustomerDetails($order_info['customer_id']);
 			
 			
 			if (!$this->request->server['HTTPS']) {
@@ -47,7 +47,7 @@ class ControllerExtensionPaymentOPBoost extends Controller {
 			}
 			
 			//提交网关
-			$action = $this->config->get('payment_op_boost_transaction');
+			$action = $this->config->get('payment_op_akulaku_transaction');
 			$data['action'] = $action;
 			
 			//订单号
@@ -63,12 +63,12 @@ class ControllerExtensionPaymentOPBoost extends Controller {
 			$data['order_currency'] = $order_currency;
 			
 
-			$validate_arr['terminal'] = $this->config->get('payment_op_boost_terminal');
-			$validate_arr['securecode'] = $this->config->get('payment_op_boost_securecode');
+			$validate_arr['terminal'] = $this->config->get('payment_op_akulaku_terminal');
+			$validate_arr['securecode'] = $this->config->get('payment_op_akulaku_securecode');
 
 
 			//商户号
-			$account = $this->config->get('payment_op_boost_account');
+			$account = $this->config->get('payment_op_akulaku_account');
 			$data['account'] = $account;
 				
 			//终端号
@@ -80,11 +80,11 @@ class ControllerExtensionPaymentOPBoost extends Controller {
 			
 			
 			//返回地址
-			$backUrl = $base_url.'index.php?route=extension/payment/op_boost/callback';
+			$backUrl = $base_url.'index.php?route=extension/payment/op_akulaku/callback';
 			$data['backUrl'] = $backUrl;
 			
 			//服务器响应地址
-			$noticeUrl = $base_url.'index.php?route=extension/payment/op_boost/notice';
+			$noticeUrl = $base_url.'index.php?route=extension/payment/op_akulaku/notice';
 			$data['noticeUrl'] = $noticeUrl;
 			
 			//备注
@@ -92,7 +92,7 @@ class ControllerExtensionPaymentOPBoost extends Controller {
 			$data['order_notes'] = $order_notes;
 			
 			//支付方式
-			$methods = "Boost";
+			$methods = "Akulaku";
 			$data['methods'] = $methods;
 
 			//账单人名
@@ -273,12 +273,12 @@ class ControllerExtensionPaymentOPBoost extends Controller {
 			$data['header'] = $this->load->controller('common/header');
 			
 			//支付模式Pay Mode
-			if($this->config->get('payment_op_boost_pay_mode') == 1){
+			if($this->config->get('payment_op_akulaku_pay_mode') == 1){
 				//内嵌Iframe
-				$this->response->setOutput($this->load->view('extension/payment/op_boost_iframe', $data));
+				$this->response->setOutput($this->load->view('extension/payment/op_akulaku_iframe', $data));
 			}else{
 				//跳转Redirect
-				$this->response->setOutput($this->load->view('extension/payment/op_boost_form', $data));
+				$this->response->setOutput($this->load->view('extension/payment/op_akulaku_form', $data));
 			}
 
 		}else{		
@@ -291,7 +291,7 @@ class ControllerExtensionPaymentOPBoost extends Controller {
 	
 	public function callback() {
 		if (isset($this->request->post['order_number']) && !(empty($this->request->post['order_number']))) {
-			$this->language->load('extension/payment/op_boost');
+			$this->language->load('extension/payment/op_akulaku');
 		
 			$data['title'] = sprintf($this->language->get('heading_title'), $this->config->get('config_name'));
 
@@ -320,7 +320,7 @@ class ControllerExtensionPaymentOPBoost extends Controller {
 			
 	
 			//返回信息
-			$account = $this->config->get('payment_op_boost_account');
+			$account = $this->config->get('payment_op_akulaku_account');
 			$terminal = $this->request->post['terminal'];
 			$response_type = $this->request->post['response_type'];
 			$payment_id = $this->request->post['payment_id'];
@@ -348,9 +348,9 @@ class ControllerExtensionPaymentOPBoost extends Controller {
 			
 			
 			//匹配终端号
-			if($terminal == $this->config->get('payment_op_boost_terminal')){
+			if($terminal == $this->config->get('payment_op_akulaku_terminal')){
 				//普通终端号
-				$securecode = $this->config->get('payment_op_boost_securecode');
+				$securecode = $this->config->get('payment_op_akulaku_securecode');
 			}else{
 				$securecode = '';
 			}
@@ -390,7 +390,7 @@ class ControllerExtensionPaymentOPBoost extends Controller {
 					if($ErrorCode == 20061){	 
 						//排除订单号重复(20061)的交易
 						$data['continue'] = $this->url->link('checkout/cart');
-						$this->response->setOutput($this->load->view('extension/payment/op_boost_failure', $data));
+						$this->response->setOutput($this->load->view('extension/payment/op_akulaku_failure', $data));
 
 					}else{
 						if ($payment_status == 1 ){  
@@ -398,10 +398,10 @@ class ControllerExtensionPaymentOPBoost extends Controller {
 							//清除coupon
 							unset($this->session->data['coupon']);
 							
-							$this->model_checkout_order->addOrderHistory($this->request->post['order_number'], $this->config->get('payment_op_boost_success_order_status_id'), $message, true);
+							$this->model_checkout_order->addOrderHistory($this->request->post['order_number'], $this->config->get('payment_op_akulaku_success_order_status_id'), $message, true);
 							
 							$data['continue'] = HTTPS_SERVER . 'index.php?route=checkout/success';
-							$this->response->setOutput($this->load->view('extension/payment/op_boost_success', $data));
+							$this->response->setOutput($this->load->view('extension/payment/op_akulaku_success', $data));
 
 						}elseif ($payment_status == -1 ){   
 							//交易待处理 
@@ -409,17 +409,17 @@ class ControllerExtensionPaymentOPBoost extends Controller {
 							if($payment_authType == 1){						
 								$message .= '(Pre-auth)';
 							}
-							$this->model_checkout_order->addOrderHistory($this->request->post['order_number'], $this->config->get('payment_op_boost_pending_order_status_id'), $message, false);
+							$this->model_checkout_order->addOrderHistory($this->request->post['order_number'], $this->config->get('payment_op_akulaku_pending_order_status_id'), $message, false);
 								
 							$data['continue'] = $this->url->link('checkout/cart');
-							$this->response->setOutput($this->load->view('extension/payment/op_boost_success', $data));
+							$this->response->setOutput($this->load->view('extension/payment/op_akulaku_success', $data));
 	
 						}else{     
 							//交易失败
-							$this->model_checkout_order->addOrderHistory($this->request->post['order_number'], $this->config->get('payment_op_boost_failed_order_status_id'), $message, false);
+							$this->model_checkout_order->addOrderHistory($this->request->post['order_number'], $this->config->get('payment_op_akulaku_failed_order_status_id'), $message, false);
 							
 							$data['continue'] = $this->url->link('checkout/cart');
-							$this->response->setOutput($this->load->view('extension/payment/op_boost_failure', $data));
+							$this->response->setOutput($this->load->view('extension/payment/op_akulaku_failure', $data));
 
 						}
  					}								
@@ -427,10 +427,10 @@ class ControllerExtensionPaymentOPBoost extends Controller {
 			
 			}else {     
 				//数据签名对比失败
-				$this->model_checkout_order->addOrderHistory($this->request->post['order_number'], $this->config->get('op_boost_failed_order_status_id'), $message, false);
+				$this->model_checkout_order->addOrderHistory($this->request->post['order_number'], $this->config->get('op_akulaku_failed_order_status_id'), $message, false);
 							
 				$data['continue'] = $this->url->link('checkout/cart');
-				$this->response->setOutput($this->load->view('extension/payment/op_boost_failure', $data));
+				$this->response->setOutput($this->load->view('extension/payment/op_akulaku_failure', $data));
 					
 			}
 		}
@@ -472,9 +472,9 @@ class ControllerExtensionPaymentOPBoost extends Controller {
 				
 					
 			//匹配终端号
-			if($_REQUEST['terminal'] == $this->config->get('payment_op_boost_terminal')){
+			if($_REQUEST['terminal'] == $this->config->get('payment_op_akulaku_terminal')){
 				//普通终端号
-				$securecode = $this->config->get('payment_op_boost_securecode');
+				$securecode = $this->config->get('payment_op_akulaku_securecode');
 			}else{
 				$securecode = '';
 			}
@@ -524,17 +524,17 @@ class ControllerExtensionPaymentOPBoost extends Controller {
 				}else{
 					if ($_REQUEST['payment_status'] == 1 ){
 						//交易成功
-						$this->model_checkout_order->addOrderHistory($_REQUEST['order_number'], $this->config->get('payment_op_boost_success_order_status_id'), $message, false);
+						$this->model_checkout_order->addOrderHistory($_REQUEST['order_number'], $this->config->get('payment_op_akulaku_success_order_status_id'), $message, false);
 					}elseif ($_REQUEST['payment_status'] == -1){
 						//交易待处理
 						//是否预授权交易
 						if($_REQUEST['payment_authType'] == 1){
 							$message .= '(Pre-auth)';
 						}
-						$this->model_checkout_order->addOrderHistory($_REQUEST['order_number'], $this->config->get('payment_op_boost_pending_order_status_id'), $message, false);
+						$this->model_checkout_order->addOrderHistory($_REQUEST['order_number'], $this->config->get('payment_op_akulaku_pending_order_status_id'), $message, false);
 					}else{
 						//交易失败
-						$this->model_checkout_order->addOrderHistory($_REQUEST['order_number'], $this->config->get('payment_op_boost_failed_order_status_id'), $message, false);
+						$this->model_checkout_order->addOrderHistory($_REQUEST['order_number'], $this->config->get('payment_op_akulaku_failed_order_status_id'), $message, false);
 					}
 				}
 				

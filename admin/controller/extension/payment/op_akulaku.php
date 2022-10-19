@@ -1,9 +1,9 @@
 <?php 
-class ControllerExtensionPaymentOPBoost extends Controller {
+class ControllerExtensionPaymentOPAkulaku extends Controller {
 	private $error = array(); 
 
 	public function index() {
-		$this->load->language('extension/payment/op_boost');
+		$this->load->language('extension/payment/op_akulaku');
 		
 		$this->document->setTitle($this->language->get('heading_title'));
 		
@@ -12,7 +12,7 @@ class ControllerExtensionPaymentOPBoost extends Controller {
 		if (($this->request->server['REQUEST_METHOD'] == 'POST') && ($this->validate())) {
 			$this->load->model('setting/setting');
 			
-			$this->model_setting_setting->editSetting('payment_op_boost', $this->request->post);
+			$this->model_setting_setting->editSetting('payment_op_akulaku', $this->request->post);
 			
 			$this->session->data['success'] = $this->language->get('text_success');
 			
@@ -102,69 +102,69 @@ class ControllerExtensionPaymentOPBoost extends Controller {
 
    		$data['breadcrumbs'][] = array(
        		'text' => $this->language->get('heading_title'),
-   			'href' => $this->url->link('extension/payment/op_boost', 'user_token=' . $this->session->data['user_token'], 'SSL'),
+   			'href' => $this->url->link('extension/payment/op_akulaku', 'user_token=' . $this->session->data['user_token'], 'SSL'),
    		);
 
-		$data['action'] = $this->url->link('extension/payment/op_boost', 'user_token=' . $this->session->data['user_token'], 'SSL');
+		$data['action'] = $this->url->link('extension/payment/op_akulaku', 'user_token=' . $this->session->data['user_token'], 'SSL');
 
 		$data['cancel'] = $this->url->link('marketplace/extension', 'user_token=' . $this->session->data['user_token'].'&type=payment', 'SSL');
 
-		if (isset($this->request->post['payment_op_boost_account'])) {
-			$data['payment_op_boost_account'] = $this->request->post['payment_op_boost_account'];
+		if (isset($this->request->post['payment_op_akulaku_account'])) {
+			$data['payment_op_akulaku_account'] = $this->request->post['payment_op_akulaku_account'];
 		} else {
-			$data['payment_op_boost_account'] = $this->config->get('payment_op_boost_account');
+			$data['payment_op_akulaku_account'] = $this->config->get('payment_op_akulaku_account');
 		}
 
-		if (isset($this->request->post['payment_op_boost_terminal'])) {
-			$data['payment_op_boost_terminal'] = $this->request->post['payment_op_boost_terminal'];
+		if (isset($this->request->post['payment_op_akulaku_terminal'])) {
+			$data['payment_op_akulaku_terminal'] = $this->request->post['payment_op_akulaku_terminal'];
 		} else {
-			$data['payment_op_boost_terminal'] = $this->config->get('payment_op_boost_terminal');
+			$data['payment_op_akulaku_terminal'] = $this->config->get('payment_op_akulaku_terminal');
 		}
 
-		if (isset($this->request->post['payment_op_boost_securecode'])) {
-			$data['payment_op_boost_securecode'] = $this->request->post['payment_op_boost_securecode'];
+		if (isset($this->request->post['payment_op_akulaku_securecode'])) {
+			$data['payment_op_akulaku_securecode'] = $this->request->post['payment_op_akulaku_securecode'];
 		} else {
-			$data['payment_op_boost_securecode'] = $this->config->get('payment_op_boost_securecode');
+			$data['payment_op_akulaku_securecode'] = $this->config->get('payment_op_akulaku_securecode');
 		}
 		
 	
 		
 		
-		$data['callback'] = HTTP_CATALOG . 'index.php?route=extension/payment/op_boost/callback';
+		$data['callback'] = HTTP_CATALOG . 'index.php?route=extension/payment/op_akulaku/callback';
 
 		
-		if (isset($this->request->post['payment_op_boost_transaction'])) {
-			$data['payment_op_boost_transaction'] = $this->request->post['payment_op_boost_transaction'];
+		if (isset($this->request->post['payment_op_akulaku_transaction'])) {
+			$data['payment_op_akulaku_transaction'] = $this->request->post['payment_op_akulaku_transaction'];
 		} else {
-			$data['payment_op_boost_transaction'] = $this->config->get('payment_op_boost_transaction');
+			$data['payment_op_akulaku_transaction'] = $this->config->get('payment_op_akulaku_transaction');
 		}
 		
-		if (isset($this->request->post['payment_op_boost_pay_mode'])) {
-			$data['payment_op_boost_pay_mode'] = $this->request->post['payment_op_boost_pay_mode'];
+		if (isset($this->request->post['payment_op_akulaku_pay_mode'])) {
+			$data['payment_op_akulaku_pay_mode'] = $this->request->post['payment_op_akulaku_pay_mode'];
 		} else {
-			$data['payment_op_boost_pay_mode'] = $this->config->get('payment_op_boost_pay_mode');
+			$data['payment_op_akulaku_pay_mode'] = $this->config->get('payment_op_akulaku_pay_mode');
 		}
 		
-		if (isset($this->request->post['payment_op_boost_default_order_status_id'])) {
-			$data['payment_op_boost_default_order_status_id'] = $this->request->post['payment_op_boost_default_order_status_id'];
+		if (isset($this->request->post['payment_op_akulaku_default_order_status_id'])) {
+			$data['payment_op_akulaku_default_order_status_id'] = $this->request->post['payment_op_akulaku_default_order_status_id'];
 		} else {
-			$data['payment_op_boost_default_order_status_id'] = $this->config->get('payment_op_boost_default_order_status_id');
+			$data['payment_op_akulaku_default_order_status_id'] = $this->config->get('payment_op_akulaku_default_order_status_id');
 		} 
 		/* add status */
-		if (isset($this->request->post['payment_op_boost_success_order_status_id'])) {
-			$data['payment_op_boost_success_order_status_id'] = $this->request->post['payment_op_boost_success_order_status_id'];
+		if (isset($this->request->post['payment_op_akulaku_success_order_status_id'])) {
+			$data['payment_op_akulaku_success_order_status_id'] = $this->request->post['payment_op_akulaku_success_order_status_id'];
 		} else {
-			$data['payment_op_boost_success_order_status_id'] = $this->config->get('payment_op_boost_success_order_status_id');
+			$data['payment_op_akulaku_success_order_status_id'] = $this->config->get('payment_op_akulaku_success_order_status_id');
 		}
-		if (isset($this->request->post['payment_op_boost_failed_order_status_id'])) {
-			$data['payment_op_boost_failed_order_status_id'] = $this->request->post['payment_op_boost_failed_order_status_id'];
+		if (isset($this->request->post['payment_op_akulaku_failed_order_status_id'])) {
+			$data['payment_op_akulaku_failed_order_status_id'] = $this->request->post['payment_op_akulaku_failed_order_status_id'];
 		} else {
-			$data['payment_op_boost_failed_order_status_id'] = $this->config->get('payment_op_boost_failed_order_status_id');
+			$data['payment_op_akulaku_failed_order_status_id'] = $this->config->get('payment_op_akulaku_failed_order_status_id');
 		}
-		if (isset($this->request->post['payment_op_boost_pending_order_status_id'])) {
-			$data['payment_op_boost_pending_order_status_id'] = $this->request->post['payment_op_boost_pending_order_status_id'];
+		if (isset($this->request->post['payment_op_akulaku_pending_order_status_id'])) {
+			$data['payment_op_akulaku_pending_order_status_id'] = $this->request->post['payment_op_akulaku_pending_order_status_id'];
 		} else {
-			$data['payment_op_boost_pending_order_status_id'] = $this->config->get('payment_op_boost_pending_order_status_id');
+			$data['payment_op_akulaku_pending_order_status_id'] = $this->config->get('payment_op_akulaku_pending_order_status_id');
 		}
 		
 		
@@ -172,50 +172,50 @@ class ControllerExtensionPaymentOPBoost extends Controller {
 		
 		$data['order_statuses'] = $this->model_localisation_order_status->getOrderStatuses();
 
-		if (isset($this->request->post['payment_op_boost_geo_zone_id'])) {
-			$data['payment_op_boost_geo_zone_id'] = $this->request->post['payment_op_boost_geo_zone_id'];
+		if (isset($this->request->post['payment_op_akulaku_geo_zone_id'])) {
+			$data['payment_op_akulaku_geo_zone_id'] = $this->request->post['payment_op_akulaku_geo_zone_id'];
 		} else {
-			$data['payment_op_boost_geo_zone_id'] = $this->config->get('payment_op_boost_geo_zone_id');
+			$data['payment_op_akulaku_geo_zone_id'] = $this->config->get('payment_op_akulaku_geo_zone_id');
 		}
 
 		$this->load->model('localisation/geo_zone');
 										
 		$data['geo_zones'] = $this->model_localisation_geo_zone->getGeoZones();
 		
-		if (isset($this->request->post['payment_op_boost_status'])) {
-			$data['payment_op_boost_status'] = $this->request->post['payment_op_boost_status'];
+		if (isset($this->request->post['payment_op_akulaku_status'])) {
+			$data['payment_op_akulaku_status'] = $this->request->post['payment_op_akulaku_status'];
 		} else {
-			$data['payment_op_boost_status'] = $this->config->get('payment_op_boost_status');
+			$data['payment_op_akulaku_status'] = $this->config->get('payment_op_akulaku_status');
 		}
 		
-		if (isset($this->request->post['payment_op_boost_sort_order'])) {
-			$data['payment_op_boost_sort_order'] = $this->request->post['payment_op_boost_sort_order'];
+		if (isset($this->request->post['payment_op_akulaku_sort_order'])) {
+			$data['payment_op_akulaku_sort_order'] = $this->request->post['payment_op_akulaku_sort_order'];
 		} else {
-			$data['payment_op_boost_sort_order'] = $this->config->get('payment_op_boost_sort_order');
+			$data['payment_op_akulaku_sort_order'] = $this->config->get('payment_op_akulaku_sort_order');
 		}
 		
-		if (isset($this->request->post['payment_op_boost_location'])) {
-          $data['payment_op_boost_location'] = $this->request->post['payment_op_boost_location'];
+		if (isset($this->request->post['payment_op_akulaku_location'])) {
+          $data['payment_op_akulaku_location'] = $this->request->post['payment_op_akulaku_location'];
 		  } else {
-			  $data['payment_op_boost_location'] = $this->config->get('payment_op_boost_location');
+			  $data['payment_op_akulaku_location'] = $this->config->get('payment_op_akulaku_location');
 		  }
 
-		  if (isset($this->request->post['payment_op_boost_locations'])) {
-			  $data['payment_op_boost_locations'] = $this->request->post['payment_op_boost_locations'];
+		  if (isset($this->request->post['payment_op_akulaku_locations'])) {
+			  $data['payment_op_akulaku_locations'] = $this->request->post['payment_op_akulaku_locations'];
 		  } else {
-			  $data['payment_op_boost_locations'] = $this->config->get('payment_op_boost_locations');
+			  $data['payment_op_akulaku_locations'] = $this->config->get('payment_op_akulaku_locations');
 		  }
 
-		  if (isset($this->request->post['payment_op_boost_entity'])) {
-			  $data['payment_op_boost_entity'] = $this->request->post['payment_op_boost_entity'];
+		  if (isset($this->request->post['payment_op_akulaku_entity'])) {
+			  $data['payment_op_akulaku_entity'] = $this->request->post['payment_op_akulaku_entity'];
 		  } else {
-			  $data['payment_op_boost_entity'] = $this->config->get('payment_op_boost_entity');
+			  $data['payment_op_akulaku_entity'] = $this->config->get('payment_op_akulaku_entity');
 		  }
 
-		  if (isset($this->request->post['payment_op_boost_entitys'])) {
-			  $data['payment_op_boost_entitys'] = $this->request->post['payment_op_boost_entitys'];
+		  if (isset($this->request->post['payment_op_akulaku_entitys'])) {
+			  $data['payment_op_akulaku_entitys'] = $this->request->post['payment_op_akulaku_entitys'];
 		  } else {
-			  $data['payment_op_boost_entitys'] = $this->config->get('payment_op_boost_entitys');
+			  $data['payment_op_akulaku_entitys'] = $this->config->get('payment_op_akulaku_entitys');
 		  }
 
 		
@@ -226,24 +226,24 @@ class ControllerExtensionPaymentOPBoost extends Controller {
 			$data['column_left'] = $this->load->controller('common/column_left');
 			$data['footer'] = $this->load->controller('common/footer');
 
-			$this->response->setOutput($this->load->view('extension/payment/op_boost', $data));
+			$this->response->setOutput($this->load->view('extension/payment/op_akulaku', $data));
 		}
 		
 
 	private function validate() {
-		if (!$this->user->hasPermission('modify', 'extension/payment/op_boost')) {
+		if (!$this->user->hasPermission('modify', 'extension/payment/op_akulaku')) {
 			$this->error['warning'] = $this->language->get('error_permission');
 		}
 
-		if (!$this->request->post['payment_op_boost_account']) {
+		if (!$this->request->post['payment_op_akulaku_account']) {
 			$this->error['account'] = $this->language->get('error_account');
 		}
 
-		if (!$this->request->post['payment_op_boost_terminal']) {
+		if (!$this->request->post['payment_op_akulaku_terminal']) {
 			$this->error['terminal'] = $this->language->get('error_terminal');
 		}
 
-		if (!$this->request->post['payment_op_boost_securecode']) {
+		if (!$this->request->post['payment_op_akulaku_securecode']) {
 			$this->error['securecode'] = $this->language->get('error_securecode');
 		}
 		
