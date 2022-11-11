@@ -367,8 +367,12 @@ class ControllerExtensionPaymentOPBoleto extends Controller {
 			}else{
 				$MobileType = '';
 			}
-			
-			$message = '';
+
+			$message = self::BrowserReturn ;
+			if($this->config->get('payment_op_boleto_transaction') == 'https://test-secure.oceanpayment.com/gateway/service/pay'){
+				$message .= 'TEST ORDER-';
+				$data['payment_details'] = 'TEST ORDER-'.$data['payment_details'];
+			}
 			if ($payment_status == 1){           //交易状态
 				$message .= 'PAY:Success.';
 			}elseif ($payment_status == 0){
@@ -501,8 +505,11 @@ class ControllerExtensionPaymentOPBoleto extends Controller {
 				
 			
 				$this->load->model('checkout/order');
-				
-	
+
+				$message = self::PUSH ;
+				if($this->config->get('payment_op_boleto_transaction') == 'https://test-secure.oceanpayment.com/gateway/service/pay'){
+					$message .= 'TEST ORDER-';
+				}
 				if ($_REQUEST['payment_status'] == 1){           //交易状态
 					$message .= 'PAY:Success.';
 				}elseif ($_REQUEST['payment_status'] == 0){
