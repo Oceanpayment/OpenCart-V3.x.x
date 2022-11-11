@@ -383,6 +383,10 @@ class ControllerExtensionPaymentOPKonbini extends Controller {
 	
 
 			$message = self::BrowserReturn . $text_is_3d;
+			if($this->config->get('payment_op_konbini_transaction') == 'https://test-secure.oceanpayment.com/gateway/service/pay'){
+				$message .= 'TEST ORDER-';
+				$data['payment_details'] = 'TEST ORDER-'.$data['payment_details'];
+			}
 			if ($payment_status == 1){           //交易状态
 				$message .= 'PAY:Success.';
 			}elseif ($payment_status == 0){
@@ -525,6 +529,9 @@ class ControllerExtensionPaymentOPKonbini extends Controller {
 				
 
 				$message = self::PUSH . $text_is_3d;
+				if($this->config->get('payment_op_konbini_transaction') == 'https://test-secure.oceanpayment.com/gateway/service/pay'){
+					$message .= 'TEST ORDER-';
+				}
 				if ($_REQUEST['payment_status'] == 1){           //交易状态
 					$message .= 'PAY:Success.';
 				}elseif ($_REQUEST['payment_status'] == 0){
