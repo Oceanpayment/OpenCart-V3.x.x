@@ -14,6 +14,7 @@ $_['text_pay_redirect']  	= 'Redirect';
 $_['text_select_currency']  = '- Select -';
 $_['text_logs_true'] 		= 'True';
 $_['text_logs_false'] 		= 'False';
+$_['text_pay_sandbox']      = 'Note: In the test state all transactions are not deducted and cannot be shipped or services provided. The interface needs to be closed in time after the test is completed to avoid consumers from placing orders.';
 
       
 // Entry
