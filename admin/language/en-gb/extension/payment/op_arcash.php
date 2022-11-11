@@ -8,9 +8,10 @@ $_['text_success']       	= 'Success: You have modified AR_Cash account details!
 $_['text_edit']          	= 'Edit Oceanpayment AR_Cash Payment';
 $_['text_op_arcash'] 	= '<img src="view/image/payment/op_arcash.png" alt="arcash" height="25"  title="arcash" style="border: 1px solid #EEEEEE;" />';
 $_['text_pay']           	= 'https://secure.oceanpayment.com/gateway/service/pay';
-$_['text_test']          	= 'https://secure.oceanpayment.com/gateway/service/test';
+$_['text_test']          	= 'https://test-secure.oceanpayment.com/gateway/service/pay';
 $_['text_logs_true'] 		= 'True';
 $_['text_logs_false'] 		= 'False';
+$_['text_pay_sandbox']      = 'Note: In the test state all transactions are not deducted and cannot be shipped or services provided. The interface needs to be closed in time after the test is completed to avoid consumers from placing orders.';
 
 
 

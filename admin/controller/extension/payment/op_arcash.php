@@ -32,6 +32,7 @@ class ControllerExtensionPaymentOPArcash extends Controller {
 		$data['text_unselect_all'] = $this->language->get('text_unselect_all');
 		$data['text_logs_true'] = $this->language->get('text_logs_true');
 		$data['text_logs_false'] = $this->language->get('text_logs_false');
+		$data['text_pay_sandbox'] = $this->language->get('text_pay_sandbox');
 		
 		$data['entry_account'] = $this->language->get('entry_account');
 		$data['entry_terminal'] = $this->language->get('entry_terminal');
