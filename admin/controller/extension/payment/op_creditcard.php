@@ -28,24 +28,16 @@ class ControllerExtensionPaymentOPCreditCard extends Controller {
 		$data['text_pay'] = $this->language->get('text_pay');
 		$data['text_test'] = $this->language->get('text_test');	
 		$data['text_pay_iframe'] = $this->language->get('text_pay_iframe');
-		$data['text_pay_redirect'] = $this->language->get('text_pay_redirect');	
-		$data['text_3d_on'] = $this->language->get('text_3d_on');
-		$data['text_3d_off'] = $this->language->get('text_3d_off');
-		$data['text_select_currency'] = $this->language->get('text_select_currency');
+		$data['text_pay_redirect'] = $this->language->get('text_pay_redirect');
 		$data['text_select_all'] = $this->language->get('text_select_all');
 		$data['text_unselect_all'] = $this->language->get('text_unselect_all');
 		$data['text_logs_true'] = $this->language->get('text_logs_true');
 		$data['text_logs_false'] = $this->language->get('text_logs_false');
+		$data['text_pay_sandbox'] = $this->language->get('text_pay_sandbox');
 		
 		$data['entry_account'] = $this->language->get('entry_account');
 		$data['entry_terminal'] = $this->language->get('entry_terminal');
 		$data['entry_securecode'] = $this->language->get('entry_securecode');
-		$data['entry_3d'] = $this->language->get('entry_3d');
-		$data['entry_3d_terminal'] = $this->language->get('entry_3d_terminal');
-		$data['entry_3d_securecode'] = $this->language->get('entry_3d_securecode');
-		$data['entry_currencies'] = $this->language->get('entry_currencies');
-		$data['entry_currencies_value'] = $this->language->get('entry_currencies_value');
-		$data['entry_countries'] = $this->language->get('entry_countries');
 		$data['entry_transaction'] = $this->language->get('entry_transaction');
 		$data['entry_pay_mode'] = $this->language->get('entry_pay_mode');
 	
@@ -136,50 +128,6 @@ class ControllerExtensionPaymentOPCreditCard extends Controller {
 			$data['payment_op_creditcard_securecode'] = $this->request->post['payment_op_creditcard_securecode'];
 		} else {
 			$data['payment_op_creditcard_securecode'] = $this->config->get('payment_op_creditcard_securecode');
-		}
-		
-		if (isset($this->request->post['payment_op_creditcard_3d'])) {
-			$data['payment_op_creditcard_3d'] = $this->request->post['payment_op_creditcard_3d'];
-		} else {
-			$data['payment_op_creditcard_3d'] = $this->config->get('payment_op_creditcard_3d');
-		}
-
-		if (isset($this->request->post['payment_op_creditcard_3d_terminal'])) {
-			$data['payment_op_creditcard_3d_terminal'] = $this->request->post['payment_op_creditcard_3d_terminal'];
-		} else {
-			$data['payment_op_creditcard_3d_terminal'] = $this->config->get('payment_op_creditcard_3d_terminal');
-		}
-
-		if (isset($this->request->post['payment_op_creditcard_3d_securecode'])) {
-			$data['payment_op_creditcard_3d_securecode'] = $this->request->post['payment_op_creditcard_3d_securecode'];
-		} else {
-			$data['payment_op_creditcard_3d_securecode'] = $this->config->get('payment_op_creditcard_3d_securecode');
-		}
-		
-		$this->load->model('localisation/currency');
-		$results = $this->model_localisation_currency->getCurrencies();
-		foreach ($results as $result) {
-			$data['currencies'][] = $result['code'];
-		}
-
-
-		if (isset($this->request->post['payment_op_creditcard_currencies_value'])) {
-			$data['payment_op_creditcard_currencies_value'] = $this->request->post['payment_op_creditcard_currencies_value'];
-		} else {
-			$data['payment_op_creditcard_currencies_value'] = $this->config->get('payment_op_creditcard_currencies_value');
-		}
-		
-		
-		
-		$this->load->model('localisation/country');
-		$data['countries'] = $this->model_localisation_country->getCountries();
-
-		if (isset($this->request->post['payment_op_creditcard_country_array'])) {
-			$data['payment_op_creditcard_country_array'] = $this->request->post['payment_op_creditcard_country_array'];
-		} elseif ($this->config->has('payment_op_creditcard_country_array')) {
-			$data['payment_op_creditcard_country_array'] = $this->config->get('payment_op_creditcard_country_array');
-		} else {
-			$data['payment_op_creditcard_country_array'] = array();
 		}
 		
 		

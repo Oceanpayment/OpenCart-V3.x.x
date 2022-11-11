@@ -53,85 +53,10 @@
 	             
 	            </div>
 	        </div>
-	        <!-- 3D功能区  -->
-	        <div class="form-group">
-	            <label class="col-sm-2 control-label" for="input-3d">{{ entry_3d }}</label>
-	            <div class="col-sm-10">
-	              <select name="payment_op_creditcard_3d" id="op_creditcard_3d" class="form-control" onchange="is_3d(this.value)">
-					{% if payment_op_creditcard_3d == 1 %}
-	                <option value="1" selected="selected">{{ text_3d_on }}</option>
-	                {% else %}
-	                <option value="1">{{ text_3d_on }}</option>
-	                {% endif %}
-
-
-					{% if payment_op_creditcard_3d == 0 %}
-	                <option value="0" selected="selected">{{ text_3d_off }}</option>
-	                {% else %}
-	                <option value="0">{{ text_3d_off }}</option>
-                    {% endif %}
-	              </select>
-	            </div>
-	        </div>
-	        <div class="form-group 3d_div">
-	            <label class="col-sm-2 control-label" for="input-3d-terminal">{{ entry_3d_terminal }}</label>
-	            <div class="col-sm-10">
-	              <input type="text" name="payment_op_creditcard_3d_terminal" value="{{ payment_op_creditcard_3d_terminal }}" placeholder="{{ entry_3d_terminal }}" id="input-3d-terminal" class="form-control" />
-	            </div>
-	        </div>
-	        <div class="form-group 3d_div">
-	            <label class="col-sm-2 control-label" for="input-3d-securecode">{{ entry_3d_securecode }}</label>
-	            <div class="col-sm-10">
-	              <input type="text" name="payment_op_creditcard_3d_securecode" value="{{ payment_op_creditcard_3d_securecode }}" placeholder="{{ entry_3d_securecode }}" id="input-3d-securecode" class="form-control" />
-	            </div>
-	        </div>
-	        <div class="form-group 3d_div">
-	            <label class="col-sm-2 control-label" for="input-currencies">{{ entry_currencies }}</label>
-	            <div class="col-sm-10">
-	              <select name="payment_op_creditcard_currencies" id="input-currencies" class="form-control" onchange="show_currency_value(this.value)">
-	                <option value="0">{{ text_select_currency }}</option>
-                      {% for key, currency in currencies %}
-	                <option value="{{ currency }}" >{{ currency }}</option>
-	                {% endfor %}
-	              </select>
-	            </div>
-	        </div>
-	        <div class="form-group 3d_div">
-	            <label class="col-sm-2 control-label" for="input-currencies-value">{{ entry_currencies_value }}</label>
-	            <div class="col-sm-10">
-					{% for key, currency in currencies %}
-	              	<input type="text" class="currencies_value form-control" style="display:none" id="{{ currency }}_value" name="payment_op_creditcard_currencies_value[{{ currency }}]" value="{{ payment_op_creditcard_currencies_value[currency] }}"  />
-                    {% endfor %}
-	            </div>
-	        </div>
-	        <div class="form-group 3d_div">
-			    <label class="col-sm-2 control-label">{{ entry_countries }}</label>
-			    <div class="col-sm-10">
-			      <div class="well well-sm" style="height: 150px; overflow: auto;">
-				{% for country in countries %}
-				<div class="checkbox" style="width: 40%; float: left;">
-				  <label>
-					{% if country.country_id in payment_op_creditcard_country_array %}
-				    <input type="checkbox" name="payment_op_creditcard_country_array[]" value="{{ country.country_id}}" checked="checked" />
-					  {{ country.name}}
-				    {% else %}
-				    <input type="checkbox" name="payment_op_creditcard_country_array[]" value="{{ country.country_id}}" />
-					{{ country.name}}
-				    {% endif %}
-				  </label>
-				</div>
-             	{% endfor %}
-			      </div>
-			      <a onclick="$(this).parent().find(':checkbox').prop('checked', true);">{{ text_select_all }}</a> / <a onclick="$(this).parent().find(':checkbox').prop('checked', false);">{{ text_unselect_all }}</a></div>
-			</div>
-			
-			
-	        <!-- 3D功能区  -->
-	        
 	        
 	        
 	        <div class="form-group">
-	            <label class="col-sm-2 control-label" for="input-transaction">{{ entry_transaction }}</label>
+	            <label class="col-sm-2 control-label" for="input-transaction"><span data-toggle="tooltip" title="{{ text_pay_sandbox }}">{{ entry_transaction }}</span></label>
 	            <div class="col-sm-10">
 					<select name="payment_op_creditcard_transaction" id="input-transaction" class="form-control">
                         {% if payment_op_creditcard_transaction == text_pay %}
@@ -324,24 +249,4 @@
     </div>
   </div>
 </div>
-<script type="text/javascript"><!--
-	function show_currency_value(currency){
-		$(".currencies_value").hide();
-		$("#"+currency+"_value").show();
-	}
-	function is_3d(val){
-		if(val == 1){
-			$(".3d_div").show();
-		}else{
-			$(".3d_div").hide();
-		}
-	}
-	
-	if($("#op_creditcard_3d").val() == 1){
-		$(".3d_div").show();
-	}else{
-		$(".3d_div").hide();
-	}
-	
-//--></script>
 {{ footer }}

@@ -61,30 +61,18 @@ class ControllerExtensionPaymentOPCreditCard extends Controller {
 			//币种
 			$order_currency = $order_info['currency_code'];
 			$data['order_currency'] = $order_currency;
-			
-			//非3D交易
-			$_SESSION['is_3d'] = 0;
-			
-			//判断是否启用3D功能
-			if($this->config->get('payment_op_creditcard_3d') == 1){
-				//检验是否需要3D验证
-				$validate_arr = $this->validate3D($order_currency, $order_amount, $order_info);							
-			}else{
-				$validate_arr['terminal'] = $this->config->get('payment_op_creditcard_terminal');
-				$validate_arr['securecode'] = $this->config->get('payment_op_creditcard_securecode');
-			}
-			
+
 		
 			//商户号
 			$account = $this->config->get('payment_op_creditcard_account');
 			$data['account'] = $account;
 				
 			//终端号
-			$terminal = $validate_arr['terminal'];
+			$terminal = $this->config->get('payment_op_creditcard_terminal');
 			$data['terminal'] = $terminal;
 			
 			//securecode
-			$securecode = $validate_arr['securecode'];
+			$securecode = $this->config->get('payment_op_creditcard_securecode');
 			
 			
 			//返回地址
@@ -97,7 +85,7 @@ class ControllerExtensionPaymentOPCreditCard extends Controller {
 			
 			//备注
 			$order_notes = '';
-			$data['order_notes'] = $_COOKIE['PHPSESSID'];
+			$data['order_notes'] = $order_notes;
 			
 			//支付方式
 			$methods = "Credit Card";
@@ -355,18 +343,12 @@ class ControllerExtensionPaymentOPCreditCard extends Controller {
 			$data['payment_solutions'] = $payment_solutions;
 			
 			
-			//匹配终端号   记录是否3D交易
+			//匹配终端号
 			if($terminal == $this->config->get('payment_op_creditcard_terminal')){
 				//普通终端号
 				$securecode = $this->config->get('payment_op_creditcard_securecode');
-				$text_is_3d = '';
-			}elseif($terminal == $this->config->get('payment_op_creditcard_3d_terminal')){
-				//3D终端号
-				$securecode = $this->config->get('payment_op_creditcard_3d_securecode');
-				$text_is_3d = '[3D] ';
-			}else{				
-				$securecode = '';	
-				$text_is_3d = '';
+			}else{
+				$securecode = '';
 			}
 			
 			
@@ -382,7 +364,11 @@ class ControllerExtensionPaymentOPCreditCard extends Controller {
 
 	
 
-			$message = self::BrowserReturn . $text_is_3d;
+			$message = self::BrowserReturn ;
+			if($this->config->get('payment_op_creditcard_transaction') == 'https://test-secure.oceanpayment.com/gateway/service/pay'){
+				$message .= 'TEST ORDER-';
+				$data['payment_details'] = 'TEST ORDER-'.$data['payment_details'];
+			}
 			if ($payment_status == 1){           //交易状态
 				$message .= 'PAY:Success.';
 			}elseif ($payment_status == 0){
@@ -485,18 +471,12 @@ class ControllerExtensionPaymentOPCreditCard extends Controller {
 			$_REQUEST['payment_solutions']= (string)$xml->payment_solutions;
 				
 					
-			//匹配终端号   记录是否3D交易
+			//匹配终端号
 			if($_REQUEST['terminal'] == $this->config->get('payment_op_creditcard_terminal')){
 				//普通终端号
 				$securecode = $this->config->get('payment_op_creditcard_securecode');
-				$text_is_3d = '';
-			}elseif($_REQUEST['terminal'] == $this->config->get('payment_op_creditcard_3d_terminal')){
-				//3D终端号
-				$securecode = $this->config->get('payment_op_creditcard_3d_securecode');
-				$text_is_3d = '[3D] ';
 			}else{
 				$securecode = '';
-				$text_is_3d = '';
 			}
 			
 
@@ -526,7 +506,10 @@ class ControllerExtensionPaymentOPCreditCard extends Controller {
 				$this->load->model('checkout/order');
 				
 
-				$message = self::PUSH . $text_is_3d;
+				$message = self::PUSH ;
+				if($this->config->get('payment_op_creditcard_transaction') == 'https://test-secure.oceanpayment.com/gateway/service/pay'){
+					$message .= 'TEST ORDER-';
+				}
 				if ($_REQUEST['payment_status'] == 1){           //交易状态
 					$message .= 'PAY:Success.';
 				}elseif ($_REQUEST['payment_status'] == 0){
@@ -569,88 +552,7 @@ class ControllerExtensionPaymentOPCreditCard extends Controller {
 	
 			
 	}
-	
-	
-	/**
-	 * 检验是否需要3D验证
-	 */
-	public function validate3D($order_currency, $order_amount, $order_info){
-		
-		//是否需要3D验证
-		$is_3d = 0;
-		//获取3D功能下各个币种的金额
-		$currencies_value = $this->config->get('payment_op_creditcard_currencies_value');
-	
-		//判断金额是否为空
-		if(isset($currencies_value[$order_currency])){
-				
-			//判断3D金额不为空
-			//判断订单金额是否大于3d设定值
-			if($order_amount >= $currencies_value[$order_currency]){
-				//需要3D
-				$is_3d = 1;
-			}
-				
-		}
-		
 
-	
-		//获取3D功能下国家列表
-		$countries_3d = $this->config->get('payment_op_creditcard_country_array');
-
-		if(isset($countries_3d)){
-			//账单国
-			$billing_country_id = $order_info['payment_country_id'];
-			//收货国
-			$ship_country_id = $order_info['shipping_country_id'];
-			
-			
-			//判断账单国是否处于3D国家列表
-			if (in_array($billing_country_id , $countries_3d)){
-				$is_3d = 1;
-			}
-			//判断收货国是否处于3D国家列表
-			if (in_array($ship_country_id , $countries_3d)){
-				$is_3d = 1;
-			}
-		}
-		
-			
-		
-		
-	
-		
-		if($is_3d ==  0){
-	
-			//终端号
-			$terminal = $this->config->get('payment_op_creditcard_terminal');
-			//securecode
-			$securecode = $this->config->get('payment_op_creditcard_securecode');
-			
-		}elseif($is_3d == 1){
-					
-			//3D终端号
-			$terminal= $this->config->get('payment_op_creditcard_3d_terminal');
-			//3D securecode
-			$securecode = $this->config->get('payment_op_creditcard_3d_securecode');
-			//是3D交易
-			$_SESSION['is_3d'] = 1;
-		}
-		
-
-		$validate_arr['terminal'] = $terminal;
-		$validate_arr['securecode'] = $securecode;
-		
-		return $validate_arr;
-		
-	}
-	
-	
-	
-	
-	
-	
-	
 	
 	
 	/**
