@@ -369,6 +369,10 @@ class ControllerExtensionPaymentOPFps extends Controller {
 	
 
 			$message = self::BrowserReturn;
+			if($this->config->get('payment_op_fps_transaction') == 'https://test-secure.oceanpayment.com/gateway/service/pay'){
+				$message .= 'TEST ORDER-';
+				$data['payment_details'] = 'TEST ORDER-'.$data['payment_details'];
+			}
 			if ($payment_status == 1){           //交易状态
 				$message .= 'PAY:Success.';
 			}elseif ($payment_status == 0){
@@ -505,6 +509,9 @@ class ControllerExtensionPaymentOPFps extends Controller {
 				
 
 				$message = self::PUSH;
+				if($this->config->get('payment_op_fps_transaction') == 'https://test-secure.oceanpayment.com/gateway/service/pay'){
+					$message .= 'TEST ORDER-';
+				}
 				if ($_REQUEST['payment_status'] == 1){           //交易状态
 					$message .= 'PAY:Success.';
 				}elseif ($_REQUEST['payment_status'] == 0){
