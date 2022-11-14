@@ -21,10 +21,14 @@ class ModelExtensionPaymentOPKorsamsungpay extends Model {
 		
 		$method_data = array();
 	
-		if ($status) {  
+		if ($status) {
+			$title = $this->language->get('text_title');
+			if($this->config->get('payment_op_korsamsungpay_transaction') == 'https://test-secure.oceanpayment.com/gateway/service/pay'){
+				$title = $this->language->get('text_title').'<br><p style="color: red;">Note: In the test state all transactions are not deducted and cannot be shipped or services provided. The interface needs to be closed in time after the test is completed to avoid consumers from placing orders.</p>';
+			}
       		$method_data = array( 
         		'code'         => 'op_korsamsungpay',
-        		'title'      => $this->language->get('text_title'),
+        		'title'      => $title,
       			'terms'      => '',
 				'sort_order' => $this->config->get('payment_op_korsamsungpay_sort_order')
       		);
