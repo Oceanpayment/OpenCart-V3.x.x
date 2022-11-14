@@ -32,6 +32,7 @@ class ControllerExtensionPaymentOPPix extends Controller {
 		$data['text_select_currency'] = $this->language->get('text_select_currency');
 		$data['text_select_all'] = $this->language->get('text_select_all');
 		$data['text_unselect_all'] = $this->language->get('text_unselect_all');
+		$data['text_pay_sandbox'] = $this->language->get('text_pay_sandbox');
 		
 		$data['entry_account'] = $this->language->get('entry_account');
 		$data['entry_terminal'] = $this->language->get('entry_terminal');
