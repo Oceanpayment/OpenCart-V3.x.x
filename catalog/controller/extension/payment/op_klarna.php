@@ -297,7 +297,7 @@ class ControllerExtensionPaymentOPKlarna extends Controller {
             $data['header'] = $this->load->controller('common/header');
 
             //支付模式Pay Mode
-            if($this->config->get('payment_op_klarna_pay_mode') == 1){
+            if($this->config->get('payment_op_klarna_pay_mode') == 1 && !in_array($billing_country,array('BE','FR','IT','ES','CH'))){
                 //内嵌Iframe
                 $this->response->setOutput($this->load->view('extension/payment/op_klarna_iframe', $data));
             }else{
