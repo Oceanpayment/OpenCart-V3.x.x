@@ -151,6 +151,43 @@ class ControllerExtensionPaymentOPKlarna extends Controller {
 
 
             //收货人名
+            $ship_firstName = substr(urlencode($this->OceanHtmlSpecialChars($order_info['shipping_firstname'])),0,50);
+            $data['ship_firstName'] = !empty($ship_firstName) ? $ship_firstName : $billing_firstName;
+
+            //收货人姓
+            $ship_lastName = substr(urlencode($this->OceanHtmlSpecialChars($order_info['shipping_lastname'])),0,50);
+            $data['ship_lastName'] = !empty($ship_lastName) ? $ship_lastName : $billing_lastName;
+
+            //收货人手机
+            $ship_phone = $order_info['telephone'];
+            $data['ship_phone'] = !empty($ship_phone) ? $ship_phone : $billing_phone;
+
+            //收货人国家
+            $ship_country = $order_info['shipping_iso_code_2'];
+            $data['ship_country'] = !empty($ship_country) ? $ship_country : $billing_country;
+
+            //收货人州
+            $ship_state = $order_info['shipping_zone'];
+            $data['ship_state'] = !empty($ship_state) ? $ship_state : $billing_state;
+
+            //收货人城市
+            $ship_city = $order_info['shipping_city'];
+            $data['ship_city'] = !empty($ship_city) ? $ship_city : $billing_city;
+
+            //收货人地址
+            if (!$order_info['shipping_address_2']) {
+                $ship_addr = $order_info['shipping_address_1'] ;
+            } else {
+                $ship_addr = $order_info['shipping_address_1'] . ',' . $order_info['shipping_address_2'];
+            }
+            $data['ship_addr'] = !empty($ship_city) ? $ship_addr : $billing_address;
+
+            //收货人邮编
+            $ship_zip = $order_info['shipping_postcode'];
+            $data['ship_zip'] = !empty($ship_zip) ? $ship_zip : $billing_zip;
+
+/*
+            //收货人名
             $ship_firstName = $this->OceanHtmlSpecialChars($order_info['shipping_fullname']);
             $data['ship_firstName'] = $ship_firstName;
 
@@ -184,7 +221,7 @@ class ControllerExtensionPaymentOPKlarna extends Controller {
 
             //收货人邮编
             $ship_zip = $order_info['shipping_postcode'];
-            $data['ship_zip'] = $ship_zip;
+            $data['ship_zip'] = $ship_zip;*/
 
             //产品名称
             $productName = $productDetails['productName'];
