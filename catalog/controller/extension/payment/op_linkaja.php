@@ -1,6 +1,6 @@
 <?php
 
-class ControllerExtensionPaymentOPJeniuspay extends Controller {
+class ControllerExtensionPaymentOPLinkaja extends Controller {
 	
 	const PUSH 			= "[PUSH]";
 	const BrowserReturn = "[Browser Return]";	
@@ -12,32 +12,32 @@ class ControllerExtensionPaymentOPJeniuspay extends Controller {
 		
 		
 		$data['button_confirm'] = $this->language->get('button_confirm');
-		$data['action'] = 'index.php?route=extension/payment/op_jeniuspay/op_jeniuspay_form';
+		$data['action'] = 'index.php?route=extension/payment/op_linkaja/op_linkaja_form';
 		
 		
 		$order_info = $this->model_checkout_order->getOrder($this->session->data['order_id']);
 		
-		return $this->load->view('extension/payment/op_jeniuspay', $data);
+		return $this->load->view('extension/payment/op_linkaja', $data);
 	}
 
 	
-	public function op_jeniuspay_form() {
+	public function op_linkaja_form() {
 		
 		$this->load->model('checkout/order');
 		$order_info = $this->model_checkout_order->getOrder($this->session->data['order_id']);
-		$this->model_checkout_order->addOrderHistory($this->session->data['order_id'], $this->config->get('payment_op_jeniuspay_default_order_status_id'), '', false);
+		$this->model_checkout_order->addOrderHistory($this->session->data['order_id'], $this->config->get('payment_op_linkaja_default_order_status_id'), '', false);
 
 		
 		//判断是否为空订单
 		if (!empty($order_info)) {
 			
-			$this->load->model('extension/payment/op_jeniuspay');
-			$product_info = $this->model_extension_payment_op_jeniuspay->getOrderProducts($this->session->data['order_id']);
+			$this->load->model('extension/payment/op_linkaja');
+			$product_info = $this->model_extension_payment_op_linkaja->getOrderProducts($this->session->data['order_id']);
 			
 			//获取订单详情
 			$productDetails = $this->getProductItems($product_info);
 			//获取消费者详情
-			$customer_info = $this->model_extension_payment_op_jeniuspay->getCustomerDetails($order_info['customer_id']);
+			$customer_info = $this->model_extension_payment_op_linkaja->getCustomerDetails($order_info['customer_id']);
 			
 			
 			if (!$this->request->server['HTTPS']) {
@@ -47,7 +47,7 @@ class ControllerExtensionPaymentOPJeniuspay extends Controller {
 			}
 			
 			//提交网关
-			$action = $this->config->get('payment_op_jeniuspay_transaction');
+			$action = $this->config->get('payment_op_linkaja_transaction');
 			$data['action'] = $action;
 			
 			//订单号
@@ -63,12 +63,12 @@ class ControllerExtensionPaymentOPJeniuspay extends Controller {
 			$data['order_currency'] = $order_currency;
 			
 
-			$validate_arr['terminal'] = $this->config->get('payment_op_jeniuspay_terminal');
-			$validate_arr['securecode'] = $this->config->get('payment_op_jeniuspay_securecode');
+			$validate_arr['terminal'] = $this->config->get('payment_op_linkaja_terminal');
+			$validate_arr['securecode'] = $this->config->get('payment_op_linkaja_securecode');
 
 
 			//商户号
-			$account = $this->config->get('payment_op_jeniuspay_account');
+			$account = $this->config->get('payment_op_linkaja_account');
 			$data['account'] = $account;
 				
 			//终端号
@@ -80,11 +80,11 @@ class ControllerExtensionPaymentOPJeniuspay extends Controller {
 			
 			
 			//返回地址
-			$backUrl = $base_url.'index.php?route=extension/payment/op_jeniuspay/callback';
+			$backUrl = $base_url.'index.php?route=extension/payment/op_linkaja/callback';
 			$data['backUrl'] = $backUrl;
 			
 			//服务器响应地址
-			$noticeUrl = $base_url.'index.php?route=extension/payment/op_jeniuspay/notice';
+			$noticeUrl = $base_url.'index.php?route=extension/payment/op_linkaja/notice';
 			$data['noticeUrl'] = $noticeUrl;
 			
 			//备注
@@ -92,7 +92,7 @@ class ControllerExtensionPaymentOPJeniuspay extends Controller {
 			$data['order_notes'] = $order_notes;
 			
 			//支付方式
-			$methods = "JeniusPay";
+			$methods = "LinkAja";
 			$data['methods'] = $methods;
 
 			//账单人名
@@ -273,12 +273,12 @@ class ControllerExtensionPaymentOPJeniuspay extends Controller {
 			$data['header'] = $this->load->controller('common/header');
 			
 			//支付模式Pay Mode
-			if($this->config->get('payment_op_jeniuspay_pay_mode') == 1){
+			if($this->config->get('payment_op_linkaja_pay_mode') == 1){
 				//内嵌Iframe
-				$this->response->setOutput($this->load->view('extension/payment/op_jeniuspay_iframe', $data));
+				$this->response->setOutput($this->load->view('extension/payment/op_linkaja_iframe', $data));
 			}else{
 				//跳转Redirect
-				$this->response->setOutput($this->load->view('extension/payment/op_jeniuspay_form', $data));
+				$this->response->setOutput($this->load->view('extension/payment/op_linkaja_form', $data));
 			}
 
 		}else{		
@@ -291,7 +291,7 @@ class ControllerExtensionPaymentOPJeniuspay extends Controller {
 	
 	public function callback() {
 		if (isset($this->request->post['order_number']) && !(empty($this->request->post['order_number']))) {
-			$this->language->load('extension/payment/op_jeniuspay');
+			$this->language->load('extension/payment/op_linkaja');
 		
 			$data['title'] = sprintf($this->language->get('heading_title'), $this->config->get('config_name'));
 
@@ -320,7 +320,7 @@ class ControllerExtensionPaymentOPJeniuspay extends Controller {
 			
 	
 			//返回信息
-			$account = $this->config->get('payment_op_jeniuspay_account');
+			$account = $this->config->get('payment_op_linkaja_account');
 			$terminal = $this->request->post['terminal'];
 			$response_type = $this->request->post['response_type'];
 			$payment_id = $this->request->post['payment_id'];
@@ -348,9 +348,9 @@ class ControllerExtensionPaymentOPJeniuspay extends Controller {
 			
 			
 			//匹配终端号
-			if($terminal == $this->config->get('payment_op_jeniuspay_terminal')){
+			if($terminal == $this->config->get('payment_op_linkaja_terminal')){
 				//普通终端号
-				$securecode = $this->config->get('payment_op_jeniuspay_securecode');
+				$securecode = $this->config->get('payment_op_linkaja_securecode');
 			}else{
 				$securecode = '';
 			}
@@ -369,7 +369,7 @@ class ControllerExtensionPaymentOPJeniuspay extends Controller {
 	
 
 			$message = self::BrowserReturn;
-			if($this->config->get('payment_op_jeniuspay_transaction') == 'https://test-secure.oceanpayment.com/gateway/service/pay'){
+			if($this->config->get('payment_op_linkaja_transaction') == 'https://test-secure.oceanpayment.com/gateway/service/pay'){
 				$message .= 'TEST ORDER-';
 				$data['payment_details'] = 'TEST ORDER-'.$data['payment_details'];
 			}
@@ -394,7 +394,7 @@ class ControllerExtensionPaymentOPJeniuspay extends Controller {
 					if($ErrorCode == 20061){	 
 						//排除订单号重复(20061)的交易
 						$data['continue'] = $this->url->link('checkout/cart');
-						$this->response->setOutput($this->load->view('extension/payment/op_jeniuspay_failure', $data));
+						$this->response->setOutput($this->load->view('extension/payment/op_linkaja_failure', $data));
 
 					}else{
 						if ($payment_status == 1 ){  
@@ -402,10 +402,10 @@ class ControllerExtensionPaymentOPJeniuspay extends Controller {
 							//清除coupon
 							unset($this->session->data['coupon']);
 							
-							$this->model_checkout_order->addOrderHistory($this->request->post['order_number'], $this->config->get('payment_op_jeniuspay_success_order_status_id'), $message, true);
+							$this->model_checkout_order->addOrderHistory($this->request->post['order_number'], $this->config->get('payment_op_linkaja_success_order_status_id'), $message, true);
 							
 							$data['continue'] = HTTPS_SERVER . 'index.php?route=checkout/success';
-							$this->response->setOutput($this->load->view('extension/payment/op_jeniuspay_success', $data));
+							$this->response->setOutput($this->load->view('extension/payment/op_linkaja_success', $data));
 
 						}elseif ($payment_status == -1 ){   
 							//交易待处理 
@@ -413,17 +413,17 @@ class ControllerExtensionPaymentOPJeniuspay extends Controller {
 							if($payment_authType == 1){						
 								$message .= '(Pre-auth)';
 							}
-							$this->model_checkout_order->addOrderHistory($this->request->post['order_number'], $this->config->get('payment_op_jeniuspay_pending_order_status_id'), $message, false);
+							$this->model_checkout_order->addOrderHistory($this->request->post['order_number'], $this->config->get('payment_op_linkaja_pending_order_status_id'), $message, false);
 								
 							$data['continue'] = $this->url->link('checkout/cart');
-							$this->response->setOutput($this->load->view('extension/payment/op_jeniuspay_success', $data));
+							$this->response->setOutput($this->load->view('extension/payment/op_linkaja_success', $data));
 	
 						}else{     
 							//交易失败
-							$this->model_checkout_order->addOrderHistory($this->request->post['order_number'], $this->config->get('payment_op_jeniuspay_failed_order_status_id'), $message, false);
+							$this->model_checkout_order->addOrderHistory($this->request->post['order_number'], $this->config->get('payment_op_linkaja_failed_order_status_id'), $message, false);
 							
 							$data['continue'] = $this->url->link('checkout/cart');
-							$this->response->setOutput($this->load->view('extension/payment/op_jeniuspay_failure', $data));
+							$this->response->setOutput($this->load->view('extension/payment/op_linkaja_failure', $data));
 
 						}
  					}								
@@ -431,10 +431,10 @@ class ControllerExtensionPaymentOPJeniuspay extends Controller {
 			
 			}else {     
 				//数据签名对比失败
-				$this->model_checkout_order->addOrderHistory($this->request->post['order_number'], $this->config->get('op_jeniuspay_failed_order_status_id'), $message, false);
+				$this->model_checkout_order->addOrderHistory($this->request->post['order_number'], $this->config->get('op_linkaja_failed_order_status_id'), $message, false);
 							
 				$data['continue'] = $this->url->link('checkout/cart');
-				$this->response->setOutput($this->load->view('extension/payment/op_jeniuspay_failure', $data));
+				$this->response->setOutput($this->load->view('extension/payment/op_linkaja_failure', $data));
 					
 			}
 		}
@@ -476,9 +476,9 @@ class ControllerExtensionPaymentOPJeniuspay extends Controller {
 				
 					
 			//匹配终端号
-			if($_REQUEST['terminal'] == $this->config->get('payment_op_jeniuspay_terminal')){
+			if($_REQUEST['terminal'] == $this->config->get('payment_op_linkaja_terminal')){
 				//普通终端号
-				$securecode = $this->config->get('payment_op_jeniuspay_securecode');
+				$securecode = $this->config->get('payment_op_linkaja_securecode');
 			}else{
 				$securecode = '';
 			}
@@ -509,7 +509,7 @@ class ControllerExtensionPaymentOPJeniuspay extends Controller {
 				
 
 				$message = self::PUSH;
-				if($this->config->get('payment_op_jeniuspay_transaction') == 'https://test-secure.oceanpayment.com/gateway/service/pay'){
+				if($this->config->get('payment_op_linkaja_transaction') == 'https://test-secure.oceanpayment.com/gateway/service/pay'){
 					$message .= 'TEST ORDER-';
 				}
 				if ($_REQUEST['payment_status'] == 1){           //交易状态
@@ -531,17 +531,17 @@ class ControllerExtensionPaymentOPJeniuspay extends Controller {
 				}else{
 					if ($_REQUEST['payment_status'] == 1 ){
 						//交易成功
-						$this->model_checkout_order->addOrderHistory($_REQUEST['order_number'], $this->config->get('payment_op_jeniuspay_success_order_status_id'), $message, false);
+						$this->model_checkout_order->addOrderHistory($_REQUEST['order_number'], $this->config->get('payment_op_linkaja_success_order_status_id'), $message, false);
 					}elseif ($_REQUEST['payment_status'] == -1){
 						//交易待处理
 						//是否预授权交易
 						if($_REQUEST['payment_authType'] == 1){
 							$message .= '(Pre-auth)';
 						}
-						$this->model_checkout_order->addOrderHistory($_REQUEST['order_number'], $this->config->get('payment_op_jeniuspay_pending_order_status_id'), $message, false);
+						$this->model_checkout_order->addOrderHistory($_REQUEST['order_number'], $this->config->get('payment_op_linkaja_pending_order_status_id'), $message, false);
 					}else{
 						//交易失败
-						$this->model_checkout_order->addOrderHistory($_REQUEST['order_number'], $this->config->get('payment_op_jeniuspay_failed_order_status_id'), $message, false);
+						$this->model_checkout_order->addOrderHistory($_REQUEST['order_number'], $this->config->get('payment_op_linkaja_failed_order_status_id'), $message, false);
 					}
 				}
 				
