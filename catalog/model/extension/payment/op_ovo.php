@@ -1,14 +1,14 @@
 <?php 
-class ModelExtensionPaymentOPLinkaja extends Model {
+class ModelExtensionPaymentOPOvo extends Model {
 	private $_limit = ',';
 	
   	public function getMethod($address) {
-		$this->load->language('extension/payment/op_linkaja');
+		$this->load->language('extension/payment/op_ovo');
 		
-		if ($this->config->get('payment_op_linkaja_status')) {
-      		$query = $this->db->query("SELECT * FROM " . DB_PREFIX . "zone_to_geo_zone WHERE geo_zone_id = '" . (int)$this->config->get('payment_op_linkaja_geo_zone_id') . "' AND country_id = '" . (int)$address['country_id'] . "' AND (zone_id = '" . (int)$address['zone_id'] . "' OR zone_id = '0')");
+		if ($this->config->get('payment_op_ovo_status')) {
+      		$query = $this->db->query("SELECT * FROM " . DB_PREFIX . "zone_to_geo_zone WHERE geo_zone_id = '" . (int)$this->config->get('payment_op_ovo_geo_zone_id') . "' AND country_id = '" . (int)$address['country_id'] . "' AND (zone_id = '" . (int)$address['zone_id'] . "' OR zone_id = '0')");
 			
-			if (!$this->config->get('payment_op_linkaja_geo_zone_id')) {
+			if (!$this->config->get('payment_op_ovo_geo_zone_id')) {
         		$status = true;
       		} elseif ($query->num_rows) {
       		  	$status = true;
@@ -23,14 +23,14 @@ class ModelExtensionPaymentOPLinkaja extends Model {
 	
 		if ($status) {
 			$title = $this->language->get('text_title');
-			if($this->config->get('payment_op_linkaja_transaction') == 'https://test-secure.oceanpayment.com/gateway/service/pay'){
+			if($this->config->get('payment_op_ovo_transaction') == 'https://test-secure.oceanpayment.com/gateway/service/pay'){
 				$title = $this->language->get('text_title').'<br><p style="color: red;">Note: In the test state all transactions are not deducted and cannot be shipped or services provided. The interface needs to be closed in time after the test is completed to avoid consumers from placing orders.</p>';
 			}
       		$method_data = array( 
-        		'code'         => 'op_linkaja',
+        		'code'         => 'op_ovo',
         		'title'      => $title,
       			'terms'      => '',
-				'sort_order' => $this->config->get('payment_op_linkaja_sort_order')
+				'sort_order' => $this->config->get('payment_op_ovo_sort_order')
       		);
     	}
    

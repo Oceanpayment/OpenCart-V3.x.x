@@ -1,12 +1,12 @@
 <?php
 // Heading
-$_['heading_title']      	= 'Oceanpayment LinkAja Payment';
+$_['heading_title']      	= 'Oceanpayment OVO Payment';
 
 // Text 
 $_['text_payment']       	= 'Payment';
-$_['text_success']       	= 'Success: You have modified LinkAja account details!';
-$_['text_edit']          	= 'Edit Oceanpayment LinkAja Payment';
-$_['text_op_linkaja'] 	        = '<img src="view/image/payment/op_LinkAja.png" alt="LinkAja" height="25"  title="LinkAja" style="border: 1px solid #EEEEEE;" />';
+$_['text_success']       	= 'Success: You have modified OVO account details!';
+$_['text_edit']          	= 'Edit Oceanpayment OVO Payment';
+$_['text_op_ovo'] 	        = '<img src="view/image/payment/op_ovo.png" alt="OVO" height="25"  title="OVO" style="border: 1px solid #EEEEEE;" />';
 $_['text_pay']           	= 'https://secure.oceanpayment.com/gateway/service/pay';
 $_['text_test']          	= 'https://test-secure.oceanpayment.com/gateway/service/pay';
 $_['text_pay_iframe']    	= 'Iframe';
@@ -41,7 +41,7 @@ $_['entry_entitys']                 = 'Entity';
 
 
 // Error
-$_['error_permission']                = 'Warning: You do not have permission to modify Oceanpayment LinkAja!';
+$_['error_permission']                = 'Warning: You do not have permission to modify Oceanpayment OVO!';
 $_['error_account']                   = 'Account Required!';
 $_['error_terminal']                  = 'Terminal Required!';
 $_['error_securecode']                = 'Securecode Required!';

@@ -1,9 +1,9 @@
 <?php 
-class ControllerExtensionPaymentOPLinkaja extends Controller {
+class ControllerExtensionPaymentOPOvo extends Controller {
 	private $error = array(); 
 
 	public function index() {
-		$this->load->language('extension/payment/op_linkaja');
+		$this->load->language('extension/payment/op_ovo');
 		
 		$this->document->setTitle($this->language->get('heading_title'));
 		
@@ -12,7 +12,7 @@ class ControllerExtensionPaymentOPLinkaja extends Controller {
 		if (($this->request->server['REQUEST_METHOD'] == 'POST') && ($this->validate())) {
 			$this->load->model('setting/setting');
 			
-			$this->model_setting_setting->editSetting('payment_op_linkaja', $this->request->post);
+			$this->model_setting_setting->editSetting('payment_op_ovo', $this->request->post);
 			
 			$this->session->data['success'] = $this->language->get('text_success');
 			
@@ -103,69 +103,69 @@ class ControllerExtensionPaymentOPLinkaja extends Controller {
 
    		$data['breadcrumbs'][] = array(
        		'text' => $this->language->get('heading_title'),
-   			'href' => $this->url->link('extension/payment/op_linkaja', 'user_token=' . $this->session->data['user_token'], 'SSL'),
+   			'href' => $this->url->link('extension/payment/op_ovo', 'user_token=' . $this->session->data['user_token'], 'SSL'),
    		);
 
-		$data['action'] = $this->url->link('extension/payment/op_linkaja', 'user_token=' . $this->session->data['user_token'], 'SSL');
+		$data['action'] = $this->url->link('extension/payment/op_ovo', 'user_token=' . $this->session->data['user_token'], 'SSL');
 
 		$data['cancel'] = $this->url->link('marketplace/extension', 'user_token=' . $this->session->data['user_token'].'&type=payment', 'SSL');
 
-		if (isset($this->request->post['payment_op_linkaja_account'])) {
-			$data['payment_op_linkaja_account'] = $this->request->post['payment_op_linkaja_account'];
+		if (isset($this->request->post['payment_op_ovo_account'])) {
+			$data['payment_op_ovo_account'] = $this->request->post['payment_op_ovo_account'];
 		} else {
-			$data['payment_op_linkaja_account'] = $this->config->get('payment_op_linkaja_account');
+			$data['payment_op_ovo_account'] = $this->config->get('payment_op_ovo_account');
 		}
 
-		if (isset($this->request->post['payment_op_linkaja_terminal'])) {
-			$data['payment_op_linkaja_terminal'] = $this->request->post['payment_op_linkaja_terminal'];
+		if (isset($this->request->post['payment_op_ovo_terminal'])) {
+			$data['payment_op_ovo_terminal'] = $this->request->post['payment_op_ovo_terminal'];
 		} else {
-			$data['payment_op_linkaja_terminal'] = $this->config->get('payment_op_linkaja_terminal');
+			$data['payment_op_ovo_terminal'] = $this->config->get('payment_op_ovo_terminal');
 		}
 
-		if (isset($this->request->post['payment_op_linkaja_securecode'])) {
-			$data['payment_op_linkaja_securecode'] = $this->request->post['payment_op_linkaja_securecode'];
+		if (isset($this->request->post['payment_op_ovo_securecode'])) {
+			$data['payment_op_ovo_securecode'] = $this->request->post['payment_op_ovo_securecode'];
 		} else {
-			$data['payment_op_linkaja_securecode'] = $this->config->get('payment_op_linkaja_securecode');
+			$data['payment_op_ovo_securecode'] = $this->config->get('payment_op_ovo_securecode');
 		}
 		
 	
 		
 		
-		$data['callback'] = HTTP_CATALOG . 'index.php?route=extension/payment/op_linkaja/callback';
+		$data['callback'] = HTTP_CATALOG . 'index.php?route=extension/payment/op_ovo/callback';
 
 		
-		if (isset($this->request->post['payment_op_linkaja_transaction'])) {
-			$data['payment_op_linkaja_transaction'] = $this->request->post['payment_op_linkaja_transaction'];
+		if (isset($this->request->post['payment_op_ovo_transaction'])) {
+			$data['payment_op_ovo_transaction'] = $this->request->post['payment_op_ovo_transaction'];
 		} else {
-			$data['payment_op_linkaja_transaction'] = $this->config->get('payment_op_linkaja_transaction');
+			$data['payment_op_ovo_transaction'] = $this->config->get('payment_op_ovo_transaction');
 		}
 		
-		if (isset($this->request->post['payment_op_linkaja_pay_mode'])) {
-			$data['payment_op_linkaja_pay_mode'] = $this->request->post['payment_op_linkaja_pay_mode'];
+		if (isset($this->request->post['payment_op_ovo_pay_mode'])) {
+			$data['payment_op_ovo_pay_mode'] = $this->request->post['payment_op_ovo_pay_mode'];
 		} else {
-			$data['payment_op_linkaja_pay_mode'] = $this->config->get('payment_op_linkaja_pay_mode');
+			$data['payment_op_ovo_pay_mode'] = $this->config->get('payment_op_ovo_pay_mode');
 		}
 		
-		if (isset($this->request->post['payment_op_linkaja_default_order_status_id'])) {
-			$data['payment_op_linkaja_default_order_status_id'] = $this->request->post['payment_op_linkaja_default_order_status_id'];
+		if (isset($this->request->post['payment_op_ovo_default_order_status_id'])) {
+			$data['payment_op_ovo_default_order_status_id'] = $this->request->post['payment_op_ovo_default_order_status_id'];
 		} else {
-			$data['payment_op_linkaja_default_order_status_id'] = $this->config->get('payment_op_linkaja_default_order_status_id');
+			$data['payment_op_ovo_default_order_status_id'] = $this->config->get('payment_op_ovo_default_order_status_id');
 		} 
 		/* add status */
-		if (isset($this->request->post['payment_op_linkaja_success_order_status_id'])) {
-			$data['payment_op_linkaja_success_order_status_id'] = $this->request->post['payment_op_linkaja_success_order_status_id'];
+		if (isset($this->request->post['payment_op_ovo_success_order_status_id'])) {
+			$data['payment_op_ovo_success_order_status_id'] = $this->request->post['payment_op_ovo_success_order_status_id'];
 		} else {
-			$data['payment_op_linkaja_success_order_status_id'] = $this->config->get('payment_op_linkaja_success_order_status_id');
+			$data['payment_op_ovo_success_order_status_id'] = $this->config->get('payment_op_ovo_success_order_status_id');
 		}
-		if (isset($this->request->post['payment_op_linkaja_failed_order_status_id'])) {
-			$data['payment_op_linkaja_failed_order_status_id'] = $this->request->post['payment_op_linkaja_failed_order_status_id'];
+		if (isset($this->request->post['payment_op_ovo_failed_order_status_id'])) {
+			$data['payment_op_ovo_failed_order_status_id'] = $this->request->post['payment_op_ovo_failed_order_status_id'];
 		} else {
-			$data['payment_op_linkaja_failed_order_status_id'] = $this->config->get('payment_op_linkaja_failed_order_status_id');
+			$data['payment_op_ovo_failed_order_status_id'] = $this->config->get('payment_op_ovo_failed_order_status_id');
 		}
-		if (isset($this->request->post['payment_op_linkaja_pending_order_status_id'])) {
-			$data['payment_op_linkaja_pending_order_status_id'] = $this->request->post['payment_op_linkaja_pending_order_status_id'];
+		if (isset($this->request->post['payment_op_ovo_pending_order_status_id'])) {
+			$data['payment_op_ovo_pending_order_status_id'] = $this->request->post['payment_op_ovo_pending_order_status_id'];
 		} else {
-			$data['payment_op_linkaja_pending_order_status_id'] = $this->config->get('payment_op_linkaja_pending_order_status_id');
+			$data['payment_op_ovo_pending_order_status_id'] = $this->config->get('payment_op_ovo_pending_order_status_id');
 		}
 		
 		
@@ -173,50 +173,50 @@ class ControllerExtensionPaymentOPLinkaja extends Controller {
 		
 		$data['order_statuses'] = $this->model_localisation_order_status->getOrderStatuses();
 
-		if (isset($this->request->post['payment_op_linkaja_geo_zone_id'])) {
-			$data['payment_op_linkaja_geo_zone_id'] = $this->request->post['payment_op_linkaja_geo_zone_id'];
+		if (isset($this->request->post['payment_op_ovo_geo_zone_id'])) {
+			$data['payment_op_ovo_geo_zone_id'] = $this->request->post['payment_op_ovo_geo_zone_id'];
 		} else {
-			$data['payment_op_linkaja_geo_zone_id'] = $this->config->get('payment_op_linkaja_geo_zone_id');
+			$data['payment_op_ovo_geo_zone_id'] = $this->config->get('payment_op_ovo_geo_zone_id');
 		}
 
 		$this->load->model('localisation/geo_zone');
 										
 		$data['geo_zones'] = $this->model_localisation_geo_zone->getGeoZones();
 		
-		if (isset($this->request->post['payment_op_linkaja_status'])) {
-			$data['payment_op_linkaja_status'] = $this->request->post['payment_op_linkaja_status'];
+		if (isset($this->request->post['payment_op_ovo_status'])) {
+			$data['payment_op_ovo_status'] = $this->request->post['payment_op_ovo_status'];
 		} else {
-			$data['payment_op_linkaja_status'] = $this->config->get('payment_op_linkaja_status');
+			$data['payment_op_ovo_status'] = $this->config->get('payment_op_ovo_status');
 		}
 		
-		if (isset($this->request->post['payment_op_linkaja_sort_order'])) {
-			$data['payment_op_linkaja_sort_order'] = $this->request->post['payment_op_linkaja_sort_order'];
+		if (isset($this->request->post['payment_op_ovo_sort_order'])) {
+			$data['payment_op_ovo_sort_order'] = $this->request->post['payment_op_ovo_sort_order'];
 		} else {
-			$data['payment_op_linkaja_sort_order'] = $this->config->get('payment_op_linkaja_sort_order');
+			$data['payment_op_ovo_sort_order'] = $this->config->get('payment_op_ovo_sort_order');
 		}
 		
-		if (isset($this->request->post['payment_op_linkaja_location'])) {
-          $data['payment_op_linkaja_location'] = $this->request->post['payment_op_linkaja_location'];
+		if (isset($this->request->post['payment_op_ovo_location'])) {
+          $data['payment_op_ovo_location'] = $this->request->post['payment_op_ovo_location'];
 		  } else {
-			  $data['payment_op_linkaja_location'] = $this->config->get('payment_op_linkaja_location');
+			  $data['payment_op_ovo_location'] = $this->config->get('payment_op_ovo_location');
 		  }
 
-		  if (isset($this->request->post['payment_op_linkaja_locations'])) {
-			  $data['payment_op_linkaja_locations'] = $this->request->post['payment_op_linkaja_locations'];
+		  if (isset($this->request->post['payment_op_ovo_locations'])) {
+			  $data['payment_op_ovo_locations'] = $this->request->post['payment_op_ovo_locations'];
 		  } else {
-			  $data['payment_op_linkaja_locations'] = $this->config->get('payment_op_linkaja_locations');
+			  $data['payment_op_ovo_locations'] = $this->config->get('payment_op_ovo_locations');
 		  }
 
-		  if (isset($this->request->post['payment_op_linkaja_entity'])) {
-			  $data['payment_op_linkaja_entity'] = $this->request->post['payment_op_linkaja_entity'];
+		  if (isset($this->request->post['payment_op_ovo_entity'])) {
+			  $data['payment_op_ovo_entity'] = $this->request->post['payment_op_ovo_entity'];
 		  } else {
-			  $data['payment_op_linkaja_entity'] = $this->config->get('payment_op_linkaja_entity');
+			  $data['payment_op_ovo_entity'] = $this->config->get('payment_op_ovo_entity');
 		  }
 
-		  if (isset($this->request->post['payment_op_linkaja_entitys'])) {
-			  $data['payment_op_linkaja_entitys'] = $this->request->post['payment_op_linkaja_entitys'];
+		  if (isset($this->request->post['payment_op_ovo_entitys'])) {
+			  $data['payment_op_ovo_entitys'] = $this->request->post['payment_op_ovo_entitys'];
 		  } else {
-			  $data['payment_op_linkaja_entitys'] = $this->config->get('payment_op_linkaja_entitys');
+			  $data['payment_op_ovo_entitys'] = $this->config->get('payment_op_ovo_entitys');
 		  }
 
 		
@@ -227,24 +227,24 @@ class ControllerExtensionPaymentOPLinkaja extends Controller {
 			$data['column_left'] = $this->load->controller('common/column_left');
 			$data['footer'] = $this->load->controller('common/footer');
 
-			$this->response->setOutput($this->load->view('extension/payment/op_linkaja', $data));
+			$this->response->setOutput($this->load->view('extension/payment/op_ovo', $data));
 		}
 		
 
 	private function validate() {
-		if (!$this->user->hasPermission('modify', 'extension/payment/op_linkaja')) {
+		if (!$this->user->hasPermission('modify', 'extension/payment/op_ovo')) {
 			$this->error['warning'] = $this->language->get('error_permission');
 		}
 
-		if (!$this->request->post['payment_op_linkaja_account']) {
+		if (!$this->request->post['payment_op_ovo_account']) {
 			$this->error['account'] = $this->language->get('error_account');
 		}
 
-		if (!$this->request->post['payment_op_linkaja_terminal']) {
+		if (!$this->request->post['payment_op_ovo_terminal']) {
 			$this->error['terminal'] = $this->language->get('error_terminal');
 		}
 
-		if (!$this->request->post['payment_op_linkaja_securecode']) {
+		if (!$this->request->post['payment_op_ovo_securecode']) {
 			$this->error['securecode'] = $this->language->get('error_securecode');
 		}
 		
