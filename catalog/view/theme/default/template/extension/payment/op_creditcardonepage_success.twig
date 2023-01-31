@@ -1,0 +1,29 @@
+<html xmlns="http://www.w3.org/1999/xhtml" dir="{{ direction }}" lang="{{ language }}" xml:lang="{{ language }}">
+<head>
+<title>{{ title }}</title>
+<base href="{{ base }}" />
+<script>
+function goto(){
+    window.parent.location.href="{{ text_success_url }}";
+}
+function auto(){
+    setTimeout("goto()",5000);
+}
+</script>
+</head>
+<body onload="auto();">
+<div style="text-align: center;">
+  <h1>{{ heading_title }}</h1>
+  <p>{{ text_response }}</p>
+  <div style="border: 1px solid #DDDDDD; margin-bottom: 20px; width: 350px; margin-left: auto; margin-right: auto;">
+    <creditcard ITEM=banner />
+  </div>
+  <p>{{ text_success }}</p>
+  <p style="color:green">{{ payment_details }}</p>
+  <p>Your Order No. is:{{ text_order_number }}</p>
+
+  <p>{{ text_success_wait }}</p>
+
+</div>
+</body>
+</html>

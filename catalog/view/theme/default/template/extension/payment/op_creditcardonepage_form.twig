@@ -1,0 +1,70 @@
+<script>
+    var ipAddress = "https://secure.oceanpayment.com";
+    var onePageCardData = {
+        init: function ($isSandBox, $cssUrl, $language, $publicKey,$backUrl) {
+            if ($isSandBox) {
+                ipAddress = "https://test-secure.oceanpayment.com";
+            }
+            document.getElementById("oceanpayment-element").innerHTML = '<iframe id="oceanpayment-iframe-region" name="oceanpayment-iframe-region" width="100%" height="200px" style="overflow-x : hidden;overflow-y : hidden;" src="' + ipAddress + '/gateway/direct/checkpage?quickPay=3&language=' + $language + '" frameborder="0" seamless></iframe>';
+            //获取iframe元素
+            var iframe = document.getElementById("oceanpayment-iframe-region");
+            //iframe网页IP:PORT
+            var childDomain = ipAddress;
+            iframe.onload = function () {
+                //发送消息到iframe网页
+                iframe.contentWindow.postMessage({
+                    'methodType': 'init',
+                    'cssUrl': $cssUrl,
+                    'language': $language,
+                    'publicKey': $publicKey,
+                    'backUrl':$backUrl
+                }, childDomain);
+            };
+        },
+        checkout: function ($data) {
+            //获取iframe元素
+            var iframe = document.getElementById("oceanpayment-iframe-region");
+            //iframe网页IP:PORT
+            var childDomain = ipAddress;
+            //发送消息到iframe网页
+            iframe.contentWindow.postMessage($data, childDomain);
+        }
+    }
+    window.addEventListener('message', function (e) {
+        if (e.origin == "https://secure.oceanpayment.com" || e.origin == "https://test-secure.oceanpayment.com") {
+            oceanpaymentCallBack(e.data);
+        }
+    });
+
+
+    jQuery(function() {
+        //如需修改支付语言，可传入语言代码
+        onePageCardData.init("{{ transaction }}",'{{ cssurl }}','{{ language }}',"{{ public_key }}","{{ SSL }}");
+    });
+    var oceanpaymentCallBack = function(data){
+        $("#card_data").val(data.card_data);
+        
+    }
+</script>
+<div id="oceanpayment-element" class="op-payment-icons"></div>
+<form  method='post' name='creditcard_checkout' action='{{ action }}'>
+<input name="card_data" id="card_data" value="" type="hidden"/>
+</form>
+    
+<div class="buttons">
+    <div class="pull-right">
+        
+        <input id="button-confirm" type="submit" value="{{ button_confirm }}" class="btn btn-primary" />
+    </div>
+</div>
+
+<script type="text/javascript">
+    $('#button-confirm').bind('click', function() {
+        $('#button-confirm').button('loading');
+        document.creditcard_checkout.submit();
+        
+    });
+</script>
+
+      
+        
