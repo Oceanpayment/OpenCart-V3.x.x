@@ -273,7 +273,7 @@ class ControllerExtensionPaymentOPWechatpay extends Controller {
 			$data['header'] = $this->load->controller('common/header');
 			
 			//支付模式Pay Mode
-			if($this->config->get('payment_op_wechatpay_pay_mode') == 1){
+			if($this->config->get('payment_op_wechatpay_pay_mode') == 1 && !$this->isMobile()){
 				//内嵌Iframe
 				$this->response->setOutput($this->load->view('extension/payment/op_wechatpay_iframe', $data));
 			}else{
