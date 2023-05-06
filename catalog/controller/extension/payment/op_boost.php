@@ -116,7 +116,7 @@ class ControllerExtensionPaymentOPBoost extends Controller {
 			$data['billing_country'] = $billing_country;
 			
 			//账单人州
-			$billing_state = $order_info['payment_zone'];
+			$billing_state = $order_info['payment_zone_code'];
 			$data['billing_state'] = $billing_state;
 			 
 			//账单人城市
@@ -156,7 +156,7 @@ class ControllerExtensionPaymentOPBoost extends Controller {
 			$data['ship_country'] = $ship_country;
 				
 			//收货人州
-			$ship_state = $order_info['shipping_zone'];
+			$ship_state = $order_info['shipping_zone_code'];
 			$data['ship_state'] = $ship_state;
 				
 			//收货人城市
