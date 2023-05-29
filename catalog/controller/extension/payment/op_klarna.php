@@ -100,13 +100,13 @@ class ControllerExtensionPaymentOPKlarna extends Controller {
 
 
             //账单人姓名
-            $billing_name = $this->OceanHtmlSpecialChars($order_info['payment_fullname']);
+            $billing_name = $this->OceanHtmlSpecialChars($order_info['payment_firstname']);
             //账单人名
             $billing_firstName = $billing_name;
             $data['billing_firstName'] = $billing_firstName;
 
             //账单人姓
-            $billing_lastName = $this->OceanHtmlSpecialChars($order_info['customer_id']);
+            $billing_lastName = $this->OceanHtmlSpecialChars($order_info['payment_lastname']);
             $data['billing_lastName'] = $billing_lastName;
 
             //账单人邮箱
@@ -186,13 +186,12 @@ class ControllerExtensionPaymentOPKlarna extends Controller {
             $ship_zip = $order_info['shipping_postcode'];
             $data['ship_zip'] = !empty($ship_zip) ? $ship_zip : $billing_zip;
 
-/*
             //收货人名
-            $ship_firstName = $this->OceanHtmlSpecialChars($order_info['shipping_fullname']);
+            $ship_firstName = $this->OceanHtmlSpecialChars($order_info['shipping_firstname']);
             $data['ship_firstName'] = $ship_firstName;
 
             //收货人姓
-            $ship_lastName = $this->OceanHtmlSpecialChars($order_info['shipping_fullname']);
+            $ship_lastName = $this->OceanHtmlSpecialChars($order_info['shipping_lastname']);
             $data['ship_lastName'] = $ship_lastName;
 
             //收货人手机
@@ -221,7 +220,7 @@ class ControllerExtensionPaymentOPKlarna extends Controller {
 
             //收货人邮编
             $ship_zip = $order_info['shipping_postcode'];
-            $data['ship_zip'] = $ship_zip;*/
+            $data['ship_zip'] = $ship_zip;
 
             //产品名称
             $productName = $productDetails['productName'];
@@ -409,7 +408,7 @@ class ControllerExtensionPaymentOPKlarna extends Controller {
 
 
             //匹配终端号
-            if($terminal == $this->config->get('payment_klarna_terminal')){
+            if($terminal == $this->config->get('payment_op_klarna_terminal')){
                 //普通终端号
                 $securecode = $this->config->get('payment_op_klarna_securecode');
             }else{
