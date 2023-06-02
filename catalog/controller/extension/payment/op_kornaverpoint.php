@@ -1,6 +1,6 @@
 <?php
 
-class ControllerExtensionPaymentOPBpi extends Controller {
+class ControllerExtensionPaymentOPKornaverpoint extends Controller {
 	
 	const PUSH 			= "[PUSH]";
 	const BrowserReturn = "[Browser Return]";	
@@ -12,32 +12,32 @@ class ControllerExtensionPaymentOPBpi extends Controller {
 		
 		
 		$data['button_confirm'] = $this->language->get('button_confirm');
-		$data['action'] = 'index.php?route=extension/payment/op_bpi/op_bpi_form';
+		$data['action'] = 'index.php?route=extension/payment/op_kornaverpoint/op_kornaverpoint_form';
 		
 		
 		$order_info = $this->model_checkout_order->getOrder($this->session->data['order_id']);
 		
-		return $this->load->view('extension/payment/op_bpi', $data);
+		return $this->load->view('extension/payment/op_kornaverpoint', $data);
 	}
 
 	
-	public function op_bpi_form() {
+	public function op_kornaverpoint_form() {
 		
 		$this->load->model('checkout/order');
 		$order_info = $this->model_checkout_order->getOrder($this->session->data['order_id']);
-		$this->model_checkout_order->addOrderHistory($this->session->data['order_id'], $this->config->get('payment_op_bpi_default_order_status_id'), '', false);
+		$this->model_checkout_order->addOrderHistory($this->session->data['order_id'], $this->config->get('payment_op_kornaverpoint_default_order_status_id'), '', false);
 
 		
 		//判断是否为空订单
 		if (!empty($order_info)) {
 			
-			$this->load->model('extension/payment/op_bpi');
-			$product_info = $this->model_extension_payment_op_bpi->getOrderProducts($this->session->data['order_id']);
+			$this->load->model('extension/payment/op_kornaverpoint');
+			$product_info = $this->model_extension_payment_op_kornaverpoint->getOrderProducts($this->session->data['order_id']);
 			
 			//获取订单详情
 			$productDetails = $this->getProductItems($product_info);
 			//获取消费者详情
-			$customer_info = $this->model_extension_payment_op_bpi->getCustomerDetails($order_info['customer_id']);
+			$customer_info = $this->model_extension_payment_op_kornaverpoint->getCustomerDetails($order_info['customer_id']);
 			
 			
 			if (!$this->request->server['HTTPS']) {
@@ -47,7 +47,7 @@ class ControllerExtensionPaymentOPBpi extends Controller {
 			}
 			
 			//提交网关
-			$action = $this->config->get('payment_op_bpi_transaction');
+			$action = $this->config->get('payment_op_kornaverpoint_transaction');
 			$data['action'] = $action;
 			
 			//订单号
@@ -63,12 +63,12 @@ class ControllerExtensionPaymentOPBpi extends Controller {
 			$data['order_currency'] = $order_currency;
 			
 
-			$validate_arr['terminal'] = $this->config->get('payment_op_bpi_terminal');
-			$validate_arr['securecode'] = $this->config->get('payment_op_bpi_securecode');
+			$validate_arr['terminal'] = $this->config->get('payment_op_kornaverpoint_terminal');
+			$validate_arr['securecode'] = $this->config->get('payment_op_kornaverpoint_securecode');
 
 
 			//商户号
-			$account = $this->config->get('payment_op_bpi_account');
+			$account = $this->config->get('payment_op_kornaverpoint_account');
 			$data['account'] = $account;
 				
 			//终端号
@@ -80,11 +80,11 @@ class ControllerExtensionPaymentOPBpi extends Controller {
 			
 			
 			//返回地址
-			$backUrl = $base_url.'index.php?route=extension/payment/op_bpi/callback';
+			$backUrl = $base_url.'index.php?route=extension/payment/op_kornaverpoint/callback';
 			$data['backUrl'] = $backUrl;
 			
 			//服务器响应地址
-			$noticeUrl = $base_url.'index.php?route=extension/payment/op_bpi/notice';
+			$noticeUrl = $base_url.'index.php?route=extension/payment/op_kornaverpoint/notice';
 			$data['noticeUrl'] = $noticeUrl;
 			
 			//备注
@@ -92,17 +92,15 @@ class ControllerExtensionPaymentOPBpi extends Controller {
 			$data['order_notes'] = $order_notes;
 			
 			//支付方式
-			$methods = "BPI";
+			$methods = "Naverpoint";
 			$data['methods'] = $methods;
 
-			//账单人姓名
-			$billing_name = $this->OceanHtmlSpecialChars($order_info['payment_fullname']);
 			//账单人名
-			$billing_firstName = $billing_name;
+			$billing_firstName = $this->OceanHtmlSpecialChars($order_info['payment_firstname']);
 			$data['billing_firstName'] = $billing_firstName;
 
 			//账单人姓
-			$billing_lastName = $this->OceanHtmlSpecialChars($order_info['customer_id']);
+			$billing_lastName = $this->OceanHtmlSpecialChars($order_info['payment_lastname']);
 			$data['billing_lastName'] = $billing_lastName;
 			 
 			//账单人邮箱
@@ -118,7 +116,7 @@ class ControllerExtensionPaymentOPBpi extends Controller {
 			$data['billing_country'] = $billing_country;
 			
 			//账单人州
-			$billing_state = $order_info['payment_zone_code'];
+			$billing_state = $order_info['payment_zone'];
 			$data['billing_state'] = $billing_state;
 			 
 			//账单人城市
@@ -142,11 +140,11 @@ class ControllerExtensionPaymentOPBpi extends Controller {
 			$data['signValue'] = $signValue;
 
 			//收货人名
-			$ship_firstName = $this->OceanHtmlSpecialChars($order_info['shipping_fullname']);
+			$ship_firstName = $order_info['shipping_firstname'];
 			$data['ship_firstName'] = $ship_firstName;
 
 			//收货人姓
-			$ship_lastName = $this->OceanHtmlSpecialChars($order_info['shipping_fullname']);
+			$ship_lastName = $order_info['shipping_lastname'];
 			$data['ship_lastName'] = $ship_lastName;
 			
 			//收货人手机
@@ -158,7 +156,7 @@ class ControllerExtensionPaymentOPBpi extends Controller {
 			$data['ship_country'] = $ship_country;
 				
 			//收货人州
-			$ship_state = $order_info['shipping_zone_code'];
+			$ship_state = $order_info['shipping_zone'];
 			$data['ship_state'] = $ship_state;
 				
 			//收货人城市
@@ -275,12 +273,12 @@ class ControllerExtensionPaymentOPBpi extends Controller {
 			$data['header'] = $this->load->controller('common/header');
 			
 			//支付模式Pay Mode
-			if($this->config->get('payment_op_bpi_pay_mode') == 1){
+			if($this->config->get('payment_op_kornaverpoint_pay_mode') == 1){
 				//内嵌Iframe
-				$this->response->setOutput($this->load->view('extension/payment/op_bpi_iframe', $data));
+				$this->response->setOutput($this->load->view('extension/payment/op_kornaverpoint_iframe', $data));
 			}else{
 				//跳转Redirect
-				$this->response->setOutput($this->load->view('extension/payment/op_bpi_form', $data));
+				$this->response->setOutput($this->load->view('extension/payment/op_kornaverpoint_form', $data));
 			}
 
 		}else{		
@@ -293,7 +291,7 @@ class ControllerExtensionPaymentOPBpi extends Controller {
 	
 	public function callback() {
 		if (isset($this->request->post['order_number']) && !(empty($this->request->post['order_number']))) {
-			$this->language->load('extension/payment/op_bpi');
+			$this->language->load('extension/payment/op_kornaverpoint');
 		
 			$data['title'] = sprintf($this->language->get('heading_title'), $this->config->get('config_name'));
 
@@ -322,7 +320,7 @@ class ControllerExtensionPaymentOPBpi extends Controller {
 			
 	
 			//返回信息
-			$account = $this->config->get('payment_op_bpi_account');
+			$account = $this->config->get('payment_op_kornaverpoint_account');
 			$terminal = $this->request->post['terminal'];
 			$response_type = $this->request->post['response_type'];
 			$payment_id = $this->request->post['payment_id'];
@@ -350,9 +348,9 @@ class ControllerExtensionPaymentOPBpi extends Controller {
 			
 			
 			//匹配终端号
-			if($terminal == $this->config->get('payment_op_bpi_terminal')){
+			if($terminal == $this->config->get('payment_op_kornaverpoint_terminal')){
 				//普通终端号
-				$securecode = $this->config->get('payment_op_bpi_securecode');
+				$securecode = $this->config->get('payment_op_kornaverpoint_securecode');
 			}else{
 				$securecode = '';
 			}
@@ -371,7 +369,7 @@ class ControllerExtensionPaymentOPBpi extends Controller {
 	
 
 			$message = self::BrowserReturn;
-			if($this->config->get('payment_op_bpi_transaction') == 'https://test-secure.oceanpayment.com/gateway/service/pay'){
+			if($this->config->get('payment_op_kornaverpoint_transaction') == 'https://test-secure.oceanpayment.com/gateway/service/pay'){
 				$message .= 'TEST ORDER-';
 				$data['payment_details'] = 'TEST ORDER-'.$data['payment_details'];
 			}
@@ -396,7 +394,7 @@ class ControllerExtensionPaymentOPBpi extends Controller {
 					if($ErrorCode == 20061){	 
 						//排除订单号重复(20061)的交易
 						$data['continue'] = $this->url->link('checkout/cart');
-						$this->response->setOutput($this->load->view('extension/payment/op_bpi_failure', $data));
+						$this->response->setOutput($this->load->view('extension/payment/op_kornaverpoint_failure', $data));
 
 					}else{
 						if ($payment_status == 1 ){  
@@ -404,10 +402,10 @@ class ControllerExtensionPaymentOPBpi extends Controller {
 							//清除coupon
 							unset($this->session->data['coupon']);
 							
-							$this->model_checkout_order->addOrderHistory($this->request->post['order_number'], $this->config->get('payment_op_bpi_success_order_status_id'), $message, true);
+							$this->model_checkout_order->addOrderHistory($this->request->post['order_number'], $this->config->get('payment_op_kornaverpoint_success_order_status_id'), $message, true);
 							
 							$data['continue'] = HTTPS_SERVER . 'index.php?route=checkout/success';
-							$this->response->setOutput($this->load->view('extension/payment/op_bpi_success', $data));
+							$this->response->setOutput($this->load->view('extension/payment/op_kornaverpoint_success', $data));
 
 						}elseif ($payment_status == -1 ){   
 							//交易待处理 
@@ -415,17 +413,17 @@ class ControllerExtensionPaymentOPBpi extends Controller {
 							if($payment_authType == 1){						
 								$message .= '(Pre-auth)';
 							}
-							$this->model_checkout_order->addOrderHistory($this->request->post['order_number'], $this->config->get('payment_op_bpi_pending_order_status_id'), $message, false);
+							$this->model_checkout_order->addOrderHistory($this->request->post['order_number'], $this->config->get('payment_op_kornaverpoint_pending_order_status_id'), $message, false);
 								
 							$data['continue'] = $this->url->link('checkout/cart');
-							$this->response->setOutput($this->load->view('extension/payment/op_bpi_success', $data));
+							$this->response->setOutput($this->load->view('extension/payment/op_kornaverpoint_success', $data));
 	
 						}else{     
 							//交易失败
-							$this->model_checkout_order->addOrderHistory($this->request->post['order_number'], $this->config->get('payment_op_bpi_failed_order_status_id'), $message, false);
+							$this->model_checkout_order->addOrderHistory($this->request->post['order_number'], $this->config->get('payment_op_kornaverpoint_failed_order_status_id'), $message, false);
 							
 							$data['continue'] = $this->url->link('checkout/cart');
-							$this->response->setOutput($this->load->view('extension/payment/op_bpi_failure', $data));
+							$this->response->setOutput($this->load->view('extension/payment/op_kornaverpoint_failure', $data));
 
 						}
  					}								
@@ -433,10 +431,10 @@ class ControllerExtensionPaymentOPBpi extends Controller {
 			
 			}else {     
 				//数据签名对比失败
-				$this->model_checkout_order->addOrderHistory($this->request->post['order_number'], $this->config->get('op_bpi_failed_order_status_id'), $message, false);
+				$this->model_checkout_order->addOrderHistory($this->request->post['order_number'], $this->config->get('op_kornaverpoint_failed_order_status_id'), $message, false);
 							
 				$data['continue'] = $this->url->link('checkout/cart');
-				$this->response->setOutput($this->load->view('extension/payment/op_bpi_failure', $data));
+				$this->response->setOutput($this->load->view('extension/payment/op_kornaverpoint_failure', $data));
 					
 			}
 		}
@@ -478,9 +476,9 @@ class ControllerExtensionPaymentOPBpi extends Controller {
 				
 					
 			//匹配终端号
-			if($_REQUEST['terminal'] == $this->config->get('payment_op_bpi_terminal')){
+			if($_REQUEST['terminal'] == $this->config->get('payment_op_kornaverpoint_terminal')){
 				//普通终端号
-				$securecode = $this->config->get('payment_op_bpi_securecode');
+				$securecode = $this->config->get('payment_op_kornaverpoint_securecode');
 			}else{
 				$securecode = '';
 			}
@@ -511,7 +509,7 @@ class ControllerExtensionPaymentOPBpi extends Controller {
 				
 
 				$message = self::PUSH;
-				if($this->config->get('payment_op_bpi_transaction') == 'https://test-secure.oceanpayment.com/gateway/service/pay'){
+				if($this->config->get('payment_op_kornaverpoint_transaction') == 'https://test-secure.oceanpayment.com/gateway/service/pay'){
 					$message .= 'TEST ORDER-';
 				}
 				if ($_REQUEST['payment_status'] == 1){           //交易状态
@@ -533,17 +531,17 @@ class ControllerExtensionPaymentOPBpi extends Controller {
 				}else{
 					if ($_REQUEST['payment_status'] == 1 ){
 						//交易成功
-						$this->model_checkout_order->addOrderHistory($_REQUEST['order_number'], $this->config->get('payment_op_bpi_success_order_status_id'), $message, false);
+						$this->model_checkout_order->addOrderHistory($_REQUEST['order_number'], $this->config->get('payment_op_kornaverpoint_success_order_status_id'), $message, false);
 					}elseif ($_REQUEST['payment_status'] == -1){
 						//交易待处理
 						//是否预授权交易
 						if($_REQUEST['payment_authType'] == 1){
 							$message .= '(Pre-auth)';
 						}
-						$this->model_checkout_order->addOrderHistory($_REQUEST['order_number'], $this->config->get('payment_op_bpi_pending_order_status_id'), $message, false);
+						$this->model_checkout_order->addOrderHistory($_REQUEST['order_number'], $this->config->get('payment_op_kornaverpoint_pending_order_status_id'), $message, false);
 					}else{
 						//交易失败
-						$this->model_checkout_order->addOrderHistory($_REQUEST['order_number'], $this->config->get('payment_op_bpi_failed_order_status_id'), $message, false);
+						$this->model_checkout_order->addOrderHistory($_REQUEST['order_number'], $this->config->get('payment_op_kornaverpoint_failed_order_status_id'), $message, false);
 					}
 				}
 				

@@ -1,12 +1,12 @@
 <?php
 // Heading
-$_['heading_title']      	= 'Oceanpayment BPI Payment';
+$_['heading_title']      	= 'Oceanpayment NaverPoint Payment';
 
 // Text 
 $_['text_payment']       	= 'Payment';
-$_['text_success']       	= 'Success: You have modified bpi account details!';
-$_['text_edit']          	= 'Edit Oceanpayment BPI Payment';
-$_['text_op_bpi'] 	        = '<img src="view/image/payment/op_bpi.png" alt="bpi" height="25"  title="bpi" style="border: 1px solid #EEEEEE;" />';
+$_['text_success']       	= 'Success: You have modified NaverPoint account details!';
+$_['text_edit']          	= 'Edit Oceanpayment NaverPoint Payment';
+$_['text_op_kornaverpoint'] = '<img src="view/image/payment/op_NaverPay.png" alt="NaverPoint" height="25"  title="NaverPoint" style="border: 1px solid #EEEEEE;" />';
 $_['text_pay']           	= 'https://secure.oceanpayment.com/gateway/service/pay';
 $_['text_test']          	= 'https://test-secure.oceanpayment.com/gateway/service/pay';
 $_['text_pay_iframe']    	= 'Iframe';
@@ -29,19 +29,19 @@ $_['entry_geo_zone']             	= 'Geo Zone';
 $_['entry_status']       			= 'Status';
 $_['entry_sort_order']      		= 'Sort Order';
 
-$_['text_hide']                     = 'Hide';
-$_['text_show']                     = 'Show';
-$_['text_hides']                    = 'Hide';
-$_['text_shows']                    = 'Show';
+$_['text_hide']        = 'Hide';
+$_['text_show']          = 'Show';
+$_['text_hides']          = 'Hide';
+$_['text_shows']         = 'Show';
 
-$_['entry_location']                = 'Show/Hide Location';
-$_['entry_locations']               = 'Location';
-$_['entry_entity']                  = 'Show/Hide Entity';
-$_['entry_entitys']                 = 'Entity';
+$_['entry_location']           = 'Show/Hide Location';
+$_['entry_locations']             = 'Location';
+$_['entry_entity']            = 'Show/Hide Entity';
+$_['entry_entitys']           = 'Entity';
 
 
 // Error
-$_['error_permission']                = 'Warning: You do not have permission to modify Oceanpayment BPI!';
+$_['error_permission']                = 'Warning: You do not have permission to modify Oceanpayment NaverPoint!';
 $_['error_account']                   = 'Account Required!';
 $_['error_terminal']                  = 'Terminal Required!';
 $_['error_securecode']                = 'Securecode Required!';
