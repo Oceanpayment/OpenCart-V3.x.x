@@ -95,14 +95,12 @@ class ControllerExtensionPaymentOPAtome extends Controller {
 			$methods = "Atome";
 			$data['methods'] = $methods;
 
-			//账单人姓名
-			$billing_name = $this->OceanHtmlSpecialChars($order_info['payment_fullname']);
 			//账单人名
-			$billing_firstName = $billing_name;
+			$billing_firstName = $this->OceanHtmlSpecialChars($order_info['payment_firstname']);
 			$data['billing_firstName'] = $billing_firstName;
 
 			//账单人姓
-			$billing_lastName = $this->OceanHtmlSpecialChars($order_info['customer_id']);
+			$billing_lastName = $this->OceanHtmlSpecialChars($order_info['payment_lastname']);
 			$data['billing_lastName'] = $billing_lastName;
 			 
 			//账单人邮箱
@@ -142,11 +140,11 @@ class ControllerExtensionPaymentOPAtome extends Controller {
 			$data['signValue'] = $signValue;
 
 			//收货人名
-			$ship_firstName = $this->OceanHtmlSpecialChars($order_info['shipping_fullname']);
+			$ship_firstName = $this->OceanHtmlSpecialChars($order_info['shipping_firstname']);
 			$data['ship_firstName'] = $ship_firstName;
 
 			//收货人姓
-			$ship_lastName = $this->OceanHtmlSpecialChars($order_info['shipping_fullname']);
+			$ship_lastName = $this->OceanHtmlSpecialChars($order_info['shipping_lastname']);
 			$data['ship_lastName'] = $ship_lastName;
 			
 			//收货人手机
