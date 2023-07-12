@@ -4,7 +4,7 @@
 <base href="{{ base }}" />
 <script>
 function goto(){
-    window.parent.location.href="{{ text_failure_url }}";
+    window.parent.location.href="{{ text_success_url }}";
 }
 function auto(){
     setTimeout("goto()",5000);
@@ -13,14 +13,17 @@ function auto(){
 </head>
 <body onload="auto();">
 <div style="text-align: center;">
-  <p><?php echo $text_response; ?></p>
+  <h1>{{ heading_title }}</h1>
+  <p>{{ text_response }}</p>
   <div style="border: 1px solid #DDDDDD; margin-bottom: 20px; width: 350px; margin-left: auto; margin-right: auto;">
-    <yunshanfu ITEM=banner />
+    <applepay ITEM=banner />
   </div>
-  <p>{{ text_failure }}</p>
-  <p style="color:red">{{ payment_details }}</p>
-  <p>{{ payment_solutions }}</p>
-  <p>{{ text_failure_wait }}</p>
+  <p>{{ text_success }}</p>
+  <p style="color:green">{{ payment_details }}</p>
+  <p>Your Order No. is:{{ text_order_number }}</p>
+
+  <p>{{ text_success_wait }}</p>
+
 </div>
 </body>
 </html>

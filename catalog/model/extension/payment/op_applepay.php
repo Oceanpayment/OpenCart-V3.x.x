@@ -1,14 +1,14 @@
 <?php 
-class ModelExtensionPaymentOPYunshanfu extends Model {
+class ModelExtensionPaymentOPApplePay extends Model {
 	private $_limit = ',';
 	
   	public function getMethod($address) {
-		$this->load->language('extension/payment/op_yunshanfu');
+		$this->load->language('extension/payment/op_applepay');
 		
-		if ($this->config->get('payment_op_yunshanfu_status')) {
-      		$query = $this->db->query("SELECT * FROM " . DB_PREFIX . "zone_to_geo_zone WHERE geo_zone_id = '" . (int)$this->config->get('payment_op_yunshanfu_geo_zone_id') . "' AND country_id = '" . (int)$address['country_id'] . "' AND (zone_id = '" . (int)$address['zone_id'] . "' OR zone_id = '0')");
+		if ($this->config->get('payment_op_applepay_status')) {
+      		$query = $this->db->query("SELECT * FROM " . DB_PREFIX . "zone_to_geo_zone WHERE geo_zone_id = '" . (int)$this->config->get('payment_op_applepay_geo_zone_id') . "' AND country_id = '" . (int)$address['country_id'] . "' AND (zone_id = '" . (int)$address['zone_id'] . "' OR zone_id = '0')");
 			
-			if (!$this->config->get('payment_op_yunshanfu_geo_zone_id')) {
+			if (!$this->config->get('payment_op_applepay_geo_zone_id')) {
         		$status = true;
       		} elseif ($query->num_rows) {
       		  	$status = true;
@@ -18,19 +18,26 @@ class ModelExtensionPaymentOPYunshanfu extends Model {
       	} else {
 			$status = false;
 		}
+		//不在apple设备时隐藏
+		$userAgent = $_SERVER['HTTP_USER_AGENT'];
+		if(!strpos($userAgent,"iPhone") && !strpos($userAgent,"iPad") && !strpos($userAgent,"Mac")){
+			$status = false;
+		}
 		
 		$method_data = array();
 	
 		if ($status) {
 			$title = $this->language->get('text_title');
-			if($this->config->get('payment_op_yunshanfu_transaction') == 'https://test-secure.oceanpayment.com/gateway/service/pay'){
-				$title = $this->language->get('text_title').'<br><p style="color: red;">Note: In the test state all transactions are not deducted and cannot be shipped or services provided. The interface needs to be closed in time after the test is completed to avoid consumers from placing orders.</p>';
+			$tip = '';
+			if($this->config->get('payment_op_applepay_transaction') == 'https://test-secure.oceanpayment.com/gateway/service/pay'){
+				$tip = ' <span style="color:red;">Note: In the test state all transactions are not deducted and cannot be shipped or services provided. The interface needs to be closed in time after the test is completed to avoid consumers from placing orders.</span> ';
 			}
+
       		$method_data = array( 
-        		'code'         => 'op_yunshanfu',
+        		'code'       => 'op_applepay',
         		'title'      => $title,
-      			'terms'      => '',
-				'sort_order' => $this->config->get('payment_op_yunshanfu_sort_order')
+      			'terms'      => $tip,
+				'sort_order' => $this->config->get('payment_op_applepay_sort_order')
       		);
     	}
    
