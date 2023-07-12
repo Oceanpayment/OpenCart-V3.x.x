@@ -1,6 +1,6 @@
 <?php
 
-class ControllerExtensionPaymentOPApplePay extends Controller {
+class ControllerExtensionPaymentOPGooglePay extends Controller {
 	
 	const PUSH 			= "[PUSH]";
 	const BrowserReturn = "[Browser Return]";	
@@ -12,32 +12,32 @@ class ControllerExtensionPaymentOPApplePay extends Controller {
 		
 		
 		$data['button_confirm'] = $this->language->get('button_confirm');
-		$data['action'] = 'index.php?route=extension/payment/op_applepay/op_applepay_form';
+		$data['action'] = 'index.php?route=extension/payment/op_googlepay/op_googlepay_form';
 		
 		
 		$order_info = $this->model_checkout_order->getOrder($this->session->data['order_id']);
 		
-		return $this->load->view('extension/payment/op_applepay', $data);
+		return $this->load->view('extension/payment/op_googlepay', $data);
 	}
 
 	
-	public function op_applepay_form() {
+	public function op_googlepay_form() {
 		
 		$this->load->model('checkout/order');
 		$order_info = $this->model_checkout_order->getOrder($this->session->data['order_id']);
-		$this->model_checkout_order->addOrderHistory($this->session->data['order_id'], $this->config->get('payment_op_applepay_default_order_status_id'), '', false);
+		$this->model_checkout_order->addOrderHistory($this->session->data['order_id'], $this->config->get('payment_op_googlepay_default_order_status_id'), '', false);
 
 		
 		//判断是否为空订单
 		if (!empty($order_info)) {
 			
-			$this->load->model('extension/payment/op_applepay');
-			$product_info = $this->model_extension_payment_op_applepay->getOrderProducts($this->session->data['order_id']);
+			$this->load->model('extension/payment/op_googlepay');
+			$product_info = $this->model_extension_payment_op_googlepay->getOrderProducts($this->session->data['order_id']);
 			
 			//获取订单详情
 			$productDetails = $this->getProductItems($product_info);
 			//获取消费者详情
-			$customer_info = $this->model_extension_payment_op_applepay->getCustomerDetails($order_info['customer_id']);
+			$customer_info = $this->model_extension_payment_op_googlepay->getCustomerDetails($order_info['customer_id']);
 			
 			
 			if (!$this->request->server['HTTPS']) {
@@ -47,7 +47,7 @@ class ControllerExtensionPaymentOPApplePay extends Controller {
 			}
 			
 			//提交网关
-			$action = $this->config->get('payment_op_applepay_transaction');
+			$action = $this->config->get('payment_op_googlepay_transaction');
 			$data['action'] = $action;
 			
 			//订单号
@@ -64,23 +64,23 @@ class ControllerExtensionPaymentOPApplePay extends Controller {
 
 		
 			//商户号
-			$account = $this->config->get('payment_op_applepay_account');
+			$account = $this->config->get('payment_op_googlepay_account');
 			$data['account'] = $account;
 				
 			//终端号
-			$terminal = $this->config->get('payment_op_applepay_terminal');
+			$terminal = $this->config->get('payment_op_googlepay_terminal');
 			$data['terminal'] = $terminal;
 			
 			//securecode
-			$securecode = $this->config->get('payment_op_applepay_securecode');
+			$securecode = $this->config->get('payment_op_googlepay_securecode');
 			
 			
 			//返回地址
-			$backUrl = $base_url.'index.php?route=extension/payment/op_applepay/callback';
+			$backUrl = $base_url.'index.php?route=extension/payment/op_googlepay/callback';
 			$data['backUrl'] = $backUrl;
 			
 			//服务器响应地址
-			$noticeUrl = $base_url.'index.php?route=extension/payment/op_applepay/notice';
+			$noticeUrl = $base_url.'index.php?route=extension/payment/op_googlepay/notice';
 			$data['noticeUrl'] = $noticeUrl;
 			
 			//备注
@@ -269,12 +269,12 @@ class ControllerExtensionPaymentOPApplePay extends Controller {
 			$data['header'] = $this->load->controller('common/header');
 			
 			//支付模式Pay Mode
-			if($this->config->get('payment_op_applepay_pay_mode') == 1){
+			if($this->config->get('payment_op_googlepay_pay_mode') == 1){
 				//内嵌Iframe
-				$this->response->setOutput($this->load->view('extension/payment/op_applepay_iframe', $data));
+				$this->response->setOutput($this->load->view('extension/payment/op_googlepay_iframe', $data));
 			}else{
 				//跳转Redirect
-				$this->response->setOutput($this->load->view('extension/payment/op_applepay_form', $data));
+				$this->response->setOutput($this->load->view('extension/payment/op_googlepay_form', $data));
 			}
 
 		}else{		
@@ -287,7 +287,7 @@ class ControllerExtensionPaymentOPApplePay extends Controller {
 	
 	public function callback() {
 		if (isset($this->request->post['order_number']) && !(empty($this->request->post['order_number']))) {
-			$this->language->load('extension/payment/op_applepay');
+			$this->language->load('extension/payment/op_googlepay');
 		
 			$data['title'] = sprintf($this->language->get('heading_title'), $this->config->get('config_name'));
 
@@ -316,7 +316,7 @@ class ControllerExtensionPaymentOPApplePay extends Controller {
 			
 	
 			//返回信息
-			$account = $this->config->get('payment_op_applepay_account');
+			$account = $this->config->get('payment_op_googlepay_account');
 			$terminal = $this->request->post['terminal'];
 			$response_type = $this->request->post['response_type'];
 			$payment_id = $this->request->post['payment_id'];
@@ -344,9 +344,9 @@ class ControllerExtensionPaymentOPApplePay extends Controller {
 			
 			
 			//匹配终端号
-			if($terminal == $this->config->get('payment_op_applepay_terminal')){
+			if($terminal == $this->config->get('payment_op_googlepay_terminal')){
 				//普通终端号
-				$securecode = $this->config->get('payment_op_applepay_securecode');
+				$securecode = $this->config->get('payment_op_googlepay_securecode');
 			}else{
 				$securecode = '';
 			}
@@ -357,7 +357,7 @@ class ControllerExtensionPaymentOPApplePay extends Controller {
 			$local_signValue = hash("sha256",$account.$terminal.$order_number.$order_currency.$order_amount.$order_notes.$card_number.
 					$payment_id.$payment_authType.$payment_status.$payment_details.$payment_risk.$securecode);
 			
-			if($this->config->get('payment_op_applepay_logs') == 'True') {
+			if($this->config->get('payment_op_googlepay_logs') == 'True') {
 				//记录浏览器返回日志
 				$this->returnLog(self::BrowserReturn);
 			}
@@ -365,7 +365,7 @@ class ControllerExtensionPaymentOPApplePay extends Controller {
 	
 
 			$message = self::BrowserReturn ;
-			if($this->config->get('payment_op_applepay_transaction') == 'https://test-secure.oceanpayment.com/gateway/service/pay'){
+			if($this->config->get('payment_op_googlepay_transaction') == 'https://test-secure.oceanpayment.com/gateway/service/pay'){
 				$message .= 'TEST ORDER-';
 				$data['payment_details'] = 'TEST ORDER-'.$data['payment_details'];
 			}
@@ -390,7 +390,7 @@ class ControllerExtensionPaymentOPApplePay extends Controller {
 					if($ErrorCode == 20061){	 
 						//排除订单号重复(20061)的交易
 						$data['continue'] = $this->url->link('checkout/cart');
-						$this->response->setOutput($this->load->view('extension/payment/op_applepay_failure', $data));
+						$this->response->setOutput($this->load->view('extension/payment/op_googlepay_failure', $data));
 
 					}else{
 						if ($payment_status == 1 ){  
@@ -398,10 +398,10 @@ class ControllerExtensionPaymentOPApplePay extends Controller {
 							//清除coupon
 							unset($this->session->data['coupon']);
 							
-							$this->model_checkout_order->addOrderHistory($this->request->post['order_number'], $this->config->get('payment_op_applepay_success_order_status_id'), $message, true);
+							$this->model_checkout_order->addOrderHistory($this->request->post['order_number'], $this->config->get('payment_op_googlepay_success_order_status_id'), $message, true);
 							
 							$data['continue'] = HTTPS_SERVER . 'index.php?route=checkout/success';
-							$this->response->setOutput($this->load->view('extension/payment/op_applepay_success', $data));
+							$this->response->setOutput($this->load->view('extension/payment/op_googlepay_success', $data));
 
 						}elseif ($payment_status == -1 ){   
 							//交易待处理 
@@ -409,17 +409,17 @@ class ControllerExtensionPaymentOPApplePay extends Controller {
 							if($payment_authType == 1){						
 								$message .= '(Pre-auth)';
 							}
-							$this->model_checkout_order->addOrderHistory($this->request->post['order_number'], $this->config->get('payment_op_applepay_pending_order_status_id'), $message, false);
+							$this->model_checkout_order->addOrderHistory($this->request->post['order_number'], $this->config->get('payment_op_googlepay_pending_order_status_id'), $message, false);
 								
 							$data['continue'] = $this->url->link('checkout/cart');
-							$this->response->setOutput($this->load->view('extension/payment/op_applepay_success', $data));
+							$this->response->setOutput($this->load->view('extension/payment/op_googlepay_success', $data));
 	
 						}else{     
 							//交易失败
-							$this->model_checkout_order->addOrderHistory($this->request->post['order_number'], $this->config->get('payment_op_applepay_failed_order_status_id'), $message, false);
+							$this->model_checkout_order->addOrderHistory($this->request->post['order_number'], $this->config->get('payment_op_googlepay_failed_order_status_id'), $message, false);
 							
 							$data['continue'] = $this->url->link('checkout/cart');
-							$this->response->setOutput($this->load->view('extension/payment/op_applepay_failure', $data));
+							$this->response->setOutput($this->load->view('extension/payment/op_googlepay_failure', $data));
 
 						}
  					}								
@@ -427,10 +427,10 @@ class ControllerExtensionPaymentOPApplePay extends Controller {
 			
 			}else {     
 				//数据签名对比失败
-				$this->model_checkout_order->addOrderHistory($this->request->post['order_number'], $this->config->get('op_applepay_failed_order_status_id'), $message, false);
+				$this->model_checkout_order->addOrderHistory($this->request->post['order_number'], $this->config->get('op_googlepay_failed_order_status_id'), $message, false);
 							
 				$data['continue'] = $this->url->link('checkout/cart');
-				$this->response->setOutput($this->load->view('extension/payment/op_applepay_failure', $data));
+				$this->response->setOutput($this->load->view('extension/payment/op_googlepay_failure', $data));
 					
 			}
 		}
@@ -472,9 +472,9 @@ class ControllerExtensionPaymentOPApplePay extends Controller {
 				
 					
 			//匹配终端号
-			if($_REQUEST['terminal'] == $this->config->get('payment_op_applepay_terminal')){
+			if($_REQUEST['terminal'] == $this->config->get('payment_op_googlepay_terminal')){
 				//普通终端号
-				$securecode = $this->config->get('payment_op_applepay_securecode');
+				$securecode = $this->config->get('payment_op_googlepay_securecode');
 			}else{
 				$securecode = '';
 			}
@@ -486,7 +486,7 @@ class ControllerExtensionPaymentOPApplePay extends Controller {
 		
 		if($_REQUEST['response_type'] == 1){
 			
-			if($this->config->get('payment_op_applepay_logs') == 'True') {
+			if($this->config->get('payment_op_googlepay_logs') == 'True') {
 				//记录交易推送日志
 				$this->returnLog(self::PUSH);
 			}
@@ -507,7 +507,7 @@ class ControllerExtensionPaymentOPApplePay extends Controller {
 				
 
 				$message = self::PUSH ;
-				if($this->config->get('payment_op_applepay_transaction') == 'https://test-secure.oceanpayment.com/gateway/service/pay'){
+				if($this->config->get('payment_op_googlepay_transaction') == 'https://test-secure.oceanpayment.com/gateway/service/pay'){
 					$message .= 'TEST ORDER-';
 				}
 				if ($_REQUEST['payment_status'] == 1){           //交易状态
@@ -529,17 +529,17 @@ class ControllerExtensionPaymentOPApplePay extends Controller {
 				}else{
 					if ($_REQUEST['payment_status'] == 1 ){
 						//交易成功
-						$this->model_checkout_order->addOrderHistory($_REQUEST['order_number'], $this->config->get('payment_op_applepay_success_order_status_id'), $message, false);
+						$this->model_checkout_order->addOrderHistory($_REQUEST['order_number'], $this->config->get('payment_op_googlepay_success_order_status_id'), $message, false);
 					}elseif ($_REQUEST['payment_status'] == -1){
 						//交易待处理
 						//是否预授权交易
 						if($_REQUEST['payment_authType'] == 1){
 							$message .= '(Pre-auth)';
 						}
-						$this->model_checkout_order->addOrderHistory($_REQUEST['order_number'], $this->config->get('payment_op_applepay_pending_order_status_id'), $message, false);
+						$this->model_checkout_order->addOrderHistory($_REQUEST['order_number'], $this->config->get('payment_op_googlepay_pending_order_status_id'), $message, false);
 					}else{
 						//交易失败
-						$this->model_checkout_order->addOrderHistory($_REQUEST['order_number'], $this->config->get('payment_op_applepay_failed_order_status_id'), $message, false);
+						$this->model_checkout_order->addOrderHistory($_REQUEST['order_number'], $this->config->get('payment_op_googlepay_failed_order_status_id'), $message, false);
 					}
 				}
 				

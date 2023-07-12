@@ -1,14 +1,14 @@
 <?php 
-class ModelExtensionPaymentOPApplePay extends Model {
+class ModelExtensionPaymentOPGooglePay extends Model {
 	private $_limit = ',';
 	
   	public function getMethod($address) {
-		$this->load->language('extension/payment/op_applepay');
+		$this->load->language('extension/payment/op_googlepay');
 		
-		if ($this->config->get('payment_op_applepay_status')) {
-      		$query = $this->db->query("SELECT * FROM " . DB_PREFIX . "zone_to_geo_zone WHERE geo_zone_id = '" . (int)$this->config->get('payment_op_applepay_geo_zone_id') . "' AND country_id = '" . (int)$address['country_id'] . "' AND (zone_id = '" . (int)$address['zone_id'] . "' OR zone_id = '0')");
+		if ($this->config->get('payment_op_googlepay_status')) {
+      		$query = $this->db->query("SELECT * FROM " . DB_PREFIX . "zone_to_geo_zone WHERE geo_zone_id = '" . (int)$this->config->get('payment_op_googlepay_geo_zone_id') . "' AND country_id = '" . (int)$address['country_id'] . "' AND (zone_id = '" . (int)$address['zone_id'] . "' OR zone_id = '0')");
 			
-			if (!$this->config->get('payment_op_applepay_geo_zone_id')) {
+			if (!$this->config->get('payment_op_googlepay_geo_zone_id')) {
         		$status = true;
       		} elseif ($query->num_rows) {
       		  	$status = true;
@@ -18,26 +18,20 @@ class ModelExtensionPaymentOPApplePay extends Model {
       	} else {
 			$status = false;
 		}
-		//不在apple设备时隐藏
-		$userAgent = $_SERVER['HTTP_USER_AGENT'];
-		if(!strpos($userAgent,"iPhone") && !strpos($userAgent,"iPad") && !strpos($userAgent,"Mac")){
-			$status = false;
-		}
 		
 		$method_data = array();
 	
 		if ($status) {
 			$title = $this->language->get('text_title');
 			$tip = '';
-			if($this->config->get('payment_op_applepay_transaction') == 'https://test-secure.oceanpayment.com/gateway/service/pay'){
+			if($this->config->get('payment_op_googlepay_transaction') == 'https://test-secure.oceanpayment.com/gateway/service/pay'){
 				$tip = ' <span style="color:red;">Note: In the test state all transactions are not deducted and cannot be shipped or services provided. The interface needs to be closed in time after the test is completed to avoid consumers from placing orders.</span> ';
 			}
-
       		$method_data = array( 
-        		'code'       => 'op_applepay',
+        		'code'       => 'op_googlepay',
         		'title'      => $title,
       			'terms'      => $tip,
-				'sort_order' => $this->config->get('payment_op_applepay_sort_order')
+				'sort_order' => $this->config->get('payment_op_googlepay_sort_order')
       		);
     	}
    
