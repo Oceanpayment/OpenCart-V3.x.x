@@ -1,14 +1,14 @@
 <?php 
-class ModelExtensionPaymentOPAfterpay extends Model {
+class ModelExtensionPaymentOPClearpay extends Model {
 	private $_limit = ',';
 	
   	public function getMethod($address) {
-		$this->load->language('extension/payment/op_afterpay');
+		$this->load->language('extension/payment/op_clearpay');
 		
-		if ($this->config->get('payment_op_afterpay_status')) {
-      		$query = $this->db->query("SELECT * FROM " . DB_PREFIX . "zone_to_geo_zone WHERE geo_zone_id = '" . (int)$this->config->get('payment_op_afterpay_geo_zone_id') . "' AND country_id = '" . (int)$address['country_id'] . "' AND (zone_id = '" . (int)$address['zone_id'] . "' OR zone_id = '0')");
+		if ($this->config->get('payment_op_clearpay_status')) {
+      		$query = $this->db->query("SELECT * FROM " . DB_PREFIX . "zone_to_geo_zone WHERE geo_zone_id = '" . (int)$this->config->get('payment_op_clearpay_geo_zone_id') . "' AND country_id = '" . (int)$address['country_id'] . "' AND (zone_id = '" . (int)$address['zone_id'] . "' OR zone_id = '0')");
 			
-			if (!$this->config->get('payment_op_afterpay_geo_zone_id')) {
+			if (!$this->config->get('payment_op_clearpay_geo_zone_id')) {
         		$status = true;
       		} elseif ($query->num_rows) {
       		  	$status = true;
@@ -23,14 +23,14 @@ class ModelExtensionPaymentOPAfterpay extends Model {
 	
 		if ($status) {
 			$title = $this->language->get('text_title');
-			if($this->config->get('payment_op_afterpay_transaction') == 'https://test-secure.oceanpayment.com/gateway/service/pay'){
+			if($this->config->get('payment_op_clearpay_transaction') == 'https://test-secure.oceanpayment.com/gateway/service/pay'){
 				$title = $this->language->get('text_title').'<br><p style="color: red;">Note: In the test state all transactions are not deducted and cannot be shipped or services provided. The interface needs to be closed in time after the test is completed to avoid consumers from placing orders.</p>';
 			}
       		$method_data = array( 
-        		'code'         => 'op_afterpay',
+        		'code'         => 'op_clearpay',
         		'title'      => $title,
       			'terms'      => '',
-				'sort_order' => $this->config->get('payment_op_afterpay_sort_order')
+				'sort_order' => $this->config->get('payment_op_clearpay_sort_order')
       		);
     	}
    

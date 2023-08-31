@@ -1,9 +1,9 @@
 <?php 
-class ControllerExtensionPaymentOPAfterpay extends Controller {
+class ControllerExtensionPaymentOPClearpay extends Controller {
 	private $error = array(); 
 
 	public function index() {
-		$this->load->language('extension/payment/op_afterpay');
+		$this->load->language('extension/payment/op_clearpay');
 		
 		$this->document->setTitle($this->language->get('heading_title'));
 		
@@ -12,7 +12,7 @@ class ControllerExtensionPaymentOPAfterpay extends Controller {
 		if (($this->request->server['REQUEST_METHOD'] == 'POST') && ($this->validate())) {
 			$this->load->model('setting/setting');
 			
-			$this->model_setting_setting->editSetting('payment_op_afterpay', $this->request->post);
+			$this->model_setting_setting->editSetting('payment_op_clearpay', $this->request->post);
 			
 			$this->session->data['success'] = $this->language->get('text_success');
 			
@@ -103,69 +103,69 @@ class ControllerExtensionPaymentOPAfterpay extends Controller {
 
    		$data['breadcrumbs'][] = array(
        		'text' => $this->language->get('heading_title'),
-   			'href' => $this->url->link('extension/payment/op_afterpay', 'user_token=' . $this->session->data['user_token'], 'SSL'),
+   			'href' => $this->url->link('extension/payment/op_clearpay', 'user_token=' . $this->session->data['user_token'], 'SSL'),
    		);
 
-		$data['action'] = $this->url->link('extension/payment/op_afterpay', 'user_token=' . $this->session->data['user_token'], 'SSL');
+		$data['action'] = $this->url->link('extension/payment/op_clearpay', 'user_token=' . $this->session->data['user_token'], 'SSL');
 
 		$data['cancel'] = $this->url->link('marketplace/extension', 'user_token=' . $this->session->data['user_token'].'&type=payment', 'SSL');
 
-		if (isset($this->request->post['payment_op_afterpay_account'])) {
-			$data['payment_op_afterpay_account'] = $this->request->post['payment_op_afterpay_account'];
+		if (isset($this->request->post['payment_op_clearpay_account'])) {
+			$data['payment_op_clearpay_account'] = $this->request->post['payment_op_clearpay_account'];
 		} else {
-			$data['payment_op_afterpay_account'] = $this->config->get('payment_op_afterpay_account');
+			$data['payment_op_clearpay_account'] = $this->config->get('payment_op_clearpay_account');
 		}
 
-		if (isset($this->request->post['payment_op_afterpay_terminal'])) {
-			$data['payment_op_afterpay_terminal'] = $this->request->post['payment_op_afterpay_terminal'];
+		if (isset($this->request->post['payment_op_clearpay_terminal'])) {
+			$data['payment_op_clearpay_terminal'] = $this->request->post['payment_op_clearpay_terminal'];
 		} else {
-			$data['payment_op_afterpay_terminal'] = $this->config->get('payment_op_afterpay_terminal');
+			$data['payment_op_clearpay_terminal'] = $this->config->get('payment_op_clearpay_terminal');
 		}
 
-		if (isset($this->request->post['payment_op_afterpay_securecode'])) {
-			$data['payment_op_afterpay_securecode'] = $this->request->post['payment_op_afterpay_securecode'];
+		if (isset($this->request->post['payment_op_clearpay_securecode'])) {
+			$data['payment_op_clearpay_securecode'] = $this->request->post['payment_op_clearpay_securecode'];
 		} else {
-			$data['payment_op_afterpay_securecode'] = $this->config->get('payment_op_afterpay_securecode');
+			$data['payment_op_clearpay_securecode'] = $this->config->get('payment_op_clearpay_securecode');
 		}
 		
 	
 		
 		
-		$data['callback'] = HTTP_CATALOG . 'index.php?route=extension/payment/op_afterpay/callback';
+		$data['callback'] = HTTP_CATALOG . 'index.php?route=extension/payment/op_clearpay/callback';
 
 		
-		if (isset($this->request->post['payment_op_afterpay_transaction'])) {
-			$data['payment_op_afterpay_transaction'] = $this->request->post['payment_op_afterpay_transaction'];
+		if (isset($this->request->post['payment_op_clearpay_transaction'])) {
+			$data['payment_op_clearpay_transaction'] = $this->request->post['payment_op_clearpay_transaction'];
 		} else {
-			$data['payment_op_afterpay_transaction'] = $this->config->get('payment_op_afterpay_transaction');
+			$data['payment_op_clearpay_transaction'] = $this->config->get('payment_op_clearpay_transaction');
 		}
 		
-		if (isset($this->request->post['payment_op_afterpay_pay_mode'])) {
-			$data['payment_op_afterpay_pay_mode'] = $this->request->post['payment_op_afterpay_pay_mode'];
+		if (isset($this->request->post['payment_op_clearpay_pay_mode'])) {
+			$data['payment_op_clearpay_pay_mode'] = $this->request->post['payment_op_clearpay_pay_mode'];
 		} else {
-			$data['payment_op_afterpay_pay_mode'] = $this->config->get('payment_op_afterpay_pay_mode');
+			$data['payment_op_clearpay_pay_mode'] = $this->config->get('payment_op_clearpay_pay_mode');
 		}
 		
-		if (isset($this->request->post['payment_op_afterpay_default_order_status_id'])) {
-			$data['payment_op_afterpay_default_order_status_id'] = $this->request->post['payment_op_afterpay_default_order_status_id'];
+		if (isset($this->request->post['payment_op_clearpay_default_order_status_id'])) {
+			$data['payment_op_clearpay_default_order_status_id'] = $this->request->post['payment_op_clearpay_default_order_status_id'];
 		} else {
-			$data['payment_op_afterpay_default_order_status_id'] = $this->config->get('payment_op_afterpay_default_order_status_id');
+			$data['payment_op_clearpay_default_order_status_id'] = $this->config->get('payment_op_clearpay_default_order_status_id');
 		} 
 		/* add status */
-		if (isset($this->request->post['payment_op_afterpay_success_order_status_id'])) {
-			$data['payment_op_afterpay_success_order_status_id'] = $this->request->post['payment_op_afterpay_success_order_status_id'];
+		if (isset($this->request->post['payment_op_clearpay_success_order_status_id'])) {
+			$data['payment_op_clearpay_success_order_status_id'] = $this->request->post['payment_op_clearpay_success_order_status_id'];
 		} else {
-			$data['payment_op_afterpay_success_order_status_id'] = $this->config->get('payment_op_afterpay_success_order_status_id');
+			$data['payment_op_clearpay_success_order_status_id'] = $this->config->get('payment_op_clearpay_success_order_status_id');
 		}
-		if (isset($this->request->post['payment_op_afterpay_failed_order_status_id'])) {
-			$data['payment_op_afterpay_failed_order_status_id'] = $this->request->post['payment_op_afterpay_failed_order_status_id'];
+		if (isset($this->request->post['payment_op_clearpay_failed_order_status_id'])) {
+			$data['payment_op_clearpay_failed_order_status_id'] = $this->request->post['payment_op_clearpay_failed_order_status_id'];
 		} else {
-			$data['payment_op_afterpay_failed_order_status_id'] = $this->config->get('payment_op_afterpay_failed_order_status_id');
+			$data['payment_op_clearpay_failed_order_status_id'] = $this->config->get('payment_op_clearpay_failed_order_status_id');
 		}
-		if (isset($this->request->post['payment_op_afterpay_pending_order_status_id'])) {
-			$data['payment_op_afterpay_pending_order_status_id'] = $this->request->post['payment_op_afterpay_pending_order_status_id'];
+		if (isset($this->request->post['payment_op_clearpay_pending_order_status_id'])) {
+			$data['payment_op_clearpay_pending_order_status_id'] = $this->request->post['payment_op_clearpay_pending_order_status_id'];
 		} else {
-			$data['payment_op_afterpay_pending_order_status_id'] = $this->config->get('payment_op_afterpay_pending_order_status_id');
+			$data['payment_op_clearpay_pending_order_status_id'] = $this->config->get('payment_op_clearpay_pending_order_status_id');
 		}
 		
 		
@@ -173,50 +173,50 @@ class ControllerExtensionPaymentOPAfterpay extends Controller {
 		
 		$data['order_statuses'] = $this->model_localisation_order_status->getOrderStatuses();
 
-		if (isset($this->request->post['payment_op_afterpay_geo_zone_id'])) {
-			$data['payment_op_afterpay_geo_zone_id'] = $this->request->post['payment_op_afterpay_geo_zone_id'];
+		if (isset($this->request->post['payment_op_clearpay_geo_zone_id'])) {
+			$data['payment_op_clearpay_geo_zone_id'] = $this->request->post['payment_op_clearpay_geo_zone_id'];
 		} else {
-			$data['payment_op_afterpay_geo_zone_id'] = $this->config->get('payment_op_afterpay_geo_zone_id');
+			$data['payment_op_clearpay_geo_zone_id'] = $this->config->get('payment_op_clearpay_geo_zone_id');
 		}
 
 		$this->load->model('localisation/geo_zone');
 										
 		$data['geo_zones'] = $this->model_localisation_geo_zone->getGeoZones();
 		
-		if (isset($this->request->post['payment_op_afterpay_status'])) {
-			$data['payment_op_afterpay_status'] = $this->request->post['payment_op_afterpay_status'];
+		if (isset($this->request->post['payment_op_clearpay_status'])) {
+			$data['payment_op_clearpay_status'] = $this->request->post['payment_op_clearpay_status'];
 		} else {
-			$data['payment_op_afterpay_status'] = $this->config->get('payment_op_afterpay_status');
+			$data['payment_op_clearpay_status'] = $this->config->get('payment_op_clearpay_status');
 		}
 		
-		if (isset($this->request->post['payment_op_afterpay_sort_order'])) {
-			$data['payment_op_afterpay_sort_order'] = $this->request->post['payment_op_afterpay_sort_order'];
+		if (isset($this->request->post['payment_op_clearpay_sort_order'])) {
+			$data['payment_op_clearpay_sort_order'] = $this->request->post['payment_op_clearpay_sort_order'];
 		} else {
-			$data['payment_op_afterpay_sort_order'] = $this->config->get('payment_op_afterpay_sort_order');
+			$data['payment_op_clearpay_sort_order'] = $this->config->get('payment_op_clearpay_sort_order');
 		}
 		
-		if (isset($this->request->post['payment_op_afterpay_location'])) {
-          $data['payment_op_afterpay_location'] = $this->request->post['payment_op_afterpay_location'];
+		if (isset($this->request->post['payment_op_clearpay_location'])) {
+          $data['payment_op_clearpay_location'] = $this->request->post['payment_op_clearpay_location'];
 		  } else {
-			  $data['payment_op_afterpay_location'] = $this->config->get('payment_op_afterpay_location');
+			  $data['payment_op_clearpay_location'] = $this->config->get('payment_op_clearpay_location');
 		  }
 
-		  if (isset($this->request->post['payment_op_afterpay_locations'])) {
-			  $data['payment_op_afterpay_locations'] = $this->request->post['payment_op_afterpay_locations'];
+		  if (isset($this->request->post['payment_op_clearpay_locations'])) {
+			  $data['payment_op_clearpay_locations'] = $this->request->post['payment_op_clearpay_locations'];
 		  } else {
-			  $data['payment_op_afterpay_locations'] = $this->config->get('payment_op_afterpay_locations');
+			  $data['payment_op_clearpay_locations'] = $this->config->get('payment_op_clearpay_locations');
 		  }
 
-		  if (isset($this->request->post['payment_op_afterpay_entity'])) {
-			  $data['payment_op_afterpay_entity'] = $this->request->post['payment_op_afterpay_entity'];
+		  if (isset($this->request->post['payment_op_clearpay_entity'])) {
+			  $data['payment_op_clearpay_entity'] = $this->request->post['payment_op_clearpay_entity'];
 		  } else {
-			  $data['payment_op_afterpay_entity'] = $this->config->get('payment_op_afterpay_entity');
+			  $data['payment_op_clearpay_entity'] = $this->config->get('payment_op_clearpay_entity');
 		  }
 
-		  if (isset($this->request->post['payment_op_afterpay_entitys'])) {
-			  $data['payment_op_afterpay_entitys'] = $this->request->post['payment_op_afterpay_entitys'];
+		  if (isset($this->request->post['payment_op_clearpay_entitys'])) {
+			  $data['payment_op_clearpay_entitys'] = $this->request->post['payment_op_clearpay_entitys'];
 		  } else {
-			  $data['payment_op_afterpay_entitys'] = $this->config->get('payment_op_afterpay_entitys');
+			  $data['payment_op_clearpay_entitys'] = $this->config->get('payment_op_clearpay_entitys');
 		  }
 
 		
@@ -227,24 +227,24 @@ class ControllerExtensionPaymentOPAfterpay extends Controller {
 			$data['column_left'] = $this->load->controller('common/column_left');
 			$data['footer'] = $this->load->controller('common/footer');
 
-			$this->response->setOutput($this->load->view('extension/payment/op_afterpay', $data));
+			$this->response->setOutput($this->load->view('extension/payment/op_clearpay', $data));
 		}
 		
 
 	private function validate() {
-		if (!$this->user->hasPermission('modify', 'extension/payment/op_afterpay')) {
+		if (!$this->user->hasPermission('modify', 'extension/payment/op_clearpay')) {
 			$this->error['warning'] = $this->language->get('error_permission');
 		}
 
-		if (!$this->request->post['payment_op_afterpay_account']) {
+		if (!$this->request->post['payment_op_clearpay_account']) {
 			$this->error['account'] = $this->language->get('error_account');
 		}
 
-		if (!$this->request->post['payment_op_afterpay_terminal']) {
+		if (!$this->request->post['payment_op_clearpay_terminal']) {
 			$this->error['terminal'] = $this->language->get('error_terminal');
 		}
 
-		if (!$this->request->post['payment_op_afterpay_securecode']) {
+		if (!$this->request->post['payment_op_clearpay_securecode']) {
 			$this->error['securecode'] = $this->language->get('error_securecode');
 		}
 		

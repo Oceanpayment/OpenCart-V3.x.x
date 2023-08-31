@@ -1,6 +1,6 @@
 <?php
 
-class ControllerExtensionPaymentOPAfterpay extends Controller {
+class ControllerExtensionPaymentOPClearpay extends Controller {
 	
 	const PUSH 			= "[PUSH]";
 	const BrowserReturn = "[Browser Return]";	
@@ -12,32 +12,32 @@ class ControllerExtensionPaymentOPAfterpay extends Controller {
 		
 		
 		$data['button_confirm'] = $this->language->get('button_confirm');
-		$data['action'] = 'index.php?route=extension/payment/op_afterpay/op_afterpay_form';
+		$data['action'] = 'index.php?route=extension/payment/op_clearpay/op_clearpay_form';
 		
 		
 		$order_info = $this->model_checkout_order->getOrder($this->session->data['order_id']);
 		
-		return $this->load->view('extension/payment/op_afterpay', $data);
+		return $this->load->view('extension/payment/op_clearpay', $data);
 	}
 
 	
-	public function op_afterpay_form() {
+	public function op_clearpay_form() {
 		
 		$this->load->model('checkout/order');
 		$order_info = $this->model_checkout_order->getOrder($this->session->data['order_id']);
-		$this->model_checkout_order->addOrderHistory($this->session->data['order_id'], $this->config->get('payment_op_afterpay_default_order_status_id'), '', false);
+		$this->model_checkout_order->addOrderHistory($this->session->data['order_id'], $this->config->get('payment_op_clearpay_default_order_status_id'), '', false);
 
 		
 		//判断是否为空订单
 		if (!empty($order_info)) {
 			
-			$this->load->model('extension/payment/op_afterpay');
-			$product_info = $this->model_extension_payment_op_afterpay->getOrderProducts($this->session->data['order_id']);
+			$this->load->model('extension/payment/op_clearpay');
+			$product_info = $this->model_extension_payment_op_clearpay->getOrderProducts($this->session->data['order_id']);
 			
 			//获取订单详情
 			$productDetails = $this->getProductItems($product_info);
 			//获取消费者详情
-			$customer_info = $this->model_extension_payment_op_afterpay->getCustomerDetails($order_info['customer_id']);
+			$customer_info = $this->model_extension_payment_op_clearpay->getCustomerDetails($order_info['customer_id']);
 			
 			
 			if (!$this->request->server['HTTPS']) {
@@ -47,7 +47,7 @@ class ControllerExtensionPaymentOPAfterpay extends Controller {
 			}
 			
 			//提交网关
-			$action = $this->config->get('payment_op_afterpay_transaction');
+			$action = $this->config->get('payment_op_clearpay_transaction');
 			$data['action'] = $action;
 			
 			//订单号
@@ -63,12 +63,12 @@ class ControllerExtensionPaymentOPAfterpay extends Controller {
 			$data['order_currency'] = $order_currency;
 			
 
-			$validate_arr['terminal'] = $this->config->get('payment_op_afterpay_terminal');
-			$validate_arr['securecode'] = $this->config->get('payment_op_afterpay_securecode');
+			$validate_arr['terminal'] = $this->config->get('payment_op_clearpay_terminal');
+			$validate_arr['securecode'] = $this->config->get('payment_op_clearpay_securecode');
 
 
 			//商户号
-			$account = $this->config->get('payment_op_afterpay_account');
+			$account = $this->config->get('payment_op_clearpay_account');
 			$data['account'] = $account;
 				
 			//终端号
@@ -80,11 +80,11 @@ class ControllerExtensionPaymentOPAfterpay extends Controller {
 			
 			
 			//返回地址
-			$backUrl = $base_url.'index.php?route=extension/payment/op_afterpay/callback';
+			$backUrl = $base_url.'index.php?route=extension/payment/op_clearpay/callback';
 			$data['backUrl'] = $backUrl;
 			
 			//服务器响应地址
-			$noticeUrl = $base_url.'index.php?route=extension/payment/op_afterpay/notice';
+			$noticeUrl = $base_url.'index.php?route=extension/payment/op_clearpay/notice';
 			$data['noticeUrl'] = $noticeUrl;
 			
 			//备注
@@ -92,7 +92,7 @@ class ControllerExtensionPaymentOPAfterpay extends Controller {
 			$data['order_notes'] = $order_notes;
 			
 			//支付方式
-			$methods = "Afterpay";
+			$methods = "Clearpay";
 			$data['methods'] = $methods;
 
 			//账单人名
@@ -273,12 +273,12 @@ class ControllerExtensionPaymentOPAfterpay extends Controller {
 			$data['header'] = $this->load->controller('common/header');
 			
 			//支付模式Pay Mode
-			if($this->config->get('payment_op_afterpay_pay_mode') == 1){
+			if($this->config->get('payment_op_clearpay_pay_mode') == 1){
 				//内嵌Iframe
-				$this->response->setOutput($this->load->view('extension/payment/op_afterpay_iframe', $data));
+				$this->response->setOutput($this->load->view('extension/payment/op_clearpay_iframe', $data));
 			}else{
 				//跳转Redirect
-				$this->response->setOutput($this->load->view('extension/payment/op_afterpay_form', $data));
+				$this->response->setOutput($this->load->view('extension/payment/op_clearpay_form', $data));
 			}
 
 		}else{		
@@ -291,7 +291,7 @@ class ControllerExtensionPaymentOPAfterpay extends Controller {
 	
 	public function callback() {
 		if (isset($this->request->post['order_number']) && !(empty($this->request->post['order_number']))) {
-			$this->language->load('extension/payment/op_afterpay');
+			$this->language->load('extension/payment/op_clearpay');
 		
 			$data['title'] = sprintf($this->language->get('heading_title'), $this->config->get('config_name'));
 
@@ -320,7 +320,7 @@ class ControllerExtensionPaymentOPAfterpay extends Controller {
 			
 	
 			//返回信息
-			$account = $this->config->get('payment_op_afterpay_account');
+			$account = $this->config->get('payment_op_clearpay_account');
 			$terminal = $this->request->post['terminal'];
 			$response_type = $this->request->post['response_type'];
 			$payment_id = $this->request->post['payment_id'];
@@ -348,9 +348,9 @@ class ControllerExtensionPaymentOPAfterpay extends Controller {
 			
 			
 			//匹配终端号
-			if($terminal == $this->config->get('payment_op_afterpay_terminal')){
+			if($terminal == $this->config->get('payment_op_clearpay_terminal')){
 				//普通终端号
-				$securecode = $this->config->get('payment_op_afterpay_securecode');
+				$securecode = $this->config->get('payment_op_clearpay_securecode');
 			}else{
 				$securecode = '';
 			}
@@ -369,7 +369,7 @@ class ControllerExtensionPaymentOPAfterpay extends Controller {
 	
 
 			$message = self::BrowserReturn;
-			if($this->config->get('payment_op_afterpay_transaction') == 'https://test-secure.oceanpayment.com/gateway/service/pay'){
+			if($this->config->get('payment_op_clearpay_transaction') == 'https://test-secure.oceanpayment.com/gateway/service/pay'){
 				$message .= 'TEST ORDER-';
 				$data['payment_details'] = 'TEST ORDER-'.$data['payment_details'];
 			}
@@ -394,7 +394,7 @@ class ControllerExtensionPaymentOPAfterpay extends Controller {
 					if($ErrorCode == 20061){	 
 						//排除订单号重复(20061)的交易
 						$data['continue'] = $this->url->link('checkout/cart');
-						$this->response->setOutput($this->load->view('extension/payment/op_afterpay_failure', $data));
+						$this->response->setOutput($this->load->view('extension/payment/op_clearpay_failure', $data));
 
 					}else{
 						if ($payment_status == 1 ){  
@@ -402,10 +402,10 @@ class ControllerExtensionPaymentOPAfterpay extends Controller {
 							//清除coupon
 							unset($this->session->data['coupon']);
 							
-							$this->model_checkout_order->addOrderHistory($this->request->post['order_number'], $this->config->get('payment_op_afterpay_success_order_status_id'), $message, true);
+							$this->model_checkout_order->addOrderHistory($this->request->post['order_number'], $this->config->get('payment_op_clearpay_success_order_status_id'), $message, true);
 							
 							$data['continue'] = HTTPS_SERVER . 'index.php?route=checkout/success';
-							$this->response->setOutput($this->load->view('extension/payment/op_afterpay_success', $data));
+							$this->response->setOutput($this->load->view('extension/payment/op_clearpay_success', $data));
 
 						}elseif ($payment_status == -1 ){   
 							//交易待处理 
@@ -413,17 +413,17 @@ class ControllerExtensionPaymentOPAfterpay extends Controller {
 							if($payment_authType == 1){						
 								$message .= '(Pre-auth)';
 							}
-							$this->model_checkout_order->addOrderHistory($this->request->post['order_number'], $this->config->get('payment_op_afterpay_pending_order_status_id'), $message, false);
+							$this->model_checkout_order->addOrderHistory($this->request->post['order_number'], $this->config->get('payment_op_clearpay_pending_order_status_id'), $message, false);
 								
 							$data['continue'] = $this->url->link('checkout/cart');
-							$this->response->setOutput($this->load->view('extension/payment/op_afterpay_success', $data));
+							$this->response->setOutput($this->load->view('extension/payment/op_clearpay_success', $data));
 	
 						}else{     
 							//交易失败
-							$this->model_checkout_order->addOrderHistory($this->request->post['order_number'], $this->config->get('payment_op_afterpay_failed_order_status_id'), $message, false);
+							$this->model_checkout_order->addOrderHistory($this->request->post['order_number'], $this->config->get('payment_op_clearpay_failed_order_status_id'), $message, false);
 							
 							$data['continue'] = $this->url->link('checkout/cart');
-							$this->response->setOutput($this->load->view('extension/payment/op_afterpay_failure', $data));
+							$this->response->setOutput($this->load->view('extension/payment/op_clearpay_failure', $data));
 
 						}
  					}								
@@ -431,10 +431,10 @@ class ControllerExtensionPaymentOPAfterpay extends Controller {
 			
 			}else {     
 				//数据签名对比失败
-				$this->model_checkout_order->addOrderHistory($this->request->post['order_number'], $this->config->get('op_afterpay_failed_order_status_id'), $message, false);
+				$this->model_checkout_order->addOrderHistory($this->request->post['order_number'], $this->config->get('op_clearpay_failed_order_status_id'), $message, false);
 							
 				$data['continue'] = $this->url->link('checkout/cart');
-				$this->response->setOutput($this->load->view('extension/payment/op_afterpay_failure', $data));
+				$this->response->setOutput($this->load->view('extension/payment/op_clearpay_failure', $data));
 					
 			}
 		}
@@ -476,9 +476,9 @@ class ControllerExtensionPaymentOPAfterpay extends Controller {
 				
 					
 			//匹配终端号
-			if($_REQUEST['terminal'] == $this->config->get('payment_op_afterpay_terminal')){
+			if($_REQUEST['terminal'] == $this->config->get('payment_op_clearpay_terminal')){
 				//普通终端号
-				$securecode = $this->config->get('payment_op_afterpay_securecode');
+				$securecode = $this->config->get('payment_op_clearpay_securecode');
 			}else{
 				$securecode = '';
 			}
@@ -509,7 +509,7 @@ class ControllerExtensionPaymentOPAfterpay extends Controller {
 				
 
 				$message = self::PUSH;
-				if($this->config->get('payment_op_afterpay_transaction') == 'https://test-secure.oceanpayment.com/gateway/service/pay'){
+				if($this->config->get('payment_op_clearpay_transaction') == 'https://test-secure.oceanpayment.com/gateway/service/pay'){
 					$message .= 'TEST ORDER-';
 				}
 				if ($_REQUEST['payment_status'] == 1){           //交易状态
@@ -531,17 +531,17 @@ class ControllerExtensionPaymentOPAfterpay extends Controller {
 				}else{
 					if ($_REQUEST['payment_status'] == 1 ){
 						//交易成功
-						$this->model_checkout_order->addOrderHistory($_REQUEST['order_number'], $this->config->get('payment_op_afterpay_success_order_status_id'), $message, false);
+						$this->model_checkout_order->addOrderHistory($_REQUEST['order_number'], $this->config->get('payment_op_clearpay_success_order_status_id'), $message, false);
 					}elseif ($_REQUEST['payment_status'] == -1){
 						//交易待处理
 						//是否预授权交易
 						if($_REQUEST['payment_authType'] == 1){
 							$message .= '(Pre-auth)';
 						}
-						$this->model_checkout_order->addOrderHistory($_REQUEST['order_number'], $this->config->get('payment_op_afterpay_pending_order_status_id'), $message, false);
+						$this->model_checkout_order->addOrderHistory($_REQUEST['order_number'], $this->config->get('payment_op_clearpay_pending_order_status_id'), $message, false);
 					}else{
 						//交易失败
-						$this->model_checkout_order->addOrderHistory($_REQUEST['order_number'], $this->config->get('payment_op_afterpay_failed_order_status_id'), $message, false);
+						$this->model_checkout_order->addOrderHistory($_REQUEST['order_number'], $this->config->get('payment_op_clearpay_failed_order_status_id'), $message, false);
 					}
 				}
 				
