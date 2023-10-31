@@ -6,7 +6,7 @@ $_['heading_title']      	= 'Oceanpayment ApplePay Payment';
 $_['text_payment']       	= 'Payment';
 $_['text_success']       	= 'Success: You have modified ApplePay account details!';
 $_['text_edit']          	= 'Edit Oceanpayment ApplePay Payment';
-$_['text_op_applepay'] 	= '<img src="view/image/payment/op_applepay.png" alt="applepay" height="25"  title="applepay" style="border: 1px solid #EEEEEE;" />';
+$_['text_op_applepay'] 	= '<img src="view/image/payment/op_applepay.svg" alt="applepay" width="70" height="25"  title="applepay" style="border: 1px solid #EEEEEE;" />';
 $_['text_pay']           	= 'https://secure.oceanpayment.com/gateway/service/pay';
 $_['text_test']          	= 'https://test-secure.oceanpayment.com/gateway/service/pay';
 $_['text_pay_iframe']    	= 'Iframe';
