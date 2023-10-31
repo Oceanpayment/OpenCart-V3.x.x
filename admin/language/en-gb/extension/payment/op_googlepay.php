@@ -6,7 +6,7 @@ $_['heading_title']      	= 'Oceanpayment googlepay Payment';
 $_['text_payment']       	= 'Payment';
 $_['text_success']       	= 'Success: You have modified GooglePay account details!';
 $_['text_edit']          	= 'Edit Oceanpayment GooglePay Payment';
-$_['text_op_googlepay'] 	= '<img src="view/image/payment/op_googlepay.png" alt="GooglePay" height="25"  title="GooglePay" style="border: 1px solid #EEEEEE;" />';
+$_['text_op_googlepay'] 	= '<img src="view/image/payment/op_googlepay.svg" alt="GooglePay" width="70" height="25"  title="GooglePay" style="border: 1px solid #EEEEEE;" />';
 $_['text_pay']           	= 'https://secure.oceanpayment.com/gateway/service/pay';
 $_['text_test']          	= 'https://test-secure.oceanpayment.com/gateway/service/pay';
 $_['text_pay_iframe']    	= 'Iframe';
