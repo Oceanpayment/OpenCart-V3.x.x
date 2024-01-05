@@ -1,14 +1,14 @@
 <?php 
-class ModelExtensionPaymentOPCreditCard extends Model {
+class ModelExtensionPaymentOPOctopus extends Model {
 	private $_limit = ',';
 	
   	public function getMethod($address) {
-		$this->load->language('extension/payment/op_creditcard');
+		$this->load->language('extension/payment/op_octopus');
 		
-		if ($this->config->get('payment_op_creditcard_status')) {
-      		$query = $this->db->query("SELECT * FROM " . DB_PREFIX . "zone_to_geo_zone WHERE geo_zone_id = '" . (int)$this->config->get('payment_op_creditcard_geo_zone_id') . "' AND country_id = '" . (int)$address['country_id'] . "' AND (zone_id = '" . (int)$address['zone_id'] . "' OR zone_id = '0')");
+		if ($this->config->get('payment_op_octopus_status')) {
+      		$query = $this->db->query("SELECT * FROM " . DB_PREFIX . "zone_to_geo_zone WHERE geo_zone_id = '" . (int)$this->config->get('payment_op_octopus_geo_zone_id') . "' AND country_id = '" . (int)$address['country_id'] . "' AND (zone_id = '" . (int)$address['zone_id'] . "' OR zone_id = '0')");
 			
-			if (!$this->config->get('payment_op_creditcard_geo_zone_id')) {
+			if (!$this->config->get('payment_op_octopus_geo_zone_id')) {
         		$status = true;
       		} elseif ($query->num_rows) {
       		  	$status = true;
@@ -23,14 +23,14 @@ class ModelExtensionPaymentOPCreditCard extends Model {
 	
 		if ($status) {
 			$title = $this->language->get('text_title');
-			if($this->config->get('payment_op_creditcard_transaction') == 'https://test-secure.oceanpayment.com/gateway/service/pay'){
+			if($this->config->get('payment_op_octopus_transaction') == 'https://test-secure.oceanpayment.com/gateway/service/pay'){
 				$title = $this->language->get('text_title').'<br><p style="color: red;">Note: In the test state all transactions are not deducted and cannot be shipped or services provided. The interface needs to be closed in time after the test is completed to avoid consumers from placing orders.</p>';
 			}
       		$method_data = array( 
-        		'code'       => 'op_creditcard',
+        		'code'         => 'op_octopus',
         		'title'      => $title,
       			'terms'      => '',
-				'sort_order' => $this->config->get('payment_op_creditcard_sort_order')
+				'sort_order' => $this->config->get('payment_op_octopus_sort_order')
       		);
     	}
    

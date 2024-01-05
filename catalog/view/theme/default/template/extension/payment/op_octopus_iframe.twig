@@ -7,7 +7,7 @@
 			        <img src="catalog/view/theme/default/image/loading.gif"  />
 			    </div>
 			</div>
-			<form action="{{ action }}" method="post" id="checkout_creditcard" name="checkout_creditcard">
+			<form action="{{ action }}" method="post" id="checkout_octopus" name="checkout_octopus">
 			  <input type="hidden" name="account" value="{{ account }}" />
 			  <input type="hidden" name="terminal" value="{{ terminal }}" />
 			  <input type="hidden" name="order_number" value="{{ order_number }}" />
@@ -45,19 +45,19 @@
 			  <input type="hidden" name="ET_COUPONS" value="{{ ET_COUPONS }}" />
 			</form>
 			
-			<iframe width="100%" height="800" scrolling="auto" name="ifrm_creditcard_checkout" id="ifrm_creditcard_checkout" style="border:none; margin: 0 auto; overflow:hidden;"></iframe>
+			<iframe width="100%" height="800" scrolling="auto" name="ifrm_octopus_checkout" id="ifrm_octopus_checkout" style="border:none; margin: 0 auto; overflow:hidden;"></iframe>
 			
 			<script type="text/javascript">
 					{% if app.session.pages == 0 %}
 				if (window.XMLHttpRequest) {
-				document.checkout_creditcard.target="ifrm_creditcard_checkout";
+				document.checkout_octopus.target="ifrm_octopus_checkout";
 				}
 					{% endif %}
-				document.checkout_creditcard.submit();
+				document.checkout_octopus.submit();
 				window.status = "{{ action }}";
 			</script>
                 <script type="text/javascript">
-			    var ifrm_cc  = document.getElementById("ifrm_creditcard_checkout");
+			    var ifrm_cc  = document.getElementById("ifrm_octopus_checkout");
 			    var loading  = document.getElementById("loading");
 			    if (ifrm_cc.attachEvent){
 			        ifrm_cc.attachEvent("onload", function(){

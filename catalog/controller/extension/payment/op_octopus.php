@@ -1,6 +1,6 @@
 <?php
 
-class ControllerExtensionPaymentOPCreditCard extends Controller {
+class ControllerExtensionPaymentOPOctopus extends Controller {
 	
 	const PUSH 			= "[PUSH]";
 	const BrowserReturn = "[Browser Return]";	
@@ -12,32 +12,32 @@ class ControllerExtensionPaymentOPCreditCard extends Controller {
 		
 		
 		$data['button_confirm'] = $this->language->get('button_confirm');
-		$data['action'] = 'index.php?route=extension/payment/op_creditcard/op_creditcard_form';
+		$data['action'] = 'index.php?route=extension/payment/op_octopus/op_octopus_form';
 		
 		
 		$order_info = $this->model_checkout_order->getOrder($this->session->data['order_id']);
 		
-		return $this->load->view('extension/payment/op_creditcard', $data);
+		return $this->load->view('extension/payment/op_octopus', $data);
 	}
 
 	
-	public function op_creditcard_form() {
+	public function op_octopus_form() {
 		
 		$this->load->model('checkout/order');
 		$order_info = $this->model_checkout_order->getOrder($this->session->data['order_id']);
-		$this->model_checkout_order->addOrderHistory($this->session->data['order_id'], $this->config->get('payment_op_creditcard_default_order_status_id'), '', false);
+		$this->model_checkout_order->addOrderHistory($this->session->data['order_id'], $this->config->get('payment_op_octopus_default_order_status_id'), '', false);
 
 		
 		//判断是否为空订单
 		if (!empty($order_info)) {
 			
-			$this->load->model('extension/payment/op_creditcard');
-			$product_info = $this->model_extension_payment_op_creditcard->getOrderProducts($this->session->data['order_id']);
+			$this->load->model('extension/payment/op_octopus');
+			$product_info = $this->model_extension_payment_op_octopus->getOrderProducts($this->session->data['order_id']);
 			
 			//获取订单详情
 			$productDetails = $this->getProductItems($product_info);
 			//获取消费者详情
-			$customer_info = $this->model_extension_payment_op_creditcard->getCustomerDetails($order_info['customer_id']);
+			$customer_info = $this->model_extension_payment_op_octopus->getCustomerDetails($order_info['customer_id']);
 			
 			
 			if (!$this->request->server['HTTPS']) {
@@ -47,7 +47,7 @@ class ControllerExtensionPaymentOPCreditCard extends Controller {
 			}
 			
 			//提交网关
-			$action = $this->config->get('payment_op_creditcard_transaction');
+			$action = $this->config->get('payment_op_octopus_transaction');
 			$data['action'] = $action;
 			
 			//订单号
@@ -61,26 +61,30 @@ class ControllerExtensionPaymentOPCreditCard extends Controller {
 			//币种
 			$order_currency = $order_info['currency_code'];
 			$data['order_currency'] = $order_currency;
+			
 
-		
+			$validate_arr['terminal'] = $this->config->get('payment_op_octopus_terminal');
+			$validate_arr['securecode'] = $this->config->get('payment_op_octopus_securecode');
+
+
 			//商户号
-			$account = $this->config->get('payment_op_creditcard_account');
+			$account = $this->config->get('payment_op_octopus_account');
 			$data['account'] = $account;
 				
 			//终端号
-			$terminal = $this->config->get('payment_op_creditcard_terminal');
+			$terminal = $validate_arr['terminal'];
 			$data['terminal'] = $terminal;
 			
 			//securecode
-			$securecode = $this->config->get('payment_op_creditcard_securecode');
+			$securecode = $validate_arr['securecode'];
 			
 			
 			//返回地址
-			$backUrl = $base_url.'index.php?route=extension/payment/op_creditcard/callback';
+			$backUrl = $base_url.'index.php?route=extension/payment/op_octopus/callback';
 			$data['backUrl'] = $backUrl;
 			
 			//服务器响应地址
-			$noticeUrl = $base_url.'index.php?route=extension/payment/op_creditcard/notice';
+			$noticeUrl = $base_url.'index.php?route=extension/payment/op_octopus/notice';
 			$data['noticeUrl'] = $noticeUrl;
 			
 			//备注
@@ -88,15 +92,15 @@ class ControllerExtensionPaymentOPCreditCard extends Controller {
 			$data['order_notes'] = $order_notes;
 			
 			//支付方式
-			$methods = "Credit Card";
+			$methods = "Octopus";
 			$data['methods'] = $methods;
-			
+
 			//账单人名
-			$billing_firstName = substr(urlencode($this->OceanHtmlSpecialChars($order_info['payment_firstname'])),0,50);
+			$billing_firstName = $this->OceanHtmlSpecialChars($order_info['payment_firstname']);
 			$data['billing_firstName'] = $billing_firstName;
-			
+
 			//账单人姓
-			$billing_lastName = substr(urlencode($this->OceanHtmlSpecialChars($order_info['payment_lastname'])),0,50);
+			$billing_lastName = $this->OceanHtmlSpecialChars($order_info['payment_lastname']);
 			$data['billing_lastName'] = $billing_lastName;
 			 
 			//账单人邮箱
@@ -112,7 +116,7 @@ class ControllerExtensionPaymentOPCreditCard extends Controller {
 			$data['billing_country'] = $billing_country;
 			
 			//账单人州
-			$billing_state = $order_info['payment_zone_code'];
+			$billing_state = $order_info['payment_zone'];
 			$data['billing_state'] = $billing_state;
 			 
 			//账单人城市
@@ -134,13 +138,13 @@ class ControllerExtensionPaymentOPCreditCard extends Controller {
 			//加密串
 			$signValue = hash("sha256",$account.$terminal.$backUrl.$order_number.$order_currency.$order_amount.$billing_firstName.$billing_lastName.$billing_email.$securecode);
 			$data['signValue'] = $signValue;
-				
+
 			//收货人名
-			$ship_firstName = substr(urlencode($this->OceanHtmlSpecialChars($order_info['shipping_firstname'])),0,50);
+			$ship_firstName = $order_info['shipping_firstname'];
 			$data['ship_firstName'] = $ship_firstName;
-			
+
 			//收货人姓
-			$ship_lastName = substr(urlencode($this->OceanHtmlSpecialChars($order_info['shipping_lastname'])),0,50);
+			$ship_lastName = $order_info['shipping_lastname'];
 			$data['ship_lastName'] = $ship_lastName;
 			
 			//收货人手机
@@ -152,7 +156,7 @@ class ControllerExtensionPaymentOPCreditCard extends Controller {
 			$data['ship_country'] = $ship_country;
 				
 			//收货人州
-			$ship_state = $order_info['shipping_zone_code'];
+			$ship_state = $order_info['shipping_zone'];
 			$data['ship_state'] = $ship_state;
 				
 			//收货人城市
@@ -269,12 +273,12 @@ class ControllerExtensionPaymentOPCreditCard extends Controller {
 			$data['header'] = $this->load->controller('common/header');
 			
 			//支付模式Pay Mode
-			if($this->config->get('payment_op_creditcard_pay_mode') == 1){
+			if($this->config->get('payment_op_octopus_pay_mode') == 1){
 				//内嵌Iframe
-				$this->response->setOutput($this->load->view('extension/payment/op_creditcard_iframe', $data));
+				$this->response->setOutput($this->load->view('extension/payment/op_octopus_iframe', $data));
 			}else{
 				//跳转Redirect
-				$this->response->setOutput($this->load->view('extension/payment/op_creditcard_form', $data));
+				$this->response->setOutput($this->load->view('extension/payment/op_octopus_form', $data));
 			}
 
 		}else{		
@@ -287,7 +291,7 @@ class ControllerExtensionPaymentOPCreditCard extends Controller {
 	
 	public function callback() {
 		if (isset($this->request->post['order_number']) && !(empty($this->request->post['order_number']))) {
-			$this->language->load('extension/payment/op_creditcard');
+			$this->language->load('extension/payment/op_octopus');
 		
 			$data['title'] = sprintf($this->language->get('heading_title'), $this->config->get('config_name'));
 
@@ -316,7 +320,7 @@ class ControllerExtensionPaymentOPCreditCard extends Controller {
 			
 	
 			//返回信息
-			$account = $this->config->get('payment_op_creditcard_account');
+			$account = $this->config->get('payment_op_octopus_account');
 			$terminal = $this->request->post['terminal'];
 			$response_type = $this->request->post['response_type'];
 			$payment_id = $this->request->post['payment_id'];
@@ -344,9 +348,9 @@ class ControllerExtensionPaymentOPCreditCard extends Controller {
 			
 			
 			//匹配终端号
-			if($terminal == $this->config->get('payment_op_creditcard_terminal')){
+			if($terminal == $this->config->get('payment_op_octopus_terminal')){
 				//普通终端号
-				$securecode = $this->config->get('payment_op_creditcard_securecode');
+				$securecode = $this->config->get('payment_op_octopus_securecode');
 			}else{
 				$securecode = '';
 			}
@@ -357,15 +361,15 @@ class ControllerExtensionPaymentOPCreditCard extends Controller {
 			$local_signValue = hash("sha256",$account.$terminal.$order_number.$order_currency.$order_amount.$order_notes.$card_number.
 					$payment_id.$payment_authType.$payment_status.$payment_details.$payment_risk.$securecode);
 			
-			if($this->config->get('payment_op_creditcard_logs') == 'True') {
-				//记录浏览器返回日志
-				$this->returnLog(self::BrowserReturn);
-			}
+
+			//记录浏览器返回日志
+			$this->returnLog(self::BrowserReturn);
+
 
 	
 
-			$message = self::BrowserReturn ;
-			if($this->config->get('payment_op_creditcard_transaction') == 'https://test-secure.oceanpayment.com/gateway/service/pay'){
+			$message = self::BrowserReturn;
+			if($this->config->get('payment_op_octopus_transaction') == 'https://test-secure.oceanpayment.com/gateway/service/pay'){
 				$message .= 'TEST ORDER-';
 				$data['payment_details'] = 'TEST ORDER-'.$data['payment_details'];
 			}
@@ -381,7 +385,7 @@ class ControllerExtensionPaymentOPCreditCard extends Controller {
 				}
 			}
 			$message .= ' | ' . $payment_id . ' | ' . $order_currency . ':' . $order_amount . ' | ' . $payment_details . "\n";
-			header("Set-Cookie:".$order_notes."path=/");
+		
 			$this->load->model('checkout/order');
 			if (strtoupper($local_signValue) == strtoupper($back_signValue)) {     //数据签名对比
 
@@ -390,7 +394,7 @@ class ControllerExtensionPaymentOPCreditCard extends Controller {
 					if($ErrorCode == 20061){	 
 						//排除订单号重复(20061)的交易
 						$data['continue'] = $this->url->link('checkout/cart');
-						$this->response->setOutput($this->load->view('extension/payment/op_creditcard_failure', $data));
+						$this->response->setOutput($this->load->view('extension/payment/op_octopus_failure', $data));
 
 					}else{
 						if ($payment_status == 1 ){  
@@ -398,10 +402,10 @@ class ControllerExtensionPaymentOPCreditCard extends Controller {
 							//清除coupon
 							unset($this->session->data['coupon']);
 							
-							$this->model_checkout_order->addOrderHistory($this->request->post['order_number'], $this->config->get('payment_op_creditcard_success_order_status_id'), $message, true);
+							$this->model_checkout_order->addOrderHistory($this->request->post['order_number'], $this->config->get('payment_op_octopus_success_order_status_id'), $message, true);
 							
 							$data['continue'] = HTTPS_SERVER . 'index.php?route=checkout/success';
-							$this->response->setOutput($this->load->view('extension/payment/op_creditcard_success', $data));
+							$this->response->setOutput($this->load->view('extension/payment/op_octopus_success', $data));
 
 						}elseif ($payment_status == -1 ){   
 							//交易待处理 
@@ -409,17 +413,17 @@ class ControllerExtensionPaymentOPCreditCard extends Controller {
 							if($payment_authType == 1){						
 								$message .= '(Pre-auth)';
 							}
-							$this->model_checkout_order->addOrderHistory($this->request->post['order_number'], $this->config->get('payment_op_creditcard_pending_order_status_id'), $message, false);
+							$this->model_checkout_order->addOrderHistory($this->request->post['order_number'], $this->config->get('payment_op_octopus_pending_order_status_id'), $message, false);
 								
 							$data['continue'] = $this->url->link('checkout/cart');
-							$this->response->setOutput($this->load->view('extension/payment/op_creditcard_success', $data));
+							$this->response->setOutput($this->load->view('extension/payment/op_octopus_success', $data));
 	
 						}else{     
 							//交易失败
-							$this->model_checkout_order->addOrderHistory($this->request->post['order_number'], $this->config->get('payment_op_creditcard_failed_order_status_id'), $message, false);
+							$this->model_checkout_order->addOrderHistory($this->request->post['order_number'], $this->config->get('payment_op_octopus_failed_order_status_id'), $message, false);
 							
 							$data['continue'] = $this->url->link('checkout/cart');
-							$this->response->setOutput($this->load->view('extension/payment/op_creditcard_failure', $data));
+							$this->response->setOutput($this->load->view('extension/payment/op_octopus_failure', $data));
 
 						}
  					}								
@@ -427,10 +431,10 @@ class ControllerExtensionPaymentOPCreditCard extends Controller {
 			
 			}else {     
 				//数据签名对比失败
-				$this->model_checkout_order->addOrderHistory($this->request->post['order_number'], $this->config->get('op_creditcard_failed_order_status_id'), $message, false);
+				$this->model_checkout_order->addOrderHistory($this->request->post['order_number'], $this->config->get('op_octopus_failed_order_status_id'), $message, false);
 							
 				$data['continue'] = $this->url->link('checkout/cart');
-				$this->response->setOutput($this->load->view('extension/payment/op_creditcard_failure', $data));
+				$this->response->setOutput($this->load->view('extension/payment/op_octopus_failure', $data));
 					
 			}
 		}
@@ -472,9 +476,9 @@ class ControllerExtensionPaymentOPCreditCard extends Controller {
 				
 					
 			//匹配终端号
-			if($_REQUEST['terminal'] == $this->config->get('payment_op_creditcard_terminal')){
+			if($_REQUEST['terminal'] == $this->config->get('payment_op_octopus_terminal')){
 				//普通终端号
-				$securecode = $this->config->get('payment_op_creditcard_securecode');
+				$securecode = $this->config->get('payment_op_octopus_securecode');
 			}else{
 				$securecode = '';
 			}
@@ -486,10 +490,8 @@ class ControllerExtensionPaymentOPCreditCard extends Controller {
 		
 		if($_REQUEST['response_type'] == 1){
 			
-			if($this->config->get('payment_op_creditcard_logs') == 'True') {
-				//记录交易推送日志
-				$this->returnLog(self::PUSH);
-			}
+			//记录交易推送日志
+			$this->returnLog(self::PUSH);
 			
 			//签名数据
 			$local_signValue = hash("sha256",$_REQUEST['account'].$_REQUEST['terminal'].$_REQUEST['order_number'].$_REQUEST['order_currency'].$_REQUEST['order_amount'].$_REQUEST['order_notes'].$_REQUEST['card_number'].
@@ -506,8 +508,8 @@ class ControllerExtensionPaymentOPCreditCard extends Controller {
 				$this->load->model('checkout/order');
 				
 
-				$message = self::PUSH ;
-				if($this->config->get('payment_op_creditcard_transaction') == 'https://test-secure.oceanpayment.com/gateway/service/pay'){
+				$message = self::PUSH;
+				if($this->config->get('payment_op_octopus_transaction') == 'https://test-secure.oceanpayment.com/gateway/service/pay'){
 					$message .= 'TEST ORDER-';
 				}
 				if ($_REQUEST['payment_status'] == 1){           //交易状态
@@ -529,17 +531,17 @@ class ControllerExtensionPaymentOPCreditCard extends Controller {
 				}else{
 					if ($_REQUEST['payment_status'] == 1 ){
 						//交易成功
-						$this->model_checkout_order->addOrderHistory($_REQUEST['order_number'], $this->config->get('payment_op_creditcard_success_order_status_id'), $message, false);
+						$this->model_checkout_order->addOrderHistory($_REQUEST['order_number'], $this->config->get('payment_op_octopus_success_order_status_id'), $message, false);
 					}elseif ($_REQUEST['payment_status'] == -1){
 						//交易待处理
 						//是否预授权交易
 						if($_REQUEST['payment_authType'] == 1){
 							$message .= '(Pre-auth)';
 						}
-						$this->model_checkout_order->addOrderHistory($_REQUEST['order_number'], $this->config->get('payment_op_creditcard_pending_order_status_id'), $message, false);
+						$this->model_checkout_order->addOrderHistory($_REQUEST['order_number'], $this->config->get('payment_op_octopus_pending_order_status_id'), $message, false);
 					}else{
 						//交易失败
-						$this->model_checkout_order->addOrderHistory($_REQUEST['order_number'], $this->config->get('payment_op_creditcard_failed_order_status_id'), $message, false);
+						$this->model_checkout_order->addOrderHistory($_REQUEST['order_number'], $this->config->get('payment_op_octopus_failed_order_status_id'), $message, false);
 					}
 				}
 				
@@ -552,8 +554,9 @@ class ControllerExtensionPaymentOPCreditCard extends Controller {
 	
 			
 	}
-
 	
+	
+
 	
 	/**
 	 * return log
