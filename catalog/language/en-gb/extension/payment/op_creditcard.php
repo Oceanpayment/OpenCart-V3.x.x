@@ -3,7 +3,7 @@
 $_['heading_title']     = 'Thank you for shopping with %s .... ';
 
 // Text
-$_['text_title']        = 'Credit Card Payment <br/><img src="../catalog/view/theme/default/image/op_creditcard.png" alt="Credit Card">';
+$_['text_title']        = 'Credit Card Payment <br/><img src="https://'.$_SERVER['HTTP_HOST'].'/catalog/view/theme/default/image/op_creditcard.png" alt="Credit Card">';
 $_['text_response']     = 'Response from Credit Card:';
 $_['text_success']      = 'Your payment was successfully received.';
 $_['text_success_wait'] = 'whilst we finish processing your order.<br>If you are not automatically re-directed in 10 seconds, please click <a href="%s" target="_top" >here</a>.';
